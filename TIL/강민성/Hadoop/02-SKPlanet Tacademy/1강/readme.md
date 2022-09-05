@@ -10,7 +10,7 @@
     - 하둡은 2007년 첫 탄생 이후 3.X 버전까지 나온 굉장히 성숙한 기술
     - 하둡 에코시스템은 Governace, Finnace, Banking, Insurance, Healthcare 등 사회 전반에 걸친 모든 요소들과 밀접히 연결되어 사용
 
-### **History of Hadoop**
+### History of Hadoop
 
 - Doug Cutting이 인덱싱 라이브러리 Lucene을 오픈소스로 공개
 - 아들 프로젝트 Nutch와 Hadoop 탄생
