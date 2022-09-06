@@ -534,7 +534,3 @@ Other:
 - [Apache Groovy syntax](http://groovy-lang.org/syntax.html)
 - [Gradle Wikipedia page](https://en.wikipedia.org/wiki/Gradle)
 
-
-
-### Homework
-
