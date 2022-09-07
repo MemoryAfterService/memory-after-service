@@ -376,7 +376,7 @@ The code editor shows a notification bar at the top with the **Sync Now** link.
 
 ### 2. Sync the new Gradle configuration
 
-When you make changes to the build configuration files in a project, Android Studio requires that you *sync* the project files so that it can import the build configuration changes and run some checks to make sure the configuration won't create build errors.
+When you make changes to the build configuration files in a project, Android Studio requires that you sync the project files so that it can import the build configuration changes and run some checks to make sure the configuration won't create build errors.
 
 ![image-20220906232448054](C:\Users\multicampus\Desktop\Git\S07P22B103\TIL\최수연\Android fundamentals 01.1 Android Studio and Hello World.assets\image-20220906232448054.png)
 
