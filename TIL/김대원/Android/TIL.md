@@ -105,3 +105,16 @@ Other:
 - [Gradle site](https://gradle.org/) : 빌드할 떄 사용하는 도구인 gradle 사이트
 - [Apache Groovy syntax](http://groovy-lang.org/syntax.html) : 자바에 다른 언어의 특징을 추가한 다른 언어
 - [Gradle Wikipedia page](https://en.wikipedia.org/wiki/Gradle)
+
+----
+
+### Android View 간단 정리
+
+---
+
+- TextView
+- EditText
+- Button
+- ScrollView & RecyclerView
+- ImageView
+- ContraintLayout & LinearLayout
