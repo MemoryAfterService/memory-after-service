@@ -752,4 +752,132 @@ score[4] = new int[3];
   }
   ```
 
-  
+
+### 0908
+
+###### Tacademy hadoop 2강
+
+하둡(3.3.0) 설치
+
+- JAVA, JDK 1.8이상 버젼(java -version)
+- IntelliJ, Maven Project를 들고 프로젝트를 만든다
+
+Maven?
+
+- dependencies들의 import, build를 용이하게 해주는 도구
+- pom.xml 파일을 통해 세팅하여 동작하게 된다(dependency 정의, hadoop mvn repository 검색을 통해 설정한다)
+
+vim 변경 적용 -> source
+
+```
+vi .bash_profile
+source .bash.profile
+```
+
+hadoop-env..sh 수정 - 하둡 환경파일 설정
+
+```
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home
+
+export HADOOP_HOME=/Users/SSAFY/Platform/hadoop-3.3.0
+
+export HADOOP_CONF_DIR=${HADOOP_HOME}}/etc/hadoop
+```
+
+core-site.xml 수정 - 하둡 코어 설정
+
+````
+<configuration>
+	<property>
+		<name>fs.defaultFS</name>
+		<value>hdfs://localhost:9000</value>
+    </property>
+```
+    <property>
+    	<name>dfs.namenode.name.dir</name>
+    	<value>/Users/SSAFY/Platform/dfs/name
+    </property>
+```
+</configuration>
+````
+
+hdfs-site.xml 수정 - 하둡 분산파일 시스템 설정값 설정
+
+- 하둡은 원본파일 포함 3개의 복제파일을 가지게된다
+
+```
+<configuration>
+	<property>
+		<name>dfs.replication</name>
+		<value>1</value> #replication을 하나만 해준다(데몬을 하나만 띄울 것이기 때문에)
+    </property>
+</configuration>
+```
+
+yarn-site.xml 수정 - 하둡 yarn에 대한 설정(map-reduce 설정)
+
+ssh 로그인 가능 여부 테스트
+
+```
+ssh localhost #자신한테 로그인
+안될경우 homedirectory로 간뒤에
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 0600 ~/.ssh/authorized_keys
+를 통해 key 생성 및 적용해준다
+key를 지우는 방법
+vi .ssh/authorized_keys를 통해서 들어간 후에 전부다 지워준다(dd를 연타하여 지운다)
+```
+
+하둡 네임노드 포맷
+
+- 포맷 이후 데몬을 띄워야 실행이 되므로 선행 필요
+- Platform/hadoop-3.3.0의 bin으로 가서 아래 명령어를 통해서 실행한다
+
+```
+bin/hdfs namenod -format
+```
+
+DFS 데몬 실행
+
+```
+sbin/start-dfs.sh
+이후 localhost:9870/을 통해서 접속한다(namenode, 하둡분산파일시스템을 확인할 수 있는 관리도구)
+localhost://9000 active가 뜬다
+```
+
+mapred-site.xml 수정
+
+- map-reduce demon을 띄우기 위한 설정
+
+```
+<configuration>
+	<property>
+		<name>mapreduce.framework.name</name>
+		<value>yarn></value>
+	</property>
+	<property>
+		<name>mapreduce.application.classpath</name>
+		<value>$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*</value>
+	</property>
+</configuration>
+```
+
+```
+sbin/start-yarn.sh를 통해 실행
+```
+
+```
+이후 http:localhost:8088을 통해 접속 -> 어플리케이션 실행 상태를 볼 수 있는 관리도구
+```
+
+유의사항
+
+```
+/tmp/SSAFY/dfs/name/current에 대한 권한이 없을 경우, 이 경로를 수정해준다
+그 방법은 
+core-site.xml에서 ```로 주석처리한 부분을 적어주는것이다
+```
+
+
+
