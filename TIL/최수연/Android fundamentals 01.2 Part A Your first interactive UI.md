@@ -151,4 +151,60 @@ The **Attributes**(known as properties) pane offers access to all of the XML att
 
 ✔ **1. Height control**
 
+ This control specifies the `layout_height` attribute and appears in two segments on the top and **bottom** sides of the square. 
+
+The angles indicate that this control is set to `wrap_content`
+
+* `View` will expand vertically as needed to fit its contents. 
+* The "0" indicates a standard margin set to 0dp.
+
+
+
 ✔ **2. Width control**
+
+This control specifies the `layout_width` and appears in two segments on the **left** and **right** sides of the square.
+
+The angles indicate that this control is set to `wrap_content`
+
+* which means the `View` will expand horizontally as needed to fit its contents, up to a margin of 0dp.
+
+
+
+**ConstraintLayout**
+
+- The `match_constraint` setting expands the `View` element to fill its parent by width or height—up to a margin, if one is set. The parent in this case is the `ConstraintLayout`.
+- The `wrap_content` setting shrinks the `View` element's dimensions so it is just big enough to enclose its content. If there is no content, the `View` element becomes <u>invisible.</u>
+
+❗ To specify a fixed size that adjusts for the screen size of the device, use a fixed number of density-independent pixels (`dp` units). 
+
+* For example, `16dp` means 16 density-independent pixels.
+
+
+
+### 2. Change the Button attributes
+
+The **Attributes** pane offers access to all of the attributes you can assign to a `View` element. 
+
+You can enter values for each attribute, such as the `android:id`, `backgroundTint`, `textColor`, and `text` attributes.
+
+✔ android:id ➡ button_toast
+
+✔ backgroundTint ➡  @color/purple_200
+
+✔ textColor ➡ @android:color/black
+
+✔ text ➡ Toast
+
+
+
+The `color/purple_200` is one of the predefined theme base colors defined in the `colors.xml` resource file. The original default purple is used for the app bar
+
+
+
+## 6. Task 4: Add a TextEdit and set its attributes
+
+One of the benefits of `ConstraintLayout` is the ability to align or otherwise constrain elements relative to other elements. In this task you will add a `TextView` in the middle of the layout, and constrain it horizontally to the margins and vertically to the two `Button` elements. You will then change the attributes for the `TextView` in the **Attributes** pane.
+
+
+
+### 1. Add a TextView and constraints
