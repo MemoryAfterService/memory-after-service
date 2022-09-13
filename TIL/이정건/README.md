@@ -879,5 +879,93 @@ sbin/start-yarn.sh를 통해 실행
 core-site.xml에서 ```로 주석처리한 부분을 적어주는것이다
 ```
 
+### 0913
 
+###### Tacademy hadoop 3강
+
+분산환경 : 물리적으로 여러개의 서버가 하나의 클러스터처럼 동작하는 플랫폼
+
+- Master-Slave 구조
+  - Master Demon가 Slave Demon을 관리
+  - Slave server들은 N대의 서버로 확장(scale-out)할 수 있다
+  - Master의 안정성을 중요시한다
+    -  부하가 가해지면 안된다(client와 slave가 직접 연결된다, 트래픽, 데이터를 주고받는다)
+- Master가 없는 구조
+  - Master가 가지고 있어야하는 정보들을 모든 노드들이 공유한다
+
+구글 플랫폼
+
+- 철학
+  - 요약 : 분산 & 자동화
+  - 한대의 고가 장비보다 여러 대의 저가 장비가 낫다
+  - 데이터는 분산 저장한다(distributed computing) <-> 데이터를 공유스토리지에 공유하고 CPU Cores, 메모리를 늘려가면서 처리하는것(Parallel computing)
+  - 시스템(H/W)은 언제든 죽을 수 있다(Smart S/W)
+  - 시스템 확장이 쉬워야 한다
+
+하둡
+
+![image-20220912173247381](README.assets/image-20220912173247381.png)
+
+- 특성
+  - 추천대 이상의 리눅스 기반 범용 서버들을 하나의 클러스터로 사용
+  - 마스터-슬레이브 구조
+  - 파일은 블록(block)단위로 저장
+  - 블록 데이터의 복제본 유지로 인한 신뢰성 보장(원본 포함 기본 3개의 복제본)
+  - 높은 내고장성(Fault-Tolerance)
+  - 데이터 처리의 지역성 보장
+
+- 네트워크 및 데몬 구성
+  - 단위는 Rack
+    - DFS를 관리하는 Name Node
+      - 데이터의 위치, 형식 보관
+    - Job을 관리하는 Job Trakcer
+    - 데이터를 저장, 관리하는 Data Node
+      - 실 데이터 저장
+    - 어플리케이션 업무를 수행하는 Task Trakcer
+    - switch + master(name, job, secondary, ....) + slave(DN(Data Node)+TT(Task Tracker))
+- 블록
+  - 하둡에서 데이터를 저장하는 단위
+  - 하나의 파일을 여러 개의 Block으로 저장
+  - 설정에 의해 하나의 Block은 64MB 혹은 128MB 등의 큰 크기(탐색 비용을 최소화 하기 위해서 큰 크기로 나눈다)로 나누어 저장
+  - 블록 크기가 128MB보다 작은 경우는 실제 크기 만큼만 용량을 차지한다
+- 블록의 지역성(Locality)
+  - 거치는 switch 최소화를 통해 실제 job을 가지는 node가 먼저 일을 수행할 수 있게 한다
+  - 장점
+    - 네트워크를 이용한 데이터 전송 시간 감소
+    - 대용량 데이터 확인을 위한 디스크 탐색 시간 감소
+    - 적절한 단위의 블록 크기를 이용한 CPU 처리시간 증가
+  - 참고 
+    - 클라우드 스토리지를 이용(ex) S3)할 경우 HDFS를 사용하는 것보다 성능 저하가 있을 수 있다
+- 블록 캐싱
+  - 데이터 노드에 저장된 데이터 중 자주 읽는 블록을 블록캐시라는 데이터 노드의 메모리에 명시적으로 캐싱하는것
+  - 파일 단위로 캐싱할 수도 있어서 조인에 사용되는 데이터들을 등록하여 읽기 성능을 높일 수 있다
+
+- 네임노드 역할
+  - 전체 hdfs에 대한 Name Space 관리
+  - DataNode로 부터 Block 리포트를 받는다
+  - Data에 대한 Replication 유지를 위한 커맨더 역할 수행
+  - 파일시스템 이미지 파일 관리(fsimage)
+  - 파일시스템에 대한 Edit Log 관리
+
+![image-20220912180924996](README.assets/image-20220912180924996.png)
+
+- 보조 네임노드(SNN, Secondary Name Node)
+  - 네임노드(NN)와 보조 네임노드(SNN)
+    - Active/Standby 구조가 아니다
+    - fsiimage와 edits 파일을 주기적으로 병합
+  - 체크 포인트
+    - 1시간 주기로 실행
+    - edits 로그가 일정 사이즈 이상이면 실행
+  - 이슈사항
+    - 네임노드가 SPOF
+    - 보조 네임노드의 장애 상황 감지 툴 없음
+
+- 데이터노드(Datanode)
+- ![image-20220912181515464](README.assets/image-20220912181515464.png)
+  - 물리적으로 로컬 파일시스템에 HDFS데이터를 저장한다
+  - DataNode는 HDFS에 대한 지식이 없다
+  - 일반적으로 레이드 구성을 하지 않는다(JBOD(Just Bunch Of Disk구성), 사용하는 데이터 낭비 방지
+  - 블록리포트: NameNode가 시작될 때, 그리고 (주기적으로)로컬 파일시스템에 있는 모든 HDFS 블록들을 검사 후 정상적인 블록의 목록을 만들NameNode에 전송
+
+![image-20220912181636043](README.assets/image-20220912181636043.png)
 
