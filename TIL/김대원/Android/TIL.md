@@ -108,13 +108,52 @@ Other:
 
 ----
 
-### Android View 간단 정리
+### View 종류들
+
+---
+
+- TextView : 텍스트 표현
+- EditText : 유저가 텍스트를 편집 가능하게 함
+- Button : 클릭 가능한 요소로서 상호작용을 가능하게 함 (라디오 버튼, 체크박스, 스피너)
+- ScrollView & RecyclerView : 스크롤 가능한 아이템을 보여줌
+- ImageView : 사진들을 보여줌
+- ContraintLayout & LinearLayout : 다른 뷰 요소를 담고, 포지셔닝 함.
+
+### Activity
+
+---
+
+- 자바의 화면 출력이나 UI를 관리하는 것은 Activity 클래스를 상속 받아서 활용.
+- 뷰의 레이아웃은 XML 파일을 통해 관리됨.
+
+### 기타
+
+---
+
+- gravity : View가 View 그룹 혹은 부모 View에서 어떻게 정렬될 지 정함. 실습 때 정한 Center는 ConstraintLayout의 Center에 놓게 됨.
+- makeText() : Toast 클래스를 만드는 팩토리 함수
+- Toast.LENGTH_SHORT, Toast.LENGTH_LONG : 화면에 표시되는 시간 조절
+
+---
+
+### TextView, ScrollView
 
 ---
 
 - TextView
-- EditText
-- Button
-- ScrollView & RecyclerView
-- ImageView
-- ContraintLayout & LinearLayout
+    - 화면에 텍스트를 표시하는 View, 레이아웃은 xml 파일을 통해 관리됨.
+- ScrollView
+    - FrameLayout의 서브 클래스,
+    - 오로지 하나의 뷰의 전체 내용을 스크롤로 출력. 그 뷰는 ViewGroup일 수 있음.
+    - ScrollView 내부의 뷰는 보통 세로로 정렬된 LinearLayout을 추천함.
+    - ScrollView 내부의 뷰는 보이지 않더라도 메모리에 저장됨.
+
+### String.xml
+
+---
+
+- xml 속 데이터를 추가할 때 참고할 점
+    - 줄바꿈 : \n
+    - 볼드 : <b></b>
+    - 이탤릭 : <i></i>
+    - 링크 : TextView 내부에 `android:autoLink="web"`달기
