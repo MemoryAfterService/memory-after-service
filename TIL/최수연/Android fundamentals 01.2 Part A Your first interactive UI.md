@@ -208,3 +208,193 @@ One of the benefits of `ConstraintLayout` is the ability to align or otherwise c
 
 
 ### 1. Add a TextView and constraints
+
+1. Drag a `TextView` from the **Palette** pane to the upper part of the layout, and drag a constraint from the top of the `TextView` to the handle on the bottom of the **Toast** `Button`.
+2.  Drag a constraint from the bottom of the `TextView` to the handle on the top of the **Count** `Button`, and from the sides of the `TextView` to the sides of the layout.
+
+
+
+### 2. Set the TextView attributes
+
+1. Set the `ID` to **show_count**.
+2. Change the horizontal and vertical view size controls (`layout_width` and `layout_height`) to **match_constraint**.
+3. Set the `text` to **0**.
+4. Scroll down the pane to **Common Attributes** and expand the textAppearance attribute.
+5. Set the `textSize` to **160sp**.
+6. Set the `textColor` to **@color/purple_500**.
+7. Set the `textStyle` to **B** (bold).
+8. Scroll down the pane to **All Attributes**, and set the `background` to **#FFFF00** for a shade of yellow.
+9. Scroll down to `gravity`, expand `gravity`, and select **center**.
+
+- `textSize`: The text size of the `TextView`. For this lesson, the size is set to `160sp`. The `sp` stands for *scale-independent pixel*, and like `dp`, is a unit that scales with the screen density and user's font size preference. Use dp units when you specify font sizes so that the sizes are adjusted for both the screen density and the user's preference.
+- `textStyle`: The text style, set to **B** (bold) in this lesson
+- `gravity`: The `gravity` attribute specifies how a `View` is aligned within its *parent* `View` or `ViewGroup`. In this step, you center the `TextView` to be centered within the parent `ConstraintLayout`.
+
+![image-20220913233723375](C:\Users\multicampus\Desktop\Git\S07P22B103\TIL\최수연\Android fundamentals 01.2 Part A Your first interactive UI.assets\image-20220913233723375.png)
+
+
+
+## 7. Task 5: Edit the layout in XML
+
+An exclamation point appears next to each UI element in the **Component Tree**. 
+
+Hover your pointer over these exclamation points to see warning messages, as shown below. The same warning appears for all three elements: hardcoded strings should use resources.
+
+![Viewing UI element warnings](https://developer.android.com/static/codelabs/android-training-layout-editor-part-a/img/5e8d5d4a30120563.gif?hl=ko)
+
+
+
+❗ The easiest way to fix layout problems is to edit the layout in XML. 
+
+❗ While the layout editor is a powerful tool, some changes are easier to make directly in the XML source code.
+
+
+
+### 1. Open the XML code for the layout
+
+**activity_main.xml**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_200"
+        android:text="Count"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button_toast"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_200"
+        android:text="Toast"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/show_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFF00"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/purple_500"
+        android:textSize="160sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+![image-20220913234148652](C:\Users\multicampus\Desktop\Git\S07P22B103\TIL\최수연\Android fundamentals 01.2 Part A Your first interactive UI.assets\image-20220913234148652.png)
+
+
+
+### 2. Extract string resources
+
+It is a best practice to use string resources, which represent the strings. 
+
+Having the strings in a separate file makes it easier to manage them, especially if you use these strings more than once. 
+
+Also, string resources are mandatory for translating and localizing your app, because you need to create a string resource file for each language.
+
+`android:text="Toast"`➡`android:text="@string/toast"`
+
+![image-20220913234313790](C:\Users\multicampus\Desktop\Git\S07P22B103\TIL\최수연\Android fundamentals 01.2 Part A Your first interactive UI.assets\image-20220913234313790.png)
+
+
+
+You need another string to use in a subsequent task that displays a message. 
+
+Add to the `strings.xml` file another string resource named `toast_message` for the phrase "Hello Toast!":
+
+![image-20220913234947965](C:\Users\multicampus\Desktop\Git\S07P22B103\TIL\최수연\Android fundamentals 01.2 Part A Your first interactive UI.assets\image-20220913234947965.png)
+
+
+
+## 8. Task 6: Add onClick handlers for the buttons
+
+In this task, you add a Java method for each `Button` in `MainActivity` that executes when the user taps the `Button`.
+
+
+
+### 1. Add the onClick attribute and handler to each Button
+
+ In Android Studio you can specify the name of the method in the `onClick` field in the **Design** tab's **Attributes** pane.
+
+ You can also specify the name of the handler method in the XML editor by adding the `android:onClick` property to the `Button`. 
+
+
+
+1. With the XML editor open (the Code tab), find the `Button` with the `android:id` set to `button_toast`:
+
+   ```xml
+       <Button
+           android:id="@+id/button_count"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:backgroundTint="@color/purple_200"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintHorizontal_bias="0.0"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintVertical_bias="1.0" />
+
+2. Add the `android:onClick` attribute to the end of the `button_toast` element after the last attribute and before the `/>` end indicator.
+3. Click the red bulb icon that appears next to the attribute. Select **Create ‘showToast(View)' in ‘MainActivity'**.
+
+![image-20220913235537949](C:\Users\multicampus\Desktop\Git\S07P22B103\TIL\최수연\Android fundamentals 01.2 Part A Your first interactive UI.assets\image-20220913235537949.png)
+
+**MainActivity.java**
+
+```java
+package com.example.hellotoast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    public void showToast(View view) {
+    }
+}
+```
+
+
+
+
+
+## Summary
+
