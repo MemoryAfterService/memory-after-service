@@ -2,9 +2,7 @@
 
 ### 데이터 과학의 정의와 툴셋
 
-![DataScience](asset/DataScience.png)
-
-![ToolSet](asset/ToolSet.png)
+<img src="asset/DataScience.png" width="30%"> <img src="asset/ToolSet.png" width="35%">
 
 데이터의 분석과 활용이 개인과 조직의 새로운 힘이 되고 경쟁력이 되는 시대입니다. 데이터 사이언스는 **데이터 수집, 큐레이션, 통계 분석과 기계학습** 등의 다양한 기술과 지식을 활용하여 **복잡한 데이터**로부터 **인사이트를 얻거나 지능화된 시스템을 구현**하기 위한 모든 업무를 총칭합니다.
 [출처: 솔트룩스]
@@ -15,7 +13,7 @@
 
 | 과정 | 수집 | 처리 | 분석 | 적용 |
 | --- | --- | --- | --- | --- |
-| 툴 | requests</br>BeautifulSoup</br>Scrapy | Database</br>SQLAlchemy</br>Pandas | Pandas</br>Numpy</br>Scipy | Matplotlib</br>Plot.ly |
+| 툴 | requests<br>BeautifulSoup<br>Scrapy | Database<br>SQLAlchemy<br>Pandas | Pandas<br>Numpy<br>Scipy | Matplotlib<br>Plot.ly |
 
 → Jupyter Notebook에서 많이 사용
 
@@ -50,7 +48,7 @@
 - Raw Data : RDB, DataWarehouse, Data Lake, File(CSV, log, txt, Excel), Service, …
 - Open Dataset, Open API
     
-    ![OpenDataURL](asset/OpenDataURL.png)
+    <img src="asset/OpenDataURL.png" width="50%">
     
 - 스크래핑
     - 파이썬으로 쉽고 편하게 스크래핑 개발 가능
@@ -87,7 +85,7 @@
     - 데이터 리터러시(데이터 문해력)
 - 시각화 방법 선택 → **다방면으로** 살펴보기
     
-    ![TyepsOfGraph](asset/TyepsOfGraph.png)
+    <img src="asset/TyepsOfGraph.png" width="50%">
     
 - 많이 사용하는 라이브러리
     - matplotlib : 기본
