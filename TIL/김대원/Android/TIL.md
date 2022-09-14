@@ -157,3 +157,44 @@ Other:
     - 볼드 : <b></b>
     - 이탤릭 : <i></i>
     - 링크 : TextView 내부에 `android:autoLink="web"`달기
+
+----
+# Android Developer Fundametnal Unit 1.4
+
+## 실습하면서 몰랐던 것들
+
+---
+
+### Launcher Icon 바꾸기
+
+---
+
+1. app/res를 우클릭 후 `New > Image Asset` 선택
+2. foreground와 background를 취향에 따라 선택
+
+- [https://material.io/design/iconography/product-icons.html](https://material.io/design/iconography/product-icons.html) 를 통해여 meterial UI에 맞는 아이콘 참고 가능
+
+### Project template 사용
+
+---
+
+> Basic Activity Template 기준으로 설명
+>| # | UI Description | Code reference |
+| --- | --- | --- |
+| 1 | 상태 바, 안드로이드 시스템이 제공하고 관리함. | 템플릿 코드에선 보이지 않음, 그러나 activity에서 접근 가능.
+예를 들어 MainActivity.java에서 필요하다면 감출 수 있음. |
+| 2 | 앱 바, 또는 액션 바로 불림.
+시각적 구조와 표준화된 시각적 요소들, 그리고 안내를 제공함. | activity_main.xml에서 AppBarLayout의 Toolbarinside를 찾아보기.
+하위 호환성을 위해서, AppBarLayout은 ActionBar와 기능적으로 같다.
+앱 바의 모습을 바꾸기위해선 toolbar attributes를 바꿔야한다. |
+| 3 | 앱 이름의 초기값은 패키지 이름에서 가져옴. (변경 가능) | AndroidManifest.xml에서 android:label=”@string/app_name” 참고.
+string.xml에서 수정 가능 |
+| 4 | 옵션-메뉴 오버플로우 버튼은 activity를 위한 메뉴를 가지고 있음.
+오버플로우 버튼은 또한 설정과 검색 같은 전역 메뉴 옵션을 가지고 있음. | MainActivity.java에서 onOptionsItemSelected() 메서드는 유저가 메뉴 아이템을 선택했을 때 할 일을 구현함.
+옵션-메뉴 아이템을 보려면, res/menu/menu_main.xml 참고. |
+| 5 | CoordinateLayout ViewGroup은 UI 요소들이 상호작용하기 위한 메커니증을 제공하는 레이아웃.
+앱 UI는 content_main.xml 파일에 있음. | activity_main.xml에서, includelayout 설명 참고.
+content_main 레이아웃을 참고함. |
+| 7 | Floating action button (FAB) | activity_main.xml에서, FloatingActionButton 요소 확인.
+FAB은 clip-art 아이콘을 사용하는 UI .
+MainActicity.java는 onCreate() 메서드로 FAB의 onclick() 리스너 설정. |
