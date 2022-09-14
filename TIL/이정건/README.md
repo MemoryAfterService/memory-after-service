@@ -969,3 +969,333 @@ core-site.xml에서 ```로 주석처리한 부분을 적어주는것이다
 
 ![image-20220912181636043](README.assets/image-20220912181636043.png)
 
+### 0914
+
+###### Tacademy hadoop 4강
+
+- HDFS 사용자 커맨드
+  - hadoop fs 
+    - 하둡 파일시스템 커맨드의 usage를 나열
+  - version
+  - mkdir
+    - hadoop dfs -mkdir hadoop_mkdir_test
+  - ls
+    - hadoop dfs -ls
+  - put
+    - hadoop fs -mkdir -p
+    - hadoop dfs -put <file> <path>
+    - hadoop fs -ls -h(human readable) # 용량 포함
+  - copyFromLocal
+    - hadoop fs -copyFromLocal <localsrc> <hdfs destination>
+  - get
+    - hadoop fs -get <src> <localdst>
+  - copyToLocal
+    - hadoop fs -copyToLocal <hdfs source> <localdst>
+  - cat
+    - hadoop fs -cat /path_to_file_in_hdfs
+  - mv
+    - hadoop fs -mv <src> <dest>
+  - cp //copy
+    - hadoop fs -cp <src> <dest>
+  - moveFromLocal
+    - hadoop fs -moveFromLocal <localsrc> <dest>
+  - moveToLocal
+  - tail
+    - hadoop fs -tail [-f] <file>
+  - rm
+    - hadoop fs -rm <path>
+  - expunge
+    - 
+  - chown
+    - hadoop fs -chown [-R] [owner] [:[group]] <path>
+  - chgrp
+    - hadoop fs -chgrp <group> <path>
+  - setrep #replication 설정(2개, 3개, 등등)
+    - hadoop fs -setrep <rep> <path>
+  - du
+    - hadoop fs -du -s /directory/filename
+  - df
+    - hadoop fs -du -s /directory/filename
+  - touchz
+    - hadoop fs -touchz /directory/filename
+  - test
+  - text #저장된 내용을 확인하는 명령어
+    - hadoop fs -text <src>
+  - stat #통계정보 출력
+    - hadoop fs -stat [format] <path>
+  - usage #명령어의 사용방법 조회
+    - hadoop fs -usage <command>
+  - help #명령어의 옵션들 조회
+    - hadoop fs -help <command>
+  - chmod
+  - appendToFile
+  - checksum
+    - hadoop fs -checksum <src>
+  - count
+    - hadoop fs -count [options] <path>
+  - find
+    - hadoop fs -find <path> ... <expression>
+  - getmerge - src의 파일을 merge해서 하나의 파일로 localdest에 받는다
+    - hadoop fs -getmerge <src> <localdest>
+
+- HDFS(하둡 분산파일시스템) 이해
+
+  - Rack Awareness Algorithm
+    - 블록을 저장할 때 2개의 블록은 같은 랙에, 나머지 하나의 블록은 다른 랙에 저장하도록 구성하여 랙 단위 장애 발생(전원, 스위치 등)에도 전체 블록이 유실되지 않도록 구성한다
+  - HDFS 세이프 모드
+    - 데이터 노드를 수정할 수 없는 상태
+    - 세이프 모드가 되면 데이터는 읽기 전용 상태가 되고 데이터 추가와 수정이 불가능하며 데이터 복제도 일어나지 않는다
+    - 관리자가 서버운영 정비를 위해 세이프 모드를 설정할 수 있다
+    - 네임노드에 문제가 생겨서 정상적인 동작을 할 수 없을 때 자동으로 세이프 모드로 전환, 주로 missing block이 발생하는 경우, 혹은 클러스터 재 구동시 블록 리포트를 다 받기 전까지 Safe mode로 동작
+    - 동작 확인
+      - hdfs dfsadmin -safemode get
+    - 진입
+      - hdfs dfsadmin -safemode enter
+    - 해제
+      - hdfs dfsadmin -safemode leave
+    - 조치방법
+      - fsck 명령어로 HDFS의 무결성 체크
+      - hdfs dfsadmin -report 명령으로 각 데이터 노드의 상태를 확인하여 문제를 해결 후 세이프 모드 해제
+
+- 커럽트 블록
+
+  - HDFS는 하트비트를 통해 데이터 블록에 문제가 생기는 것을 감지하고 자동으로 복구를 진행
+  - 다른 데이터 노드에 복제된 데이터를 가져와서 복구하지만, 모든 복제 블록에 문제가 생겨서 복구하지 못할 때 커럽트 상태가 된다
+  - 커럽트 상태의 파일들을 삭제하고, 원본 파일을 다시 HDFS에 올려주어야 해결된다
+  - 커럽트 상태 확인
+    - hadoop fsck <path> [ -move | -delete | -openforwrite] [files [-blocks [locations | -racks]]]
+  - 해결
+    - bin/hadoop fsck /user/hadoop에서 
+    - 커럽트 파일 삭제
+      - hdfs fsck -delete
+    - /user/hadoop/의 복제 개수를 5로 조정
+      - hadoop fs -setrep 5 /user/hadoop
+    - /user/hadoop/ 하위의 모든 파일의 복제 개수를 조정
+      - hadoop fs -setrep 5 -R /user/hadoop/
+    - bin/hadoop fsck-delete를 통해 커럽트 파일 삭제
+
+- HDFS 휴지통 설정 및 명령어
+
+  - fs.trash.interval 
+
+    - 체크포인트르르 삭제하는 시간 간격(분), 0이면 휴지통 기능을 끈다
+
+  - fs.trash.checkpoint.interval
+
+    - 체크포인트를 확인하는 간격(분), 체크포인터가 실행될 땜 ㅏ다 체크포인트를 생성하고, 유효기간이 지난 체크포인트는 삭제
+
+  - core-site.xml에 아래와 같이 설정
+
+    ```
+    <property>
+    	<name>fs.trash.interval</name>
+    	<value>1440</value>
+    </property>
+    <property>
+    	<name>fs.trash.checkpoint.interval</name>
+    	<value>120</value>
+    </property>
+    
+    ```
+
+  - hadoop fs -expunge #휴지통 비우기
+
+  - hadoop fs -rm -skipTrash /user/data/file #휴지통 안거치고 삭제
+
+- 운영자 커맨드
+
+  - namenode
+
+  - datanode
+
+  - secondarynamenode
+
+  - balancer
+
+    - 서로 다른 스펙의 데이터노드들을 하나의 클러스터로 구성할 때, 전체 데이터의 밸런싱이 되지 않는 발생할 수 있으며, 신규 데이터 노드를 추가하는 경우에도 문제가 발생할 수 있으므로 NameNode에서 데이터 적재량이 적은 노드를 우선적으로 선정하여 block을 추가해준다
+
+    - 실행 sudo -u hdfs dhfs balancer [-policy <policy>] [-threshold <threshold>] [-blockpools <comma-separated list of blockpool ids>] [-include [-f<hosts-file> | <comma-separated list of hosts>]] [-exclude [-f<hosts-file> | comma-separated list of hosts>]] [idleiterations <idleiterations>] [-runDuringUpgrade]
+
+    - hdfs-site.xml
+
+      ```
+      <property>
+      	<name>dfs.datanode.balance.max.concurrent.moves</name>
+      	<value>50</value>
+      </property>
+      
+      <property>
+      	<name>dfs.datanode.balance.bandwidthPerSec</name>
+      	<value>104857600</value>
+      </property>
+      ```
+
+    - balancer 대역폭을 100M로 올린다
+
+      [root@localhost]# $HADOOP_HOME/bin/hdfs dfsadmin -setBalancerBandwidth 104857600
+
+  - cacheadmin
+
+  - crypto
+
+  - dfsadmin #주로 실행 및 설정관련 명령어
+
+    - dfsadmin -report #HDFS의 각 노드들의 상태 출력 및 전체 사용량과 각 노드의 상태 확인
+      ex) hdfs dfsadmin -report -live/dead
+    - dfsadmin -safemode -get/enter/leave/wait
+    - dfsadmin -setQuota #특정 디렉토리에 용량 Quota를 설정, n 단위는 byte
+      - sudo -u hdfs hdfs dfsadmin -setSpaceWuota n directory
+      - sudo -u hdfs hdfs dfsadmin -cirSpaceQuota directory 
+
+  - dfsrouter
+
+  - dfsrouteradmin
+
+  - haadmin
+
+  - journalnode
+
+  - mover
+
+  - nfs3
+
+  - portmap
+
+  - storagepolicies
+
+  - zkfc
+
+- WEB HDFS REST API
+
+  - HDFS는 REST API를 이용하여 파일을 조회하고, 생성, 수정, 삭제하는 기능 제공
+
+  - 원격지에서 HDFS의 내용에 접근하는 것이 가능
+
+  - hdfs-site.xml에 아래 설정 필요
+
+    ```
+    <property>
+    	<name>dfs.webhdfs.enabeld</name>
+    	<value>ture</value>
+    </property>
+    <property>
+    	<name>dfs.namenode.http-address</name>
+    	<value>0.0.0.0:50070</value>
+    </property>
+    ```
+
+  - 파일 리스트 확인 예제
+
+    - /user/hadoop의 위치 조회
+
+      curl -s http://127.0.0.1:50070/webhdfs/v1/user/hadoop/?op=LISTSTATUS
+
+- HDFS 암호화 - KMS (Key Management Server)
+
+  - hadoop KMS는 KeyProvider API를 기반으로 하는 암호화 키 관리 서버(REST API 제공)
+
+    ```
+    암호화 키 생성
+    $ hadoop key create mykey
+    
+    zone 디렉토리 생성 하고 암호화 지역으로 설정, mykey를 이용하도록 설정
+    $ hadoop fs -mkdir /zone
+    $ hdfs crypto -createZone -keyName mykey -path /zone
+    
+    키확인
+    $hadoop key list
+    
+    암호화 지역 확인
+    $ hdfs crypto -listZones
+    
+    파일 넣기 및 읽기
+    $ hadoop fs -out helloWorld /zone
+    $ hadoop fs -cat /zone/helloWorld
+    
+    파일의 암호화정보 얻기
+    $ hdfs crypto -getFileEncryptionInfo -path /zone/helloWorld
+    ```
+
+- Hadoop 2.0 Cluster Architecture
+
+![image-20220914145456899](README.assets/image-20220914145456899.png)
+
+- Master server의 장애를 해결하기 위한 부분이 존재
+
+  - Stanby NameNode 추가
+
+    - Active NameNode가 작동되지 않을 때 Standby NameNode가 작동(NameNode의 이중화), 다만 전환시 다운타임이 발생할 수 있다(NameNode가 클 경우 5~10분)
+
+  - Shared edit logs
+
+    - fs image, edits log가 본래 NameNode의 로컬에 존재하는 1.0과 다르게 Shared edits log에 저장하여 Active NameNode와 Standby NameNode가 공유하게 된다
+    - 네입노드 고가용성(High Availabiltiy)
+      - 주키퍼(Zoo Keeper) - 분산 코디네이터
+      - 저널 노드(Journal Node) - 데몬, 저널링(fsimage와 edits log가 있을 때, edits log만 계속 merge를 하여, 백업등의 장애 대응 처리 방식의 이점을 얻는다), 하둡 2.0은 이런 역할을 하는 저널 노드를 3개 이상 가진다
+      - 에디트로그 공유 방식 1 : NFS(Network File System)
+        - 별개의 공유 스토리지가 있어서 여러개의 저널노드가 여기서 작업을 한다
+        - Active NameNode가 Zookeeper와 Standby NameNode와는 통신이 되지 않고 SharedStorage와 통신이 될 경우 네트워크 단절로 인해  Standby NameNode에서 fencing 처리가 될 수 없어서, 기존 Active NameNode가 여전히 Live한 상태가 되서, SplitBrain이 될 수 있다
+      - 에디트로그 공유 방식 2 : Journal Node 그룹 사용
+        - QJM(Quorum Journal Manager)은 NameNode 내부에 구현된 HDFS 전용 구현체로, 고가용성 에디트 로그를 지원하기 위한 목적으로 설계
+        - QJM은 전러 노드 그룹에서 동작하며, 각 에디트로그는 전체 저널 노드에 동시에 쓰여진다
+          - 주키퍼의 동작 방식과 유사
+        - HDFS 고가용성은 액티브 네임노드를 선출하기 위해 주키퍼를 이용
+
+  - HDFS Federation
+
+    - 하나의 네임노드에서 관리하는 파일, 블록 개수가 많아지면 물리적 한계가 있다
+    - 이럴 때 여러개의 네임노드를 띄워서 블록 풀을 구성한다
+    - 이를 도와주는 것이 HDFS Federation으로 파일, 디렉토리의 정보를 가지는 네임스페이스와 블록의 정보를 가지는 블록 풀을 각 네임노드가 독립적으로 관리할 수 있도록 scale-out할 수 있다
+
+  - 아파치 주키퍼(ZooKeeper)
+
+    - 분산 시스템의 코디네이터
+
+      - 설정관리(Configuration Management)
+      - 분산 클러스터 관리(Distributed Cluster Management)
+      - 명명 서비스(Naming Service: e.g. DNS)
+      - 분산 동기화(Distributed Synchronization : locks, barriers, queues)
+      - 분산 시스템에서 리더 선출(Leader election in a distributed system)
+      - 중앙집중형 신뢰성 있는 데이터 저장소(Centralized and highly reliable data registry)
+
+    - 구성
+
+      - n개의 서버로 단일 클러스터를 구성, 이를 서버 앙상블이라고 한다
+      - 복수의 서버에 복제되며, 모든 서버는 데이터 카피본을 저장
+      - Leader는 구동 시 주키퍼 내부 알고리즘에 의해 자동 선정
+      - Followers 서버들은 클라이언트로부터 받은 모드는 업데이트 이벤트를 리더에게 전달
+      - 클라이언트는 모든 주키퍼 서버에서 읽을 수 있으며, 리더를 통해 쓸 수 있고, 과반수 서버의승인(합의)가 필요
+
+    - 데이터 모델
+
+      - 절대 경로로 '/'로 구분
+      - 변경이 발생하면 버전 번호 증가
+      - 데이터는 항상 전체를 읽고 쓴다
+      - znode는 1M 이하의 데이터를 가질 수 있음
+      - 영속 종류에 따라
+        - Persistent Nodes(영구 노드) - 따로 삭제 하기 전까지 존재
+        - Ephemeral Nodes(임시 노드) - 세션 유지되는 동안 활성
+        - Sequence Nodes(순차 노드) - 경로의 끝에 일정하게 증가하는 카운터 추가됨, 영구 및 임시노드 모두에 적용 가능
+
+    - Operations
+
+      - create, delete, exists, getChildren, getData, setData
+
+    - WATCH
+
+      - Znode가 변경 시 Noti를 클라이언트로 trigger 해주어, 주키퍼의 znode의 변화를 통지 받는다, 오퍼레이션 등록시 watcher 등록(zk.getChildren("/mysvc/nodes",watcher))
+
+        ![image-20220914161638215](README.assets/image-20220914161638215-16631398846081.png)
+
+    - 아파치 주키퍼(ZooKeeper) 사용예
+
+      - 클러스터 관리
+      - 리더 선출
+      - 분산 배타적 잠금
+      - 기타 용도
+
+      ![image-20220914162038026](README.assets/image-20220914162038026.png)
+
+​					![image-20220914162153455](README.assets/image-20220914162153455.png)
+
+# 
