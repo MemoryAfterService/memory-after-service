@@ -198,3 +198,77 @@ content_main 레이아웃을 참고함. |
 | 7 | Floating action button (FAB) | activity_main.xml에서, FloatingActionButton 요소 확인.
 FAB은 clip-art 아이콘을 사용하는 UI .
 MainActicity.java는 onCreate() 메서드로 FAB의 onclick() 리스너 설정. |
+
+---
+### Activity
+
+---
+
+- 유저가 하나의 집중된 태스크를 할 수 있게 하는 것.
+- MainActivity는 앱이 시작될 때 보여지는 것.
+- 다른 Activity가 시작되면, 이전의 것은 중지되고 스택에 보관됨.
+- AndroidManifest.xml을 통해 다른 Activity 생성 가능
+
+### Intent
+
+---
+
+- Activity는 Intent에 의해 시작되거나 활성화된다.
+- Intent는 비동기적인 메세지로 activity간 혹은 다른 앱 구성요소에 요청을 보내는 데 사용된다.
+- Intent는 명시적 혹은 암묵적일 수 있다.
+    - 명시적 Intent는 목표를 알 수 있다.
+    - 암묵적 Intent은 목표를 알 수 없다.
+- Intent는 두가지 방법으로 데이터를 전송할 수 있다.
+    - data field : URI를 통해 실행될 특정 데이터를 가리킴.
+    - extras : URI가 아닌거나, 하나 이상의 정보를 보낼 떄 사용.
+        - Bundle : key-value로 이루어짐.
+---
+### Android Lifecycle
+
+---
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4b8820c6-7a49-4bb9-a5d0-b95529c05363/Untitled.png)
+
+- onCreate()
+    - 액티비티가 생길 때 실행
+    - 반드시 구현해야 함.
+    - 한번만 실행됨
+        - 데이터 바인딩
+        - ViewModel과 바인딩
+- onStart()
+    - 액티비티가 활성화 되면 실행
+    - 이 함수 이후 액티비티가 사용자에게 보임
+    - 여러번 실행 가능
+- onResume()
+    - 액티비티가 foreground 상태가 되면 실행
+    - 포커스가 끝날 때까지 실행
+    - 방해 이벤트가 발생하면 onPause() 실행
+- onPause()
+    - 액티비티가 background가 되면 실행
+    - 일시중지 상태일 때 멈춰야 하는 것들 실행
+- onStop()
+    - 화면에 보이지 않을 때 실행
+- onRestart()
+    - stop상태에서 다시 실행될 때 실행
+- onDestroy()
+    - 액티비티가 끝났을 때 실행
+    - 그 이전 모든 콜백을 실행해야 됨
+        - onPause(), onStop()
+
+### Activity Instance 상태 저장 후 불러오기
+
+---
+
+- Activity들은 생각보다 자주 새로고침 됨.
+- 각 Activity들의 상태는 Bundle 객체에 key-value 상태로 저장됨.
+- 시스템은 자동으로 Activity가 stop 상태로 가기 전에 bundle에 상태를 저장함.
+- 데이터를 계속하여 보관하기 위해선 `onSaveInstanceState()` 메서드를 구현해야함.
+
+<aside>
+💡 onSaveInstanceState()
+
+---
+
+- onPause()와 onStop() 사이에 실행
+- Intent가 활성화 되어 있는 동안은 Activity가 새로 만들어져도 데이터가 유지된다.
+</aside>
