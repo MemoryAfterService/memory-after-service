@@ -1298,4 +1298,385 @@ core-site.xml에서 ```로 주석처리한 부분을 적어주는것이다
 
 ​					![image-20220914162153455](README.assets/image-20220914162153455.png)
 
-# 
+### 0915
+
+###### Tacademy hadoop 5강
+
+맵리듀스(MapReduce) 알고리즘
+
+Large Cluster에서 Data Processing을 하기 위한 알고리즘
+
+Key-Value 구조가 알고리즘의 핵심
+
+Map Function : (key1, value1) -> (key2, value2)
+Reduce Function  : (key2, List of value2) -> (key3, value3)
+
+- 주요 컴포넌트
+
+  - 클라이언트(Client)
+    - 구현된 맵리듀스 Job을 제출하는 실행 주체
+  - 잡트래커(JobTracker)
+    - 맵리듀스 Job이 수행되는 전체 과정 조정, Job에 대한 마스터(Master) 역할 수행
+  - 태스크트래커(TaskTracker)
+    - Job에 대한 분할된 Task를 수행, 실질적인 Data Processing의 주체
+  - 하둡분산파일시스템(HDFS)
+    - 각 단계들 간의 Data와 처리과정에서 발생하는 중간 파일들을 공유하기 위해 사용
+
+- InputSplits
+
+  - InputSplit은 물리적 Block들을 논리적으로 그룹핑 한 개념
+  - InputSplit은 Mapper의 입력으로 들어오는 데이터를 분할하는 방식을 제공하기 위해, 데이터의 위치와 읽어들이는 길이를 정의한다
+
+- MapReduce 구동절차
+
+  1. Job 실행
+  2. 신규 Job ID 할당(JobTracker) 및 수신
+  3. Job Resource 공유
+  4. Job 제출
+  5. Job 초기화
+  6. InputSplits 정보 검색
+  7. 절절한 TaskTracker에 Task를 할당
+  8. TaskTracker가 공유되어 있는 Job Resource를 Local로 복사
+  9. TaskTracker가 child JVM 실행
+  10. MapTask 또는 ReduceTask 실행
+
+- 맵리듀스 구현 인터페이스
+
+  1. Input | (Text)InputFormat
+
+     - FileInputFormat
+     - TextInputFormat
+     - KeyValue TextInputFormat
+     - SequenceFileInputFormat
+       - 하둡 자체적으로 구현된 Binary 파일 포맷, Key-Value Pair로 구성
+       - Text 파일 포맷보다 연산 속도가 빠르고
+       - 쓰기 읽기, 정렬을 하기 위한 Writer, Reader, Sorter 클래스가 기본적으로 제공
+       - Mapper에서 생성하는 Immediate 결과 파일을 저장하는 방식으로 사용
+       - 3가지 포맷 존재
+         - Uncompressed key/value records - 압축 x
+         - Record compressed key/value records - Value만 압축
+         - Block compressed key/value records - Block 단위로 압축
+       - 주로 Small File 들이 많이 생성되는 경우 키+타임스탬프 형태로 이를 보완할 수 있어 자주 사용
+       - Shuffling 과정에서 압축을 통해 트래픽 전송량을 줄이기 위한 목적으로도 사용
+     - SequenceFileAsTextInputFormat
+     - NLineInputFormat
+     - SequenceFileAsBinaryInputFormat
+     - DBInputFormat
+     - (+ 사용자 정의 InputFormat)
+     - RecordReader
+       - 실제 파일에 접근하여 데이터를 읽고,  이 데이터를 Key-Value 형태로 반환
+       - 128MB를 구분하는 버퍼를 생성하여 큰 데이터를 잘라주고 이를 Mapper에 전달해주는 역할
+       - Input -> InputSplit -> RecordReader -> Map -> Intermediate O/p in Dusk
+
+  2. Mapper | (k1, v1) -> (k2, v2)
+
+     - MapReduce 프로그램에서 사용자의 비즈니스 로직이 구현된 첫 데이터 처리 구간(Phase)
+     - Intermediate 결과 파일을 로컬 디스크에 Key-Value Pair로 Partition 정보를 포함하여 생성
+
+  3. Combiner | (k2, list(v2)) -> (k2, v2')
+
+     - 데이터 전송량(트래픽)을 줄여주는 역할
+
+  4. Partitioner | (k2,v2', #reducer) -> #partition
+
+     - 서로다른 Mapper에서 생성된 중간결과 Key-Value Pair 들을, Key 중심으로 같은 키를 갖는 데이터는 물리적으로 동일한 Reducer로 데이터를 보내기 위한 용도로 사용
+
+     - 기본(Default) 파티셔너는 데이터의 Key 값을 해싱 처리하고 Reducer의 개수만큼 모듈러 연산
+
+       ```
+       package org.apache.hadoop.mapreduce.lib.partition;
+       
+       @InterfaceAudience.Public
+       @InterfaceStability.Stable
+       public class HashPartitioner<K, V> extends Partitioner<K, V> {
+       	public int get Partiton(K key, V value, int numReduceTaks) {
+       	return (key,hashCode() & Interger.MAX_VALUE) % numReduceTaks;
+       	}
+       }
+       ```
+
+       
+
+  5. Shuffle/sort
+
+     - Mapper의 Immediate 결과 파일이 Reducer로 전달되는 과정이 Shuffling(트래픽 발생)
+     - 서로 다른 Mapper로부터 받은 데이터를 Key 중심으로 Sorting 수행 -> 같은 키에 해당하는 리스트를 Reducer로 전달
+
+  6. Reducer | (k2, list(v2')) -> (k3,v3)
+
+     - Mapper의 출력 결과를 입력으로 받아 데이터를 처리
+     - 처리된 데이터를 OutputFormat의 형태에 맞게 결과로 출력
+     - 선택적인 옵션
+
+  7. Output | TextOutputFormat
+
+     - TextOutputFormat(Default)
+       - 텍스트 파일의 하나의 라인에, Key-Value Pair를 출력
+
+     - SequenceFileOutFputFormat
+       - Mapper의 output을 Reducer로 보내기전, Key-Value Pair 구조를 압축하도록 출력
+
+     - MultipleOutputsFormat
+       - 출력 파일의 이름을 Key-Value 등에서 추출된 문자열로 구성하고, 해당파일에 데이터를 쓸 수 있음(여러 개의 파일로 쓰기 가능)
+
+     - LazyOutputFormat
+       - 결과로 출력할 데이터가 있는 경우에만, 파일을 생성하는 OutputFOrmat의 Wrapper로 사용
+
+     - DBOutputFormat
+       - 관계형 데이터베이스나 Hbase로 데이터를 쓰기 위한 OutputFormat
+
+- setup 함수
+
+  - map, reduce 함수 실행 전 호출되는 함수
+
+  - 작업에 필요한 설정값과 전처리를 여기서 처리
+
+  - ```
+    @Override
+    public void setup(Context context) throws IOException, InterruptedException {
+    	conf = context.gotConfiguration();
+    	caseSensitive = conf.getBoolean("wordcount.case.sensitive",
+    	...
+    	)
+    }
+    ```
+
+- 카운터(Counter)
+
+  - enum을 이용하여 카운터를 등록하고, 컨텍스트에서 카운터를 가져와서 사용, 사용한 카운터는 로그에서 확인
+
+    ```
+    // 문자의 개수를 세는 카운터
+    static enum CountersEnum {
+    	INPUT_WORDS
+    }
+    
+    // 카운터 이용
+    Counter counter = context.getCounter("User Custom Counter", CountersEnum.INPUT_WORDS.toString());
+    counter.increment(1);
+    ```
+
+- 분산 캐쉬 이용하는 방법
+
+  - 잡에 addCacheFile을 이용하여 등록, 맵, 리듀스에서 이용할 때는 getCacheFiles를 이용한다
+
+    ```
+    //main()
+    if ("-skit".equals(remainingArgs[i])) {
+    	job.addCacheFile(new Path(remainingArgs[++i]).toUri());
+    }
+    ```
+
+- MR Job 진행 상황과 상태 갱신
+
+  - Task 진행율
+
+    - Map Task : 제출된 Map 개수에 대한 처리 비율
+    - Reduce Task : 총 진행을 3단계로 나누어 계산 (Shuffle 포함)
+
+  - Counter를 통한 피드백
+
+    - Task는 카운터를 가지고 있으며, 하둡 프레임워크에 내장되거나 사용자 정의 가능
+    - MapReduce 앱 구현 시 원하는 지점에서 카운터를 실행하는 방식으로 이벤트 카운트 가능
+
+  - 진행 상황의 통지
+
+    - Task는 보고 플래그가 설정되어 있다면 TaskTracker에게 진행 상황을 3초마다 보고
+
+    - TaskTracker는 JobTracker에게 Hearbeat를 보낼 때 진행중인 모든 Task의 상태를 포함하여 전송
+
+    - Client Job은 매초마다 JobTracker를 폴링하여 최신정보를 갱신
+
+      ![image-20220915171037771](README.assets/image-20220915171037771.png)
+
+- 맵리듀스(MapReduce) Job Completion
+
+  - JobTracker는 하나의 Job에 대한 마지막 Task가 완료 될 경우 상태를 '성공'으로 변경
+  - 클라이언트는 상태를 검사하고, 사용자에게 알려주기 위한 메시지를 출력
+    - waitForcompletion 메소드가 종료되고, Job 통계와 카운터가 콘솔로 출력
+  - JobTracker의 설정에 따라 HTTP Job 통지 가능
+    - Callback을 받고자 하는 클라이언트는 job.end.notification.url을 설정
+
+- MapReduce I과 Yarn(Hadoop 2버젼)의 차이점
+
+  - MapReduce I은 4,000노드 이상의 클러스트 상에서 동작 시 병목현상 이슈가 발생(JobTracker에서 발생)
+
+  - 확장성 문제를 해결하기 위해 JobTracker의 책임을 여러 컨포넌트로 분리
+
+    - ResourceManager : 클러스터의 컴퓨팅 리소스 이용 상태를 관리하고 할당하는 것을 조정함
+    - ApplicationMaster : 클러스터에서 실행중인 Job의 LifeCycle을 관리
+    - NodeManager : 컨테이너를 모니터링하고, Job이 할당 받은 그 이상의 리소스가 사용되지 않도록 보장
+
+  - JobTracker와 다르게 응용 프로그램의 각 인스턴스는 ApplicationMaster를 고정적으로 할당시켜 응용 프로그램의 지속성을 유지
+
+    ![image-20220915173139466](README.assets/image-20220915173139466.png)
+
+  - HDFS에 저장되어있는 데이터를 MapReduce(Data Processing 영역)에서 바로 처리하는 1.0과 다르게, HDFS에 저장되어있는 데이터를 Yarn(전체 클러스터의 리소스를 관리하는 소스매니저, Cluster Resource Management)을 통해 MapReduce 알고리즘을 돌리거나, 다른 분산처리 알고리즘(MPI 등)를 돌릴 수 있도록 한다(MapReduce 이외의 다른 Data Processing 방식도 수용 가능한 아키텍처로 변경)
+
+  - 2.0의 데몬의 이름
+
+    - Resource Manager - 하둡 클러스터 전체의 리소스를 관리
+
+    - Node Manager - 각 슬레이브 노드마다 하나씩 존재, 컨테이너와 자원의 상태를 RM에 통보
+
+    - Application Master - 어플리케이션의 실행을 관리하고 상태를RM에 통지, 어플리케이션마다 1개(1.0의 JobTracker 역할도 수행)
+
+    - Container - 어플리케이션을 수행하는 역할, 제한된 자원을 소유하며, 상태를 AM에게 통지(Task Tracker 역할)
+
+      <img src="README.assets/image-20220915173932940.png" alt="image-20220915173932940" style="zoom:150%;" />
+
+  - YARN MapReduce 동작 흐름
+
+    1. 클라이언트가 RM에게 어플리케이션 제출
+    2. NM을 통해 AM 실행
+    3. AM은 RM에게 자신을 등록
+    4. AM은 RM에게 컨테이너 할당할 공간/위치를 받음
+    5. AM은 NM에게 컨테이너를 실행 요청(어플리케이션 정보를 NM에게 제공)
+    6. 컨테이너는 어플리케이션의 상태정보를 AM에 알림
+    7. 클라이언트는 어플리케이션의 실행정보를 얻기 위해 AM와 직접 통신
+    8. 어플리케이션 종료되면 AM은 RM에게서 자신의 자원을 해제하고 종료
+
+    ![image-20220915174243773](README.assets/image-20220915174243773.png)
+
+- YARN MapReduce Job 제출
+
+  - Job 제출 과정은 이전 버젼과 유사
+  - Job 제출 과정
+    - 사용자 API를 사용하여 Job 제출 실행
+    - ResourceManager로부터 새로운 애플리케이션 ID를 할당 받음
+    - 클라이언트는 Job 리소스를 분산 파일 시스템으로 복사
+    - 리소스 매니저의 submitApplication을 호출하여 Job 제출
+
+- YARN MapReduce Job 초기화(Initialization)
+
+  - 리소스 매니저는 submitApplication이 호출되면 스케쥴러로 요청을 전달
+  - 스케쥴러의 Job 할당 과정
+    - 컨테이너를 할당하고, RM은 NM의 관리를 받도록 AM을 할당 받은 컨테이너로 배포
+    - AM은 Job의 진행 상황을 감시하기 위한 다수의 북키핑 객체를 생성하면서 Job을 초기화
+    - AM이 Task로부터 Job의 진행상황과 완료를 통보 받음
+    - 공유 파일 시스템으로부터 계산된 InputSplit을 받음
+    - ApplicationMaster는 mapreduce.job.reduces 속성으로 정해진 다수의 Reduce 객체와 Map Task 객체를 생성하고 태스크 수행 방법을 결정(작은 Job일 경우 동일 JVM에서 태스크를 실행, uber mode가 true인 경우에만 실행, 기본값은 false)
+    - AM은 모든 Task를 실행 전에 출력 디렉토리를 생성하는 Job 설정 메소드를 호출
+
+- YARN MapReduce Task 할당
+
+  - Uber Task로 실행하기 적합하지 않은 Job일 경우 AM은 RM에게 컨테이너를 요청
+    - 모든 요청은 Heartbeat 호출에 대한 Feedback으로 전송
+    - Map Task의 데이터 Locality와 특별히 InputSplit이 위치한 호스트 및 해당 랙 정보 포함
+  - Task는 데이터 Locality를 고려하여 할당
+  - 메모리 할당 방식
+    - 맵리듀스 I
+      - 클러스터 구성 시 설정된 고정 개수의 슬롯을 가짐
+      - 슬롯은 최대 메모리 허용치가 클러스터 단위로 고정
+      - 적은 태스크로 주어질 경우 이용률이 떨어짐
+    - YARN
+      - 애플리케이션은 메모리의 최소 할당과 최대 할당에 대한 요청이 가능
+      - 기본적인 메모리 할당은 스케쥴러에 지정되어 있음
+
+- YARN MapReduce Task 실행
+
+  - Task 실행 과정
+    - AM은 NM에 협조를 얻어 컨테이너를 작동 Tsk는 자바 애플리케이션으로 실행됨 YarnChild
+    - 애플리케이션은 Task가 필요로 하는 리소스를 로컬로 가져옴(Localization)
+    - Map이나 Reduce Task 실행
+  - 맵리듀스 I과 동일하게 YarnChild는 할당된 JVM에서 실행
+    - Yarn은 JVM 재사용을 지원하지 않는다, 매번 새로 생성
+  - 스트리밍과 파이프 프로그램은 맵리듀스 2와 동일하게 작동
+
+- YARN MapReduce 진행상황과 상태 갱신
+
+  - YARN에서는 진행상황과 상태 정보를 AM에게 보고
+  - 클라이언트는 진행 상황의 변화를 확인하기 위하여 매초마다 AM을 조회
+  - 진행 상황 모니터링
+    - MapReduce I : JobTracker의 웹 UI를 통해 제공
+    - YANRN : RM의 웹 UI를 통해 실행중인 모든 애플리케이션을 보여주고, 각 링크가 AM의 웹 UI로 연결
+
+- Hadoop 3.0 주요 변경 내용
+
+  - Java Version
+  - Erasure Coding!!!!
+    - 3배의 용량을 차지하던 것을 2배의 용량으로 역할을 할 수 있도록 하는 알고리즘, Directory단위로 관리
+  - YARN Timeline Service v.2
+  - Shell script Rewrite
+  - MapReduce Task-level native optimization
+  - Support for more than 2 NameNodes
+  - Default port
+  - Support for MS Azure
+  - Intra-datanode balancer
+  - Reworked daemon and task heap management
+
+![image-20220915180348066](README.assets/image-20220915180348066.png)
+
+![image-20220915180424107](README.assets/image-20220915180424107.png)
+
+- 성능 최적화 : Mapper, Reducer 개수 조절
+
+  - 분산처리가 잘 될수록 성능은 Linear하게 증가
+
+    ```
+    <property>
+    	<name>mapreduce.job.maps</name>
+    	<value>100</value>
+    </property>
+    <property>
+    	<name>mapreduce.job.reduces</name>
+    	<value>50</value>
+    </property>
+    ```
+
+- 성능 최적화 : 정렬 속도 튜닝
+
+  - 임시 결과 파일 개수를 줄이는 것으로 성능 개선, 
+    로컬 디스크에 저장된 파일이 줄어들수록 맵 출력 데이터의 병합, 네트워크 전송, 리듀서의 병합작업 시간 단축
+    스필되는 파일을 줄이려면 스필전 메모리 버퍼 크기인 io.sort.mb를 늘이면 된다. 메모리 버퍼가 커져서 로컬에 저장될 출력 데이터가 줄어들게 된다
+
+    ```
+    <property>
+    	<name>mapreduce.task.io.sort.mb</name>
+    	<value>200</value>
+    </property>
+    <property>
+    	<name>mapreduce.map.sort.spill.percent</name>
+    	<value>0.80</value>
+    </property>
+    <property>
+    	<name>mapreduce.task.io.sort.factor</name>
+    	<value>100</value
+    </property>
+    ```
+
+- 성능 최적화 : Combiner 클래스 적용
+
+  - 컴바이너를 적용하면 맵 작업의 결과 데이터가 리듀서로 전송되기 전에 컴바이너 작업을 진행하여, 데이터를 줄여서 네트워크 사용량을 줄이고 리듀서의 작업 속도를 향상 시킬 수 있다
+
+    ```
+    job.setMapperClass(TokenizerMapper.class)
+    job.setCombinerClass(IntSumReducer.class) // 콤바이너 적용
+    job.setReducerClass(IntSumReducer.class)
+    ```
+
+- 성능 최적화: 맵출력 데이터 압축
+
+  - 맵 출력 데이터를 압축하여 네트워크 트래픽을 줄여 주면 플레인 텍스트를 이용할 때보다 속도가 증가할 수 있다
+
+    ```
+    <property>
+    	<name>mapreduce.map.output.compress</name>
+    	<value>true</value>
+    </property>
+    <property>
+    	<name>mapreduce.map.output.compress.code</name>
+    	<value>org.apache.hadoop.io.compress.SnappyCodec</value>
+    </property>
+    ```
+
+YARN 스케줄러 : Capacity Scheduler
+
+- Capacity Scheduler는 트리 형태로 계층화된 큐를 선언하고, 큐별로 사용가능한 용량을 할당
+  - 통합 100G의 클러스터에서 2개의 큐에 40%,60%의 용량을 설정하면 각각 40, 60G의 메모리 사용가능
+- 클러스터의 자원에 여유가 있다면 설정을 이용하여 각 큐에 설정된 용량 이상의 자원을 이용하게 할 수도 있고, 운영중에도 큐를 추가할 수 있는 유연성도 가지고 있다
+
+![image-20220915181713187](README.assets/image-20220915181713187-16632334340011.png)
+
+![image-20220915181753580](README.assets/image-20220915181753580.png)
+
