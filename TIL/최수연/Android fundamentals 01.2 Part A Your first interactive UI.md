@@ -394,7 +394,115 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+4. Return to `activity_main.xml` and repeat the last two steps with the `button_count` `Button`.
+
+   ```xml
+     <Button
+         android:id="@+id/button_toast"
+   		...
+         android:onClick="showToast"/>
+     <Button
+         android:id="@+id/button_count"
+   		...
+         android:onClick="countUp" />
+   ```
+   
+   
+
+### 2. Edit the Toast Button handler
+
+Edit the `showToast()` method - **Toast** `Button` click handler in **MainActivity.java**
+
+1. Locate the newly created `showToast()` method.
+2. To create an instance of a `Toast`, call the `makeText()`factory method on the `Toast`class.
+3. Supply the context of the app `Activity`. 
+   * Because a Toast displays on top of the Activity UI, the system needs information about the current Activity. 
+4. Supply the message to display, such as a string resource (the `toast_message` you created in a previous step).
+5. Supply a duration for the display. 
+   * `Toast.LENGTH_SHORT` displays the toast for a relatively short time.
+6. Show the `Toast` by calling `show()`
+
+```java
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mShowCount = (TextView) findViewById(R.id.show_count);
+    }
+
+    public void showToast(View view) {
+        Toast toast = Toast.makeText(this, R.string.toast_message, Toast.LENGTH_SHORT);
+
+        toast.show();
+    }
+
+    public void countUp(View view) {
+        mCount++;
+        if (mShowCount != null) {
+            mShowCount.setText(Integer.toString(mCount));
+        }
+    }
+```
+
+
+
+### 3. Edit the Count Button handler
+
+Edit the  `countUp()` method—the **Count** `Button`click handler in **MainActivity.java**
+
+so that it displays the current count after **Count** is tapped. Each tap increases the count by one.
+
+1. Locate the newly created `countUp()` method.
+2. Each tap of the **Count** button increases the value of this variable. Enter the following, which will be highlighted in red and show a red bulb icon:
+3. Click the red bulb icon and choose Create field `mCount` in **MainActivity.java** from the popup menu. 
+   * This creates a private member variable at the top of **MainActivity.java**, and Android Studio assumes that you want it to be an integer (int).
+4. Change the private member variable statement to initialize the variable to zero.
+5. `TextView`, which you will add to the click handler. Call this variable `mShowCount`
+6. Now that you have `mShowCount`, you can get a reference to the **TextView** using the ID you set in the layout file.
+7. Add the `findViewById` statement to the end of the method.
+8. We have assigned to `mShowCount` the **TextView**, you can use the variable to set the text in the **TextView** to the value of the `mCount` variable.
+
+**MainActivity.java**
+
+```java
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mShowCount = (TextView) findViewById(R.id.show_count);
+    }
+
+    public void countUp(View view) {
+        mCount++;
+        if (mShowCount != null) {
+            mShowCount.setText(Integer.toString(mCount));
+        }
+    }
+```
+
+
+
+## 9. Coding challenge
+
+The HelloToast app looks fine when the device or emulator is vertically oriented. However, if you switch the device or emulator to horizontal orientation, the **Count** `Button` may overlap the `TextView` along the bottom.
+
+**Challenge**: Change the layout so that it looks good in both horizontal and vertical orientations:
+
 
 
 ## Summary
 
+View, ViewGroup, and layouts:
+
+* All UI elements are subclasses of the `View` class and therefore inherit many properties of the `View` superclass. 
+* `View` elements can be grouped inside a `ViewGroup`, which acts as a container. The relationship is parent-child, in which the parent is a `ViewGroup`, and the child is a `View` or another `ViewGroup`. 
+* The `onCreate()` method is used to inflate the layout, which means to set the content view of the screen to the XML layout. You can also use it to get references to other UI elements in the layout. 
+* A `View`, like a string, is a resource that can have an id. The `findViewById` call takes the ID of a view as its parameter and returns the `View`.
+
+✔ Using the layout editor
+
+✔ Setting layout width and height
+
+✔ Extracting string resources
+
+✔ Handling clicks
