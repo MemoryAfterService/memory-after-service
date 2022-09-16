@@ -1680,3 +1680,65 @@ YARN 스케줄러 : Capacity Scheduler
 
 ![image-20220915181753580](README.assets/image-20220915181753580.png)
 
+### 0916
+
+###### Tacademy hadoop 6강
+
+하둡 - 여러개의 작은파일을 다루는건 적합하지 않다 -> NM이 커져서 메모리를 많이 사용하고 부하를 많이준다, 성능이 나빠진다
+-> 따라서 Hadoop 자체의 압축형식인 HAR로 압축하여 별도의 관리를 한다
+
+- Map-Reduce에서도 마찬가지로 여러개의 작은 파일을 Combine 포맷으로 합쳐서 input 해주는것이 적합하다
+
+- 활용 관점
+
+  - MapReduce는 프로그래밍 레벨의 개발이 필요
+
+    - 더 쉬운 분석 지원을 위해 SQL을 지원하는 쿼리 엔진의 필요성
+
+      - ETL 처리도구로 활용
+
+      - HIVE 
+        - 디스크에서 처리(Spark보다 더 처리할 수 있는 단위가 크다)
+        - HDFS에 저장되어있는 데이터를 SQL로 처리하기 위한 툴
+      - Spark SQL -> Hadoop에 저장된 데이터를 SQL로 받아줄 수 있으며, 성능도 개선된다, 메모리에서 처리
+
+- Columnar File Format
+
+  - Columnar(<-> Row-based File Format)
+    - 압축률이 매우 좋음
+    - 데이터 Read시 I/O양을 줄일 수 있음(클라우드 전환시 비용 감소)
+    - 컬럼에 동일한 데이터 타입이 저장되기 때문에 컬럼별로 적합한 인코딩 방식을 사용할 수 있음
+    - 위와 같은 이유로 읽기 성능 증가
+    - ORC File Format(Columnar)
+      - 자바 지원, 하이브 친화
+    - Parquet File Format(Columnar)
+      - 하이브 만이 아닌 피그등 플랫폼에서 지원
+      - 컬럼별 다양한 압축 코덱 적용
+      - Spark 친화
+      - Impala에 적용
+
+- 데이터 활용 아키텍쳐
+
+  ![image-20220917025952952](README.assets/image-20220917025952952.png)
+
+- 아파치 스팍(Apache Spark)
+
+  - 머신러닝, 실시간 분석, SQL 쿼리 분석, 그래프 처리 
+  - 메모리 기반 분산 처리, 빠른 속도
+  - 하둡과 호환성 좋음
+  - 하이브 메타스토어 공유 가능
+  - 파이썬,스칼라,알,자바 지원
+  - Map, Reduce 외에 Join, Counter, Filter등 다양한 연산 지원
+  - YARN에서 구동 가능
+
+  ![image-20220917030418323](README.assets/image-20220917030418323.png)
+
+- On-Premise가 아닌 Cloud에서의 활용
+
+  - Amazon AWS
+
+    ![image-20220917030613572](README.assets/image-20220917030613572.png)
+
+  - 적용사례
+
+    ![image-20220917030652594](README.assets/image-20220917030652594.png)
