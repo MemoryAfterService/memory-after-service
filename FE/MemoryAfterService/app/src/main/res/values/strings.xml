@@ -54,4 +54,6 @@
     <string name="UploadSMSHint">1544 -</string>
     <string name="ChattingAnalysisText">채팅 분석</string>
     <string name="ConsumptionAnalysisText">소비 분석</string>
+    <string name="back" />
+    <string name="forward" />
 </resources>
