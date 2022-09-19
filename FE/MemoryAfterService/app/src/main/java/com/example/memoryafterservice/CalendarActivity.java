@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CalendarActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener{
     private TextView monthYearText;
@@ -23,6 +25,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         initWidgets();
         selectedDate = LocalDate.now();
         setMonthView();
@@ -82,5 +85,10 @@ public class CalendarActivity extends AppCompatActivity implements CalendarAdapt
             String message = "Selected Date" + dayText + " " + monthYearFromDate(selectedDate);
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void analysisChat(View view) {
+        Intent intent = new Intent(this, ChattingAnalysisActivity.class);
+        startActivity(intent);
     }
 }

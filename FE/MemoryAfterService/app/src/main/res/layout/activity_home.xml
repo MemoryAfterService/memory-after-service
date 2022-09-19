@@ -22,17 +22,18 @@
 
     <ImageView
         android:id="@+id/HomeCharacterImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="88dp"
         android:contentDescription="@string/HomeCharacterImageDesc"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:onClick="detailAnalysis"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/HomeLogoImageView"
-        tools:srcCompat="@color/purple_200" />
+        app:srcCompat="@drawable/elephant" />
 
     <TextView
         android:id="@+id/HomeCountTextView"
