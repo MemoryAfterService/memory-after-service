@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeDetailAnalysisActivity">
+
+    <ImageView
+        android:id="@+id/HomeLogoImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/mas_logo_borderless"
+        android:contentDescription="@string/HomeLogoImageDesc" />
+
+    <ImageButton
+        android:id="@+id/DetailAnalysisCloseButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/DetailAnalysisCloseDesc"
+        android:filterTouchesWhenObscured="false"
+        android:fitsSystemWindows="false"
+        android:onClick="close"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/HomeLogoImageView"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+        tools:ignore="ImageContrastCheck" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/HomeLogoImageView">
+
+        <TextView
+            android:id="@+id/DetailAnalysisRecentUploadTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/DetailAnalysisRecentUploadTitleText"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/DetailAnalysisRecentUploadData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/DetailAnalysisRecentUploadDataText"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <LinearLayout
+            android:id="@+id/DetailLayoutRecentAmountLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="expand"
+            android:orientation="vertical"
+            tools:ignore="TouchTargetSizeCheck">
+
+            <TextView
+                android:id="@+id/DetailAnalysisRecentAmountTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/DetailAnalysisRecentAmountTitleText"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/DetailAnalysisRecentAmountDataLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/DetailAnalysisRecentAmountDataTotal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/DetailAnalysisRecentAmountDataTotalText"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/DetailAnalysisRecentAmountDataDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/DetailAnalysisRecentAmountDataDetailText"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
