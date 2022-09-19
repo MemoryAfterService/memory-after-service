@@ -1742,3 +1742,181 @@ YARN 스케줄러 : Capacity Scheduler
   - 적용사례
 
     ![image-20220917030652594](README.assets/image-20220917030652594.png)
+
+### 0919
+
+###### android tutorial 1장
+
+# 1
+
+파일구성
+
+- AndroidManifest - 안드로이드 컨트롤 타워
+  - 안드로이드 어플리케이션을 구동하는데 필요한 설정 값을 관리
+- Gradle Scripts 
+  - 어플리케이션을 빌드하기 위해 필요한 옵션, 라이브러리 정보들이 들어있다
+- res 
+  - Resource 폴더 UI와 관련된 파일과 디자인 리소스, 문자열 리소스를 담고 있다. 
+  - 즉 앱에서 겉으로 보이는 모든 것들을 담당
+  - (UI, 아이콘, 폰트, 사진파일)
+- java - 클래스를 관리하는 폴더
+  - 앱이 작동하는 방식에 대해 정의하는 .java 파일들이 모두 이곳에 들어있다
+  - 앱에서 보이지 않는 모든 기능들을 담당
+  - 버튼 동작, 파일 전송 기능, 사진 촬영 기능
+
+기본파일 구성
+
+- Activity_main.xml(res)
+  - 어플리케이션 위에 실행될 화면을 보여준다
+- MainActivity.java(java)
+  - Activity를 어플리케이션에 띄워준다
+  - setContentView 함수는 표시될 화면을 지정한다
+  - R-layout.activity_main은 activity_main.xml을 가리킨다
+    - 즉 xml 파일에서 화면을 구성하고 java코드에서 화면을 띄우고, 여러 기능을 수행한다
+- 응용 activity_setting.xml 파일을 만들고, setContentView(R.layout.activity_setting)을 통해 메인화면에서 설정화면으로 이동할 수 있다.
+
+IDE 기능 알아보기
+
+- Activity_main.xml에서 Code, Split, Design을 지정할 수 있다
+  - Code - 텍스트 코드(Palette, Attributes, Component Tree로 이루어져있다.)
+  - Design - 미리보기 화면, 디자인 툴(직접 마우스를 드래그 하여 버튼 등의 위젯들을 집어넣고 화면을 구성)
+  - Split - 코드와 디자인 탭
+
+AVD 실행하기
+
+혼자해보기
+
+```
+Log.d("MainAcitivty", "Hello World"):;
+```
+
+- Log -> class
+
+- d(Debug), w(Warn), i(Info), e(Error)
+
+- MainActivity, Hello world -> 첫번째 태그인 argument, 두번째 태그인 실제 메시지
+
+  - 첫번째 태그인 argument는  Logcat pane의 필터링의 기준이 된다,(대개는 Activity를 기준으로 필터링을 한다)
+
+  - 대개(By Convention) log tags는 Activity에 대한 constants로 정의된다
+
+  ```
+  private static final String LOG_TAG = MainActivity.class.getSimpleName();
+  ```
+
+  - 두번째 태그인 Hello World는 logcat Pane에 출력되는 실제 메시지가 된다
+
+- onCreate()에 위에 적은 Log.d("MainAcitivty", "Hello World"):;를 입력하고 실행한다
+
+# 2(요약)
+
+## ConstraintLayout
+
+- 제약조건을 통한 레이아웃배치(특정 위젯의 위치 결정)
+
+- 위젯을 클릭할 때 나오는 꼭지점을 연결하여 제약조건을 설정하는 방법이 있고
+
+- Attributes 창의 Layout의 Create a connection + 버튼을 통해서 제약조건을 설정하는 방법이 있다
+
+- 우측 상단의 Code 탭을 통해서 설정할 수도 있다
+
+  - layout_width
+
+  - layout_height
+
+    
+
+  - layout_marginStart
+
+  - layout_marginTop
+
+  - layout_marginEnd
+
+  - layout_marginBottom
+
+  
+
+  - layout_constrainBottom_toBottomOf
+  - layout_constrainEnd_toEndOf
+  - layout_constrainStart_toStartOf
+  - layout_constrainTop_toTopOf
+
+Layout 만들기
+
+- File -> New -> XML -> Layout XML을 선택하고 레이아웃 파일의 이름을 입력하고 Root Tag에 'androidx.constraintlayout.widget.ConstraintLayout' 입력
+
+기존 레이아웃을 제약조건 레이아웃으로 변환
+
+- Design 탭이 선택된 상황에서 왼쪽 하단 Component Tree 창에 레이아웃을 마우스 우클릭, Convert layout to ConstraintLayout 클릭
+
+LinearLayout
+
+## LinearLayout
+
+- 세로 도는 가로의 단일 방향으로 모든 하위 요소를 정렬하는 뷰 그룹
+- Android:orientation특성을 통해 레이아웃방향 지정
+  - LinearLayout(Vertical)
+  - LinearLayout(Horizontal)
+
+생성방법
+
+- ConstrainLayout일 경우 Component Tree에서 ConstraintLayout 아래 Textview를 우클릭하여 Delete해준다
+- Component Tree에서 ConstraintLayout 우클릭 -> Convert view, LinearLayout클릭
+
+## RelativeLayout
+
+- 잘 사용되지 않는다
+
+## FrameLayout
+
+## TableLayout
+
+## GridLayout
+
+# 2
+
+## View 
+
+- 화면상 구성요소를 일컫는말
+- UI 컴포넌츠의 가장 기본적인 단위(basic building block)가 되는 class
+  - TextView
+  - EditText
+  - Button
+    - RadioButton
+    - CheckButton
+    - Spinner
+  - ScrollView
+  - RecyclerView
+  - ImageView
+  - ConstraintLayout
+  - LinearLayout
+    - 다른 View를 contain하고 position하는 View
+
+## Activity
+
+-  UI를 보여주고 조작하는(drives) **Java code**
+-  XML(eXtended Marup Language) 파일에서 정의한다
+-  XML파일은 Activity에서 이름이 유래하며, 화면상 View 원소들의 레이아웃을 정의한다
+
+## constraint
+
+- 요소(element)간의 관계
+
+## element attributes
+
+- attributes pane에서 UI element에 부여할 수 있는 모든 XML attributes(properties)를 지원한다
+- ConstraintLayout
+  - match_constraint
+  - wrap_content
+  - dp(independent pixcels)
+
+summary - 모든 UI elements는 View의 하위클래스가 되며, View superclass의 많은 속성을 상속받는다
+
+findViewById는 ID를 받아서 View 자체를 return한다
+
+onCreate() method
+
+
+
+
+
