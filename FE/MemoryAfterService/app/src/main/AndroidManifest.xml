@@ -14,6 +14,45 @@
         android:theme="@style/Theme.MemoryAfterService"
         tools:targetApi="31">
         <activity
+            android:name=".LoadingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadKakaoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadSMSActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeDetailAnalysisActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CalendarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FindPwActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FindIdActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TermOfUseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="Login" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

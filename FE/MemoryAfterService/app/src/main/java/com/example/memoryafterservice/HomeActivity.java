@@ -22,4 +22,10 @@ public class HomeActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+    public void uploadMain(View view) {
+        Intent intent = new Intent(this, UploadMainActivity.class);
+
+        startActivity(intent);
+    }
 }

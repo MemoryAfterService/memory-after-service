@@ -1,5 +1,4 @@
 <resources>
-    <resources>
     <string name="app_name">Memory After Service</string>
     <string name="LoginText">바쁜 일상 속\n잊어버린 기억을\n찾아보세요.</string>
     <string name="BackMain">메인페이지</string>
@@ -53,5 +52,4 @@
     <string name="UploadSMSDescText">결제내역 수신 번호를 입력하세요</string>
     <string name="UploadSMSNextText">Next</string>
     <string name="UploadSMSHint">1544 -</string>
-</resources>
 </resources>
