@@ -1,3 +1,57 @@
 <resources>
+    <resources>
     <string name="app_name">Memory After Service</string>
+    <string name="LoginText">바쁜 일상 속\n잊어버린 기억을\n찾아보세요.</string>
+    <string name="BackMain">메인페이지</string>
+    <string name="BackMainDesc">back to main screen</string>
+    <string name="idEditText">아이디를 입력하세요</string>
+    <string name="pwEditText">비밀번호를 입력하세요</string>
+    <string name="LoginButton">로그인</string>
+    <string name="SigninButton">회원가입</string>
+    <string name="SocialLogin">카카오 로그인</string>
+    <string name="BackLoginDesc">back to login activity</string>
+    <string name="BackLogin">로그인 화면</string>
+    <string name="TermOfUse">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="TermOfUseAgree">본 계약을 전부 읽었으며, 동의합니다.</string>
+    <string name="LoginFromButton">동의 완료</string>
+    <string name="BackTOU">사용 약관</string>
+    <string name="SignInText">회원가입</string>
+    <string name="SignInIdHint">아이디를 입력해주십시오</string>
+    <string name="SignInPwHint">비밀번호를 입력해주십시오</string>
+    <string name="SignInPwConfirmHint">비밀번호를 다시 입력해주십시오.</string>
+    <string name="SignInNameHint">이름을 입력해주십시오.</string>
+    <string name="SignInPhoneHint">전화번호를 입력해주십시오</string>
+    <string name="SignInVerifyHint">인증번호를 입력해주십시오</string>
+    <string name="SignInButton">회원 가입</string>
+    <string name="SignInIdCheckDesc">아이디 중복 확인이 필요합니다.</string>
+    <string name="SignInPwConfirmDesc">비밀번호가 다릅니다.</string>
+    <string name="FindIdText">아이디 찾기</string>
+    <string name="SignInIdCheck">중복 확인</string>
+    <string name="SignInSendVerify">인증 번호 전송</string>
+    <string name="SignInVerifyButton">인증 확인</string>
+    <string name="FindPwText">비밀번호 찾기</string>
+    <string name="LoginFindPwId">계정을 잃어버리셨나요? 아이디 찾기 또는 비밀번호 찾기</string>
+    <string name="ProfileImageChangeButtonDesc">change a profile image</string>
+    <string name="ProfileImageDesc">shows profile image</string>
+    <string name="IdText">ID</string>
+    <string name="HomeCountText">당신의 기억복원 횟수는 5회입니다.</string>
+    <string name="HomeDetailAnalysisText">상세 분석 보기</string>
+    <string name="HomeMoveAnalysisText">분석 하러 가기</string>
+    <string name="HomeLogoImageDesc">our logo image</string>
+    <string name="HomeCharacterImageDesc">elephant mascot</string>
+    <string name="DetailAnalysisCloseDesc">close detail analysis activity</string>
+    <string name="DetailAnalysisRecentUploadTitleText">최근 업로드 일</string>
+    <string name="DetailAnalysisRecentUploadDataText">2022년 9월 8일</string>
+    <string name="DetailAnalysisRecentAmountTitleText">이번 달 소비 내역\t\t\t\t\t\t +</string>
+    <string name="DetailAnalysisRecentAmountDataTotalText">총액 : 200,000원</string>
+    <string name="DetailAnalysisRecentAmountDataDetailText">09:21 GS25 4,500원\n12:30 삼성화재유성캠퍼스 7,000원\n18:00 G마켓 150,000원</string>
+    <string name="UploadMainDescText">문자와 카톡을 업로드하세요</string>
+    <string name="UploadMainHelpDesc">helps how to upload data</string>
+    <string name="UploadMainSMSDesc">Upload SMS Button</string>
+    <string name="UploadMainKakaoDesc">Upload Kakao Button</string>
+    <string name="UploadMainNextText">Next</string>
+    <string name="UploadSMSDescText">결제내역 수신 번호를 입력하세요</string>
+    <string name="UploadSMSNextText">Next</string>
+    <string name="UploadSMSHint">1544 -</string>
+</resources>
 </resources>
