@@ -52,4 +52,6 @@
     <string name="UploadSMSDescText">결제내역 수신 번호를 입력하세요</string>
     <string name="UploadSMSNextText">Next</string>
     <string name="UploadSMSHint">1544 -</string>
+    <string name="ChattingAnalysisText">채팅 분석</string>
+    <string name="ConsumptionAnalysisText">소비 분석</string>
 </resources>
