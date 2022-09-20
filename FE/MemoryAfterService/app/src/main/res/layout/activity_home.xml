@@ -7,7 +7,7 @@
     tools:context=".HomeActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/HomeBottomNavigationView"
+        android:id="@+id/HomeBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +22,7 @@
         android:name="com.example.memoryafterservice.HomeFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/HomeBottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@+id/HomeBottomNavigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

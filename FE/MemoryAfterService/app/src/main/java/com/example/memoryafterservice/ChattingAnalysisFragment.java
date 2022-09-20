@@ -1,9 +1,13 @@
 package com.example.memoryafterservice;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
@@ -15,19 +19,25 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class ChattingAnalysisActivity extends AppCompatActivity {
+public class ChattingAnalysisFragment extends Fragment {
     private BarChart barChart;
+    private View view;
+
+    public ChattingAnalysisFragment() {
+        // Required empty public constructor
+        super(R.layout.fragment_chatting_analysis);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chatting_analysis);
-        Objects.requireNonNull(getSupportActionBar()).hide();
-        barChart = findViewById(R.id.ChattingBarChart);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_chatting_analysis, container, false);
+        barChart = view.findViewById(R.id.ChattingAnalysisBar);
         initBarChart();
         showBarChart();
+        return view;
     }
 
     private void initBarChart(){
@@ -114,6 +124,4 @@ public class ChattingAnalysisActivity extends AppCompatActivity {
         barChart.setData(data);
         barChart.invalidate();
     }
-
-
 }

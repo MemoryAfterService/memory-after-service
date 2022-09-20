@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChattingAnalysisActivity">
-
+    tools:context=".AnalysisActivity">
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
+        android:id="@+id/AnalysisNavigationBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,14 +14,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/analysis_menu" />
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/ChattingBarChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="56dp"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/AnalysisFragment"
+        android:name="com.example.memoryafterservice.ChattingAnalysisFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottomNavigationView" />
+        app:layout_constraintTop_toBottomOf="@+id/AnalysisNavigationBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

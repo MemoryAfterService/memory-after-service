@@ -7,17 +7,18 @@
     tools:context=".HomeFragment">
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/HomeMascotButton"
         android:layout_width="320dp"
         android:layout_height="320dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="0dp"
         android:background="@android:color/transparent"
         android:scaleType="fitXY"
-        android:src="@drawable/elephant" />
+        android:src="@drawable/elephant"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/HomeUploadButton"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -25,7 +26,7 @@
         android:text="@string/HomeMoveAnalysisText" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/HomeCalendarButton"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -39,5 +40,5 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="340dp"
         android:text="@string/HomeCountText"
-        android:textSize="24dp" />
+        android:textSize="24sp" />
 </FrameLayout>

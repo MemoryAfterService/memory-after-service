@@ -1,9 +1,13 @@
 package com.example.memoryafterservice;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -14,19 +18,25 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-public class ConsumptionAnalysisActivity extends AppCompatActivity {
+public class ConsumptionAnalysisFragment extends Fragment {
     private PieChart pieChart;
+    private View view;
+
+    public ConsumptionAnalysisFragment() {
+        // Required empty public constructor
+        super(R.layout.fragment_consumption_analysis);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_consumption_analysis);
-        Objects.requireNonNull(getSupportActionBar()).hide();
-        pieChart = findViewById(R.id.ConsumptionPieChart);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_consumption_analysis, container, false);
+        pieChart = view.findViewById(R.id.ConsumptionAnalysisPie);
         initPieChart();
         showPieChart();
+        return view;
     }
 
     private void initPieChart(){
@@ -94,5 +104,4 @@ public class ConsumptionAnalysisActivity extends AppCompatActivity {
         pieChart.setData(pieData);
         pieChart.invalidate();
     }
-
 }

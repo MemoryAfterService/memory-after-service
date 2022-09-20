@@ -1,5 +1,6 @@
 package com.example.memoryafterservice;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -24,7 +25,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
     private View view;
-    private Button back, forward;
+    private Button back, forward, next;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -78,6 +79,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     private void setEvents(){
         back = view.findViewById(R.id.CalendarBackButton);
         forward = view.findViewById(R.id.CalendarForwardButton);
+        next = view.findViewById(R.id.CalendarNextButton);
 
         back.setOnClickListener(view -> {
             selectedDate = selectedDate.minusMonths(1);
@@ -87,11 +89,16 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
             selectedDate = selectedDate.plusMonths(1);
             setMonthView();
         });
+
+        next.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), AnalysisActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
     public void onItemClick(int position, String dayText) {
-        if(dayText.equals("")){
+        if(!dayText.equals("")){
             String message = "Selected Date" + dayText + " " + monthYearFromDate(selectedDate);
             Toast.makeText(getContext() , message, Toast.LENGTH_LONG).show();
         }
