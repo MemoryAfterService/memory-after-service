@@ -56,4 +56,17 @@
     <string name="ConsumptionAnalysisText">소비 분석</string>
     <string name="back" />
     <string name="forward" />
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ProfileIdHintSample">SSAFY</string>
+    <string name="ProfileNameHintSample">김싸피</string>
+    <string name="NameText">이름</string>
+    <string name="ProfileChangePWText">비밀번호 변경</string>
+    <string name="TOUText">이용 약관</string>
+    <string name="ProfileChangePWDesc">move to change password</string>
+    <string name="LogoutText">로그아웃</string>
+    <string name="SignoutText">회원 탈퇴</string>
+    <string name="TOUDesc">move to term of use</string>
+    <string name="ProfileLogoutDesc">logout account</string>
+    <string name="ProfileSignOutDesc">sign out account</string>
 </resources>

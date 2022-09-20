@@ -3,16 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="..\:/Android/MemoryAfterService/app/src/main/res/layout/activity_home.xml" value="0.33" />
         <entry key="..\:/Android/MemoryAfterService/app/src/main/res/layout/activity_login.xml" value="0.3016304347826087" />
         <entry key="..\:/Android/MemoryAfterService/app/src/main/res/layout/activity_main.xml" value="0.21014492753623187" />
         <entry key="..\:/Android/MemoryAfterService/app/src/main/res/layout/activity_upload_kakao.xml" value="0.21014492753623187" />
         <entry key="..\:/Android/MemoryAfterService/app/src/main/res/layout/activity_upload_main.xml" value="0.33" />
         <entry key="..\:/Android/MemoryAfterService/app/src/main/res/layout/activity_upload_sms_activity.xml" value="0.21014492753623187" />
-        <entry key="..\:/Users/multicampus/Desktop/Git/S07P22B103/FE/MemoryAfterService/app/src/main/res/layout/activity_calendar.xml" value="0.264" />
-        <entry key="..\:/Users/multicampus/Desktop/Git/S07P22B103/FE/MemoryAfterService/app/src/main/res/layout/activity_home.xml" value="0.21458333333333332" />
-        <entry key="..\:/Users/multicampus/Desktop/Git/S07P22B103/FE/MemoryAfterService/app/src/main/res/layout/activity_upload_main.xml" value="0.16" />
-        <entry key="..\:/Users/multicampus/Desktop/Git/S07P22B103/FE/MemoryAfterService/app/src/main/res/layout/calendar_cell.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.225" />
         <entry key="app/src/main/res/drawable/ic_launching_screen.xml" value="0.3285" />
         <entry key="app/src/main/res/drawable/ic_launching_screen_2.xml" value="0.234" />
@@ -36,6 +33,10 @@
         <entry key="app/src/main/res/layout/activity_upload_main.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/activity_upload_sms_activity.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/activity_upload_smsactivity.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.4081868489583333" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_upload.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/menu/analysis_menu.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.2947916666666667" />
       </map>
