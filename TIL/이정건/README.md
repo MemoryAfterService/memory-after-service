@@ -1747,7 +1747,7 @@ YARN 스케줄러 : Capacity Scheduler
 
 ###### android tutorial 1장
 
-# 1
+1
 
 파일구성
 
@@ -1808,9 +1808,9 @@ Log.d("MainAcitivty", "Hello World"):;
 
 - onCreate()에 위에 적은 Log.d("MainAcitivty", "Hello World"):;를 입력하고 실행한다
 
-# 2(요약)
+2(요약)
 
-## ConstraintLayout
+ConstraintLayout
 
 - 제약조건을 통한 레이아웃배치(특정 위젯의 위치 결정)
 
@@ -1851,7 +1851,7 @@ Layout 만들기
 
 LinearLayout
 
-## LinearLayout
+LinearLayout
 
 - 세로 도는 가로의 단일 방향으로 모든 하위 요소를 정렬하는 뷰 그룹
 - Android:orientation특성을 통해 레이아웃방향 지정
@@ -1863,19 +1863,19 @@ LinearLayout
 - ConstrainLayout일 경우 Component Tree에서 ConstraintLayout 아래 Textview를 우클릭하여 Delete해준다
 - Component Tree에서 ConstraintLayout 우클릭 -> Convert view, LinearLayout클릭
 
-## RelativeLayout
+RelativeLayout
 
 - 잘 사용되지 않는다
 
-## FrameLayout
+FrameLayout
 
-## TableLayout
+TableLayout
 
-## GridLayout
+GridLayout
 
-# 2
+2
 
-## View 
+View 
 
 - 화면상 구성요소를 일컫는말
 - UI 컴포넌츠의 가장 기본적인 단위(basic building block)가 되는 class
@@ -1892,17 +1892,17 @@ LinearLayout
   - LinearLayout
     - 다른 View를 contain하고 position하는 View
 
-## Activity
+Activity
 
 -  UI를 보여주고 조작하는(drives) **Java code**
 -  XML(eXtended Marup Language) 파일에서 정의한다
 -  XML파일은 Activity에서 이름이 유래하며, 화면상 View 원소들의 레이아웃을 정의한다
 
-## constraint
+constraint
 
 - 요소(element)간의 관계
 
-## element attributes
+element attributes
 
 - attributes pane에서 UI element에 부여할 수 있는 모든 XML attributes(properties)를 지원한다
 - ConstraintLayout
@@ -1916,7 +1916,209 @@ findViewById는 ID를 받아서 View 자체를 return한다
 
 onCreate() method
 
+### 0920
+
+###### andriod - spring boot간 RESTful API 연결
+
+Retrofit
+
+- http 통신을 위한 라이브러리
+- Okhttp를 기반으로 만들어진 라이브러리
+
+HTTP 통신
+
+- Request url로 파라미터를 포함하여 요청을 보낸다
+- 이때 http의 header에 담아서 요청을 보낸다
+- 요청은 GET, POST, PUT, DELETE의 형태로 요청을 보낸다
+- json또는 html 형태로 응답을 받는다
+
+Setting
+
+- gradle 추가
+
+  - https://github.com/square/retrofit에서 최신 버젼 확인(2.9.0)
+
+  ```
+   // Retrofit
+       implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+      implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+      implementation 'com.google.code.gson:gson:2.9.0'
+      implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+  ```
+
+- AndroidManifest.xml
+
+  ```
+  <uses-permission android:name="android.permission.INTERNET" />
+  
+  <application
+               android:usesCleartextTraffic="true"
+  />
+  ```
+
+  - android.permission.Internet : 서버와 통신을 하기 위해 인터넷 권한을 얻는다
+  - usesCleartextTraffic : http로 시작하는 사이트에 접근하기 위해서 적어준다.(andorid가 기본적으로 http와 허용하지 않는다, https를 지원하는 사이트와 통신할 경우 안 적어주어도 된다)
+
+Retrofit 사용
+
+- API Interface 정의
+
+  ```
+  public interface RetrofitAPI {
+      @GET("/users/{user}/repos")
+      Call<List<Repo>> listRepos(@Path("user") String user);
+  }
+  ```
+
+  - REST API의 요청에 해당하는 interface 생성
+  - 위 예시는 user를 파라미터로 받아 API URL을 완성하여 GET 방식으로 조회를 요청하는 인터페이스
+  - 반환 타입은 Call<객체타입>으로 나타낸다. 
+    - <> 안의 자료형은 JSON 데이터를 <> 안에 자료형으로 받겠다는 의미
+
+- Json 데이터를 받아오는 Class 선언
+
+  ```
+  public class Post{
+  	@SerializedName("userId")
+      private int userId;
+      
+      @SerializedName("id")
+      private Long id;
+      
+      //+ getter, setter 등등..
+  }
+  ```
+
+  - SerializedfName으로 JSON 객체와 해당 변수를 매칭시켜준다
+  - SerializedName 괄호 안에는 해당 JSON 객체의 변수 명을 적어준다
+  - POST 매핑으로 받아올 값은 굳이 어느테이션을 안붙이고 그냥 JSON 객체의 변수 명과 일치하는 변수만 선언
+
+- MainActivity에서 Retrofit 선언
+
+  - Main Activity에서 Retrofit 객체를 생성
+
+    ```
+    ublic class MainActivity extends AppCompatActivity{
+    
+    	@Override
+        protected void onCreate(Bundle savedInstanceState){
+        	super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            
+           📌 Retrofit retrofit = new Retrofit.Builder()
+            		.baseUrl(데이터가 있는 홈페이지의 baseUrl)
+    				.addConverterFactory(GsonConverterFactory.create())
+                    .build();
+                    
+           📌RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
+           // 위에서 구현한 api interface 구현 
+           
+           retrofitAPI.getData("1").enqueue(new Callback<List<Post>>(){ // 생성한 인터페이스 getData 에 찾을 id를 넣고 enqueue 해주기 
+           		
+                @Override
+                public void onResponse(Call<List<Post>> call, Response<List<Post>> response){ // 성공적으로 응답하면 실행 
+                
+                	if(response.isSuccessful()){
+                    	List<Post> data = response.body();
+                        //data 에서 필요한 내용 꺼내 쓰기
+                    }
+                
+                }
+                @Override
+                public void onFailure(Call<List<Post>> call, Throwable t){
+                //실패하면 실행 
+                	t.printStackTrace();
+                }
+           
+           }
+        }
+    }
+    ```
+
+    - 서버 호출이 필요할 때마다 인터페이스를 구현하는건 비효율적, Client 파일은 싱글톤으로 따로 Retrofit 객체를 생성하는것이 바람직하다
+
+      - Retrofit 객체 제작(RetrofitClient.class 추가)
+
+        - API를 부를 때 사용해야 하는 첫번째 클래스, 앞서 설치한 Retrofit의 클래스를 생성하고, api 클래스를 Retrofit.class에 연결시켜주는 역할
+
+          ```
+          import com.google.gson.Gson;
+          import com.google.gson.GsonBuilder;
+           
+          import retrofit2.Retrofit;
+          import retrofit2.converter.gson.GsonConverterFactory;
+           
+          public class RetrofitClient {
+              private static final String BASE_URL = "http://localhost:8080/";
+           
+              public static RetrofitAPI getApiService(){return getInstance().create(RetrofitAPI.class);} // api 콜 
+           
+              private static Retrofit getInstance(){
+                  Gson gson = new GsonBuilder().setLenient().create();
+                  return new Retrofit.Builder()
+                          .baseUrl(BASE_URL)
+                          .addConverterFactory(GsonConverterFactory.create(gson))
+                          .build();
+              }
+          }
+          ```
+
+- CallRestrofit.class 만들기
+
+  ```
+  //모델 경로는 각자 다르므로 주석처리
+  //import com.example.Model__CheckAlready;
+   
+  import android.util.Log;
+   
+  import retrofit2.Call;
+  import retrofit2.Callback;
+  import retrofit2.Response;
+   
+  public class CallRetrofit {
+      public boolean callPhoneAlreadyCheck(String phoneNumber){
+          boolean isRight = false;
+   
+          //Retrofit 호출
+          Model__CheckAlready modelCheckAlready = new Model__CheckAlready(phoneNumber);
+          Call<Model__CheckAlready> call = RetrofitClient.getApiService().postOverlapCheck(modelCheckAlready);
+          call.enqueue(new Callback<Model__CheckAlready>() {
+              @Override
+              public void onResponse(Call<Model__CheckAlready> call, Response<Model__CheckAlready> response) {
+                  if(!response.isSuccessful()){
+                      Log.e("연결이 비정상적 : ", "error code : " + response.code());
+                      return;
+                  }
+                  Model__CheckAlready checkAlready = response.body();
+                  Log.d("연결이 성공적 : ", response.body().toString());
+                  if(modelCheckAlready.getMessage() == "can use this number"){
+                      Log.d("중복검사: ", "중복된 번호가 아닙니다");
+                      modelCheckAlready.setRight(true);
+                  }
+              }
+              @Override
+              public void onFailure(Call<Model__CheckAlready> call, Throwable t) {
+                  Log.e("연결실패", t.getMessage());
+              }
+          });
+   
+          return modelCheckAlready.isRight();
+      }
+  }
+  ```
+
+  - 위의 Main Activity 내용과 중복되는 부분이 있다. 여기는 POST 매핑, 위에서는 GET 매핑을 다룬다
+
+주의사항
+
+- localhost/127.0.0.1:port가 안될 경우
+  - (IPv4)/127.0.0.1:port로 주소를 준다
+    - cmd창에서 ipconfig를 통해 확인
+- Button 객체 할당(findViewById)은 반드시 onCreate안에서 한다
 
 
 
+출처 - https://velog.io/@eeheaven/AndroidStudio-SpringBoot-KnockKnock-%EA%B0%9C%EB%B0%9C%EC%9D%BC%EC%A7%80-0118-%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%EC%97%B0%EA%B2%B0
+
+https://velog.io/@eeheaven/AndroidStudio-SpringBoot-KnockKnock-%EA%B0%9C%EB%B0%9C%EC%9D%BC%EC%A7%80-0119-%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C%EC%99%80-%EC%8A%A4%ED%94%84%EB%A7%81%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%97%B0%EA%B2%B02
 
