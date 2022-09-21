@@ -16,16 +16,14 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp">
 
-            <Button
+            <ImageButton
                 android:id="@+id/CalendarBackButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@null"
-                android:text="@string/back"
-                android:textColor="@color/mint"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:backgroundTint="#00FFFFFF"
+                android:onClick="previousMonthAction"
+                android:src="@drawable/ic_previous" />
 
             <TextView
                 android:id="@+id/monthYearTV"
@@ -36,17 +34,14 @@
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:textColor="@color/black"/>
-
-            <Button
+            <ImageButton
                 android:id="@+id/CalendarForwardButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@null"
-                android:text="@string/forward"
-                android:textColor="@color/mint"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:backgroundTint="#00FFFFFF"
+                android:onClick="nextMonthAction"
+                android:src="@drawable/ic_next" />
         </LinearLayout>
 
         <LinearLayout

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,12 +21,13 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
+public class CalendarFragment extends Fragment {
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
-    private LocalDate selectedDate;
+
     private View view;
-    private Button back, forward, next;
+    private ImageButton back, forward;
+    private Button next;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -43,29 +45,29 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     }
 
     private void setMonthView() {
-        monthYearText.setText(monthYearFromDate(selectedDate));
-        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+        monthYearText.setText(monthYearFromDate(CalendarUtil.selectedDate));
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray(CalendarUtil.selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
+        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(view.getContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
-    private ArrayList<String> daysInMonthArray(LocalDate date) {
-        ArrayList<String> daysInMonthArray = new ArrayList<>();
+    private ArrayList<LocalDate> daysInMonthArray(LocalDate date) {
+        ArrayList<LocalDate> daysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
 
         int daysInMonth = yearMonth.lengthOfMonth();
 
-        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
+        LocalDate firstOfMonth = CalendarUtil.selectedDate.withDayOfMonth(1);
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
         for (int i = 1; i <= 42; i++){
             if(i <= dayOfWeek || i > daysInMonth + dayOfWeek){
-                daysInMonthArray.add("");
+                daysInMonthArray.add(null);
             }
             else{
-                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
+                daysInMonthArray.add(LocalDate.of(CalendarUtil.selectedDate.getYear(), CalendarUtil.selectedDate.getMonth(), i - dayOfWeek));
             }
         }
         return daysInMonthArray;
@@ -82,11 +84,11 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         next = view.findViewById(R.id.CalendarNextButton);
 
         back.setOnClickListener(view -> {
-            selectedDate = selectedDate.minusMonths(1);
+            CalendarUtil.selectedDate = CalendarUtil.selectedDate.minusMonths(1);
             setMonthView();
         });
         forward.setOnClickListener(view -> {
-            selectedDate = selectedDate.plusMonths(1);
+            CalendarUtil.selectedDate = CalendarUtil.selectedDate.plusMonths(1);
             setMonthView();
         });
 
@@ -96,13 +98,13 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         });
     }
 
-    @Override
-    public void onItemClick(int position, String dayText) {
-        if(!dayText.equals("")){
-            String message = "Selected Date" + dayText + " " + monthYearFromDate(selectedDate);
-            Toast.makeText(getContext() , message, Toast.LENGTH_LONG).show();
-        }
-    }
+//    @Override
+//    public void onItemClick(int position, String dayText) {
+//        if(!dayText.equals("")){
+//            String message = "Selected Date" + dayText + " " + monthYearFromDate(CalendarUtil.selectedDate);
+//            Toast.makeText(getContext() , message, Toast.LENGTH_LONG).show();
+//        }
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,7 +112,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_calendar, container, false);
         initWidgets();
-        selectedDate = LocalDate.now();
+        CalendarUtil.selectedDate = LocalDate.now();
         setMonthView();
         setEvents();
 
