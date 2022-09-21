@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CalendarFragment extends Fragment {
     private TextView monthYearText;
@@ -28,6 +29,7 @@ public class CalendarFragment extends Fragment {
     private View view;
     private ImageButton back, forward;
     private Button next;
+    private CalendarAdapter calendarAdapter;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -48,7 +50,7 @@ public class CalendarFragment extends Fragment {
         monthYearText.setText(monthYearFromDate(CalendarUtil.selectedDate));
         ArrayList<LocalDate> daysInMonth = daysInMonthArray(CalendarUtil.selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth);
+        calendarAdapter = new CalendarAdapter(daysInMonth);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(view.getContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
@@ -92,19 +94,20 @@ public class CalendarFragment extends Fragment {
             setMonthView();
         });
 
+        HashSet<LocalDate> picked = calendarAdapter.getPicked();
+
         next.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), AnalysisActivity.class);
-            startActivity(intent);
+            if (picked.size() == 1) {
+                Intent intent = new Intent(getActivity(), SingleDataActivity.class);
+                intent.putExtra("singleDate", picked);
+                startActivity(intent);
+            } else if (picked.size() == 2){
+                Intent intent = new Intent(getActivity(), AnalysisActivity.class);
+                intent.putExtra("doubleDate", picked);
+                startActivity(intent);
+            }
         });
     }
-
-//    @Override
-//    public void onItemClick(int position, String dayText) {
-//        if(!dayText.equals("")){
-//            String message = "Selected Date" + dayText + " " + monthYearFromDate(CalendarUtil.selectedDate);
-//            Toast.makeText(getContext() , message, Toast.LENGTH_LONG).show();
-//        }
-//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

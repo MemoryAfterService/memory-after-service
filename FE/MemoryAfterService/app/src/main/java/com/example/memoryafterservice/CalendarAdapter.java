@@ -2,23 +2,22 @@ package com.example.memoryafterservice;
 
 
 import android.graphics.Color;
-import android.icu.util.LocaleData;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
     private final ArrayList<LocalDate> daysOfMonth;
+    private HashSet<LocalDate> pickedDate = new HashSet<LocalDate>();
 
     public CalendarAdapter(ArrayList<LocalDate> daysOfMonth) {
         this.daysOfMonth = daysOfMonth;
@@ -52,12 +51,20 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int iYear = day.getYear();
-                int iMonth = day.getMonthValue();
-                int iDay = day.getDayOfMonth();
-
-                String yearMonDay = iYear + "년" + iMonth + "월" + iDay + "일";
-                Toast.makeText(holder.itemView.getContext(), yearMonDay, Toast.LENGTH_SHORT).show();
+                if (day != null) {
+                    if (pickedDate.size() < 2) {
+                        pickedDate.add(day);
+                    } else {
+                        pickedDate.clear();
+                        pickedDate.add(day);
+                    }
+                }
+//                int iYear = day.getYear();
+//                int iMonth = day.getMonthValue();
+//                int iDay = day.getDayOfMonth();
+//
+//                String yearMonDay = iYear + "년" + iMonth + "월" + iDay + "일";
+//                Toast.makeText(holder.itemView.getContext(), yearMonDay, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -67,7 +74,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         return daysOfMonth.size();
     }
 
-    public interface OnItemListener {
-        void onItemClick(String dayText);
+    public HashSet<LocalDate> getPicked() {
+        return pickedDate;
     }
 }
