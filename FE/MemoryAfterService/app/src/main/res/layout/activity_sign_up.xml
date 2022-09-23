@@ -50,7 +50,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BackMain" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
+
         android:id="@+id/SignUpId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -67,7 +68,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SignUpDesc" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/SignUpPw"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -84,7 +85,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SignUpId" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/SignUpPwConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,7 +102,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SignUpPw" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/SignUpName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -118,7 +119,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SignUpPwConfirm" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/SignUpPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -129,13 +130,15 @@
         android:hint="@string/SignInPhoneHint"
         android:importantForAutofill="no"
         android:inputType="phone"
+        android:maxLength="13"
         android:minHeight="48dp"
         android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SignUpName" />
 
-    <EditText
+<!--    <EditText-->
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/SignUpVerify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -153,7 +156,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SignUpPhone" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/SignUpButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
