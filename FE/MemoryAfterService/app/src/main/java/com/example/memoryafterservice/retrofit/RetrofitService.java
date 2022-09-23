@@ -11,14 +11,14 @@ public class RetrofitService {
     initializeRetrofit();
      }
 
-private void initializeRetrofit() {
-    retrofit = new Retrofit.Builder()
-    .baseUrl("http://10.0.2.2:8080/")
-    .addConverterFactory(GsonConverterFactory.create(new Gson()))
-    .build();
-}
+    private void initializeRetrofit() {
+        retrofit = new Retrofit.Builder()
+        .baseUrl("http://10.0.2.2:8080/")
+        .addConverterFactory(GsonConverterFactory.create(new Gson()))
+        .build();
+    }
 
-public Retrofit getRetrofit() {
+    public Retrofit getRetrofit() {
     return retrofit;
 }
 }

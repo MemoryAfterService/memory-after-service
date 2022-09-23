@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +30,7 @@ import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
     private Toast toast;
+    private Toast signupConfirm;
     private EditText verify;
     private Button verifyCheck;
 
@@ -40,6 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
         verify = findViewById(R.id.SignUpVerify);
         verifyCheck = findViewById(R.id.SignUpVerifyButton);
         toast = Toast.makeText(this, "기능 구현 중입니다.", Toast.LENGTH_SHORT);
+        signupConfirm = Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT);
 
         initializeComponents();
     }
@@ -50,6 +54,51 @@ public class SignUpActivity extends AppCompatActivity {
         TextInputEditText inputEditPw = findViewById(R.id.SignUpPw);
         TextInputEditText inputEditName = findViewById(R.id.SignUpName);
         TextInputEditText inputEditPhone = findViewById(R.id.SignUpPhone);
+        inputEditPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
+            private boolean backspacingFlag = false;
+            private boolean editedFlag = false;
+            private int cursorComplement;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                cursorComplement = s.length()-inputEditPhone.getSelectionStart();
+                if (count > after) {
+                    backspacingFlag = true;
+                } else {
+                    backspacingFlag = false;
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String string = s.toString();
+                String phone = string.replaceAll("[^\\d]", "");
+
+                if (!editedFlag) {
+
+                    if (phone.length() >= 7 && !backspacingFlag) {
+                        editedFlag = true;
+                        String ans = phone.substring(0, 3) + "-" + phone.substring(3,7) + "-" + phone.substring(7);
+                        inputEditPhone.setText(ans);
+                        inputEditPhone.setSelection(inputEditPhone.getText().length()-cursorComplement);
+
+                    } else if (phone.length() >= 3 && !backspacingFlag) {
+                        editedFlag = true;
+                        String ans = phone.substring(0, 3) + "-" + phone.substring(3);
+                        inputEditPhone.setText(ans);
+                        inputEditPhone.setSelection(inputEditPhone.getText().length()-cursorComplement);
+                    }
+                } else {
+                    editedFlag = false;
+                }
+            }
+        });
+
+
         MaterialButton buttonSave = findViewById(R.id.SignUpButton);
 
         RetrofitService retrofitService = new RetrofitService();
@@ -73,7 +122,11 @@ public class SignUpActivity extends AppCompatActivity {
                     .enqueue(new Callback<MemberReq>() {
                         @Override
                         public void onResponse(Call<MemberReq> call, Response<MemberReq> response) {
-                            Toast.makeText(SignUpActivity.this, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                            signupConfirm.show();
+                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+//                            Toast.makeText(SignUpActivity.this, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -102,14 +155,10 @@ public class SignUpActivity extends AppCompatActivity {
         verifyCheck.setVisibility(View.VISIBLE);
     }
 
-    public void signIn(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("아직 구현중입니다");
-        builder.setTitle("구현중");
-        builder.setNeutralButton("확인", (dialogInterface, i) -> dialogInterface.cancel());
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
+//    public void signUp(View view) {
+//        signupConfirm.show();
+//        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+//        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
+//    }
 }
