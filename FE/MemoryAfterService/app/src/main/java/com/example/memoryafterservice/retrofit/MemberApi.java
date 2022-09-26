@@ -1,7 +1,10 @@
 package com.example.memoryafterservice.retrofit;
 
+import com.example.memoryafterservice.dto.LoginReq;
 import com.example.memoryafterservice.dto.MemberReq;
+import com.example.memoryafterservice.dto.MemberRes;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -11,5 +14,8 @@ public interface MemberApi {
 
 
     @POST("/api/member")
-    Call<MemberReq> save(@Body MemberReq memberReq);
+    Call<ResponseBody> saveMember(@Body MemberReq memberReq);
+
+    @POST("/api/auth/login")
+    Call<ResponseBody> login(@Body LoginReq loginReq);
 }

@@ -15,9 +15,14 @@ import android.text.style.ClickableSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.memoryafterservice.dto.LoginReq;
+import com.example.memoryafterservice.dto.MemberReq;
+import com.example.memoryafterservice.retrofit.RetrofitClient;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
@@ -25,11 +30,23 @@ import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.Objects;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity {
     private Toast toast;
+    private EditText inputEditId;
+    private EditText inputEditPw;
+    private Button buttonLogin;
 
     private ISessionCallback mSessionCallback;
 
@@ -37,6 +54,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        inputEditId = findViewById(R.id.idEditText);
+        inputEditPw = findViewById(R.id.pwEditText);
+        buttonLogin = findViewById(R.id.LoginButton);
+
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                doLogin();
+            }
+        });
 
         mSessionCallback = new ISessionCallback() {
             @Override
@@ -106,13 +134,65 @@ public class LoginActivity extends AppCompatActivity {
         findIdPw.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    public void doLogin() {
+        final String userid = inputEditId.getText().toString().trim();
+        String password = inputEditPw.getText().toString().trim();
 
-    public void DoLogin(View view){
-        toast.show();
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-        finish();
+        if (userid.isEmpty()) {
+            inputEditId.setError("아이디를 입력해주십시오.");
+            inputEditId.requestFocus();
+            return;
+        } else if (password.isEmpty()) {
+            inputEditPw.setError("비밀번호를 입력해주십시오.");
+            inputEditPw.requestFocus();
+            return;
+        }
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .login(new LoginReq(userid, password));
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String s = "";
+                String msg = "";
+                try {
+                    s = response.body().string();
+                    Log.d("myTag", s);
+                    JSONObject json = new JSONObject(s);
+                    Log.d("myTag1", json.toString());
+                    msg = json.getString("message");
+                    Log.d("myTag2", msg);
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if ("success".equals(msg)) {
+                    Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                } else {
+                    Toast.makeText(LoginActivity.this, "로그인 실패 ", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
     }
+//    public void doLogin(View view){
+//        toast.show();
+//        Intent intent = new Intent(this, HomeActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
+
 
     public void launchTOUActivity(View view){
         Intent intent = new Intent(this, TermOfUseActivity.class);

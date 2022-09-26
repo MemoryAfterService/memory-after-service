@@ -11,4 +11,11 @@ public class MemberReq {
     private String password;
     private String name;
     private String phone;
+
+    public MemberReq(String userid, String password, String name, String phone) {
+        this.userid = userid;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+    }
 }
