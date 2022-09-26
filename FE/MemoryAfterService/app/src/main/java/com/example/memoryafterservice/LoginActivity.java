@@ -160,11 +160,11 @@ public class LoginActivity extends AppCompatActivity {
                 String msg = "";
                 try {
                     s = response.body().string();
-                    Log.d("myTag", s);
+//                    Log.d("myTag", s);
                     JSONObject json = new JSONObject(s);
-                    Log.d("myTag1", json.toString());
+//                    Log.d("myTag1", json.toString());
                     msg = json.getString("message");
-                    Log.d("myTag2", msg);
+//                    Log.d("myTag2", msg);
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
