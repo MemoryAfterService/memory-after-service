@@ -23,6 +23,9 @@ import com.example.memoryafterservice.retrofit.RetrofitClient;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -148,10 +151,6 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 signUp();
-                signupConfirm.show();
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
             }
         });
     }
@@ -204,16 +203,22 @@ public class SignUpActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     String s = "";
+                    String msg = "";
                     try {
                         s = response.body().string();
-                    } catch (IOException e) {
+                        JSONObject json = new JSONObject(s);
+                        msg = json.getString("message");
+                    } catch (IOException | JSONException e) {
                         e.printStackTrace();
+                    }
 //                    } catch (NullPointerException n) {
 //                        n.printStackTrace();
-                    }
 
-                    if (s.equals("SUCCESS")) {
+                    if ("success".equals(msg)) {
                         Toast.makeText(SignUpActivity.this, "회원가입되었습니다.", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(SignUpActivity.this, "회원가입에 실패하였습니다.", Toast.LENGTH_LONG).show();
                     }
