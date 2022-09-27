@@ -1,0 +1,7 @@
+naver-cloud-sms:
+  accessKey: UqdoR5XUgV10UHmAjXbG
+  secretKey: YSXROcBS0Ve1hl8ivEaXoxKwO9kLPMPqkjahzQgL
+  serviceId: ncp:sms:kr:292987396290:mas
+  senderPhone: 01033250282
+security-aes256:
+  key:  45672301234563890789890121410567

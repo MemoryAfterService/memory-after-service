@@ -1,10 +1,16 @@
 package com.example.memoryafterservice;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.telephony.SmsManager;
 import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +34,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
+
+    static final int SMS_SEND_PERMISSION = 1;
     private Toast toast;
     private Toast signupConfirm;
     private EditText verify;
@@ -38,22 +46,49 @@ public class SignUpActivity extends AppCompatActivity {
     private TextInputEditText inputEditPhone;
     private MaterialButton buttonSave;
 
+    //EditText inputPhoneNum;
+    Button sendSMSBt;
+
+    private void sendSMS(String phoneNumber, String message)
+    {
+        PendingIntent pi = PendingIntent.getActivity(this,0,
+                new Intent(this, SignUpActivity.class),0);
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, pi, null);
+
+        Toast.makeText(getBaseContext(), "메시지가 전송되었습니다.", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        //inputPhoneNum = findViewById(R.id.SignUpPhone);
+        //문자보내기 권한
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
+
+        if(permissionCheck != PackageManager.PERMISSION_GRANTED){
+            //문자 보내기 권한 거부
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)){
+                Toast.makeText(getApplicationContext(), "SMS 권한이 필요합니다", Toast.LENGTH_SHORT).show();
+
+            }
+            //문자 보내기 권한 허용
+            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.SEND_SMS}, SMS_SEND_PERMISSION);
+        }
+
         Objects.requireNonNull(getSupportActionBar()).hide();
         verify = findViewById(R.id.SignUpVerify);
         verifyCheck = findViewById(R.id.SignUpVerifyButton);
-        toast = Toast.makeText(this, "기능 구현 중입니다.", Toast.LENGTH_SHORT);
+        //toast = Toast.makeText(this, "기능 구현 중입니다.", Toast.LENGTH_SHORT);
         signupConfirm = Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT);
 
         inputEditId = findViewById(R.id.SignUpId);
         inputEditPw = findViewById(R.id.SignUpPw);
         inputEditName = findViewById(R.id.SignUpName);
         inputEditPhone = findViewById(R.id.SignUpPhone);
+        sendSMSBt = findViewById(R.id.FindIdSendVerifyButton);
         inputEditPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
             private boolean backspacingFlag = false;
             private boolean editedFlag = false;
@@ -95,6 +130,16 @@ public class SignUpActivity extends AppCompatActivity {
                 } else {
                     editedFlag = false;
                 }
+            }
+        });
+
+        // 인증번호전송 클릭시 이벤트 기능
+        sendSMSBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                sendSMS(inputEditPhone.getText().toString(), "메세지 전송 테스트");
+
             }
         });
 
