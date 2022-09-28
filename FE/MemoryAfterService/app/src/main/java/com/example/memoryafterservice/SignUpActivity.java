@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.memoryafterservice.dto.MemberReq;
@@ -21,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,12 +37,14 @@ public class SignUpActivity extends AppCompatActivity {
     private Toast toast;
     private Toast signupConfirm;
     private EditText verify;
+//    private Button idCheck;
     private Button verifyCheck;
     private TextInputEditText inputEditId;
     private TextInputEditText inputEditPw;
     private TextInputEditText inputEditName;
     private TextInputEditText inputEditPhone;
     private MaterialButton buttonSave;
+    private TextView checkDesc;
 
 
     @Override
@@ -49,7 +54,9 @@ public class SignUpActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).hide();
         verify = findViewById(R.id.SignUpVerify);
+        checkDesc = findViewById(R.id.SignUpIdCheckDesc);
         verifyCheck = findViewById(R.id.SignUpVerifyButton);
+//        idCheck = findViewById(R.id.SignUpIdCheckButton);
         toast = Toast.makeText(this, "기능 구현 중입니다.", Toast.LENGTH_SHORT);
         signupConfirm = Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT);
 
@@ -114,9 +121,57 @@ public class SignUpActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    public void idCheck(View view){
-        toast.show();
+    public void idCheck(View view) {
+        String inputId = inputEditId.getText().toString().trim();
+        if (inputId.isEmpty()) {
+            inputEditId.setError("아이디를 입력해주십시오.");
+            inputEditId.requestFocus();
+            return;
+        }
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("inputId", inputId);
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .checkDuplicatedId(map);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String s = "";
+                String msg = "";
+                try {
+                    s = response.body().string();
+                    JSONObject json = new JSONObject(s);
+                    msg = json.getString("message");
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException n) {
+                    n.printStackTrace();
+//                    Toast.makeText(SignUpActivity.this, "NullPoint", Toast.LENGTH_LONG).show();
+                }
+
+                if ("nonduplicated".equals(msg)) {
+                    checkDesc.setText(getResources().getString(R.string.SignInIdCheckDescPass));
+//                    Toast.makeText(SignUpActivity.this, "사용할 수 있는 아이디입니다.", Toast.LENGTH_LONG).show();
+                } else {
+                    checkDesc.setText(getResources().getString(R.string.SignInIdCheckDescFail));
+//                    Toast.makeText(SignUpActivity.this, s, Toast.LENGTH_LONG).show();
+//                    Log.d("alarm", s);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
+
 
     public void sendVerification(View view) {
         toast.show();
@@ -124,65 +179,69 @@ public class SignUpActivity extends AppCompatActivity {
         verifyCheck.setVisibility(View.VISIBLE);
     }
 
-        private void signUp() {
-            String userid = inputEditId.getText().toString().trim();
-            String password = inputEditPw.getText().toString().trim();
-            String name = inputEditName.getText().toString().trim();
-            String phone = inputEditPhone.getText().toString().trim();
+    private void signUp() {
+        String userid = inputEditId.getText().toString().trim();
+        String password = inputEditPw.getText().toString().trim();
+        String name = inputEditName.getText().toString().trim();
+        String phone = inputEditPhone.getText().toString().trim();
 
 
-            if (userid.isEmpty()) {
-                inputEditId.setError("아이디를 입력해주십시오.");
-                inputEditId.requestFocus();
-                return;
-            } else if (password.isEmpty()) {
-                inputEditPw.setError("비밀번호를 입력해주십시오.");
-                inputEditPw.requestFocus();
-                return;
-            } else if (name.isEmpty()) {
-                inputEditName.setError("이름을 입력해주십시오,");
-                inputEditName.requestFocus();
-                return;
-            } else if (phone.isEmpty()) {
-                inputEditPhone.setError("휴대폰번호를 입력해주십시오.");
-                inputEditPhone.requestFocus();
-                return;
-            }
+        if (userid.isEmpty()) {
+            inputEditId.setError("아이디를 입력해주십시오.");
+            inputEditId.requestFocus();
+            return;
+        } else if (checkDesc.getText() != getString(R.string.SignInIdCheckDescPass)){
+            checkDesc.setError("중복되지 않은 아이디를 확인해 주십시오.");
+            checkDesc.requestFocus();
+            return;
+        } else if (password.isEmpty()) {
+            inputEditPw.setError("비밀번호를 입력해주십시오.");
+            inputEditPw.requestFocus();
+            return;
+        } else if (name.isEmpty()) {
+            inputEditName.setError("이름을 입력해주십시오,");
+            inputEditName.requestFocus();
+            return;
+        } else if (phone.isEmpty()) {
+            inputEditPhone.setError("휴대폰번호를 입력해주십시오.");
+            inputEditPhone.requestFocus();
+            return;
+        }
 
-            Call<ResponseBody> call = RetrofitClient
-                    .getInstance()
-                    .getApi()
-                    .saveMember(new MemberReq(userid, password, name, phone));
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .saveMember(new MemberReq(userid, password, name, phone));
 
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    String s = "";
-                    String msg = "";
-                    try {
-                        s = response.body().string();
-                        JSONObject json = new JSONObject(s);
-                        msg = json.getString("message");
-                    } catch (IOException | JSONException e) {
-                        e.printStackTrace();
-                    }
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String s = "";
+                String msg = "";
+                try {
+                    s = response.body().string();
+                    JSONObject json = new JSONObject(s);
+                    msg = json.getString("message");
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
 //                    } catch (NullPointerException n) {
 //                        n.printStackTrace();
 
-                    if ("success".equals(msg)) {
-                        Toast.makeText(SignUpActivity.this, "회원가입되었습니다.", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(SignUpActivity.this, "회원가입에 실패하였습니다.", Toast.LENGTH_LONG).show();
-                    }
+                if ("success".equals(msg)) {
+                    Toast.makeText(SignUpActivity.this, "회원가입되었습니다.", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                    intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(SignUpActivity.this, "회원가입에 실패하였습니다.", Toast.LENGTH_LONG).show();
                 }
+            }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

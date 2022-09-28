@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -47,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText inputEditId;
     private EditText inputEditPw;
     private Button buttonLogin;
+//    public final String pref_name;
 
     private ISessionCallback mSessionCallback;
 
@@ -135,10 +138,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void doLogin() {
-        final String userid = inputEditId.getText().toString().trim();
+        final String userId = inputEditId.getText().toString().trim();
         String password = inputEditPw.getText().toString().trim();
 
-        if (userid.isEmpty()) {
+        if (userId.isEmpty()) {
             inputEditId.setError("아이디를 입력해주십시오.");
             inputEditId.requestFocus();
             return;
@@ -151,26 +154,36 @@ public class LoginActivity extends AppCompatActivity {
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getApi()
-                .login(new LoginReq(userid, password));
+                .login(new LoginReq(userId, password));
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 String s = "";
                 String msg = "";
+                JSONObject member;
+                String name = "";
                 try {
                     s = response.body().string();
 //                    Log.d("myTag", s);
                     JSONObject json = new JSONObject(s);
-//                    Log.d("myTag1", json.toString());
+                    Log.d("myTag1", json.toString());
                     msg = json.getString("message");
 //                    Log.d("myTag2", msg);
+                    member = json.getJSONObject("member");
+                    name = member.getString("name");
+//                    Log.d("myTag3", name);
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
 
                 if ("success".equals(msg)) {
                     Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_LONG).show();
+//                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+//                    SharedPreferences.Editor edit = prefs.edit();
+//                    edit.putString("prefName", name);
+//                    edit.putString("prefUserId", userId);
+//                    edit.commit();
                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                 } else {
                     Toast.makeText(LoginActivity.this, "로그인 실패 ", Toast.LENGTH_LONG).show();
