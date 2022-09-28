@@ -25,7 +25,12 @@ public class RetrofitClient {
         return mInstance;
     }
 
-    public MemberApi getApi() {
+    public MemberApi getMemberApi() {
         return retrofit.create(MemberApi.class);
     }
+
+    public AuthApi getAuthApi() {
+        return retrofit.create(AuthApi.class);
+    }
 }
+

@@ -28,7 +28,4 @@ public interface MemberApi {
     @DELETE("/api/member/{userid}")
     Call<ResponseBody> withdrawFromMember(
             @Path("userid") String userid);
-
-    @POST("/api/auth/login")
-    Call<ResponseBody> login(@Body LoginReq loginReq);
 }

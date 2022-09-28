@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
-                .getApi()
+                .getAuthApi()
                 .login(new LoginReq(userid, password));
 
         call.enqueue(new Callback<ResponseBody>() {

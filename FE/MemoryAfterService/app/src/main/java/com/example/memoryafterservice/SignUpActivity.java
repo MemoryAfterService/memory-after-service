@@ -45,7 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Toast toast;
     private Toast signupConfirm;
     private EditText verify;
-//    private Button idCheck;
+    //    private Button idCheck;
     private Button verifyCheck;
     private TextInputEditText inputEditId;
     private TextInputEditText inputEditPw;
@@ -66,6 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Toast.makeText(getBaseContext(), "메시지가 전송되었습니다.", Toast.LENGTH_SHORT).show();
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +91,8 @@ public class SignUpActivity extends AppCompatActivity {
         verify = findViewById(R.id.SignUpVerify);
         checkDesc = findViewById(R.id.SignUpIdCheckDesc);
         verifyCheck = findViewById(R.id.SignUpVerifyButton);
-
 //        idCheck = findViewById(R.id.SignUpIdCheckButton);
         toast = Toast.makeText(this, "기능 구현 중입니다.", Toast.LENGTH_SHORT);
-
 
         signupConfirm = Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT);
 
@@ -182,7 +181,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
-                .getApi()
+                .getMemberApi()
                 .checkDuplicatedId(map);
 
         call.enqueue(new Callback<ResponseBody>() {
@@ -258,7 +257,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
-                .getApi()
+                .getMemberApi()
                 .saveMember(new MemberReq(userid, password, name, phone));
 
         call.enqueue(new Callback<ResponseBody>() {

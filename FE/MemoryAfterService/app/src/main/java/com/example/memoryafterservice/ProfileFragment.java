@@ -100,7 +100,7 @@ public class ProfileFragment extends Fragment {
                 public void onClick(DialogInterface dialog, int id) {
                     Call<ResponseBody> call = RetrofitClient
                             .getInstance()
-                            .getApi()
+                            .getMemberApi()
                             .withdrawFromMember(prefUserid);
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
