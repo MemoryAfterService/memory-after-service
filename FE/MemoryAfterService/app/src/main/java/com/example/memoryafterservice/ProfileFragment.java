@@ -1,6 +1,7 @@
 package com.example.memoryafterservice;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,10 +17,22 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.example.memoryafterservice.retrofit.RetrofitClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.prefs.Preferences;
 
 import javax.xml.transform.Source;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,9 +40,9 @@ import javax.xml.transform.Source;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
-//    private String prefName;
-//    private String prefUserId;
-    private EditText displayuserId;
+    private String prefName;
+    private String prefUserid;
+    private EditText displayuserid;
     private EditText displayName;
     private View view;
     private ImageButton profileImage;
@@ -48,16 +61,19 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+        SharedPreferences prefs = getActivity().getApplicationContext().getSharedPreferences("prefVars", Context.MODE_PRIVATE);
+        prefName = prefs.getString("prefName","");
+        prefUserid = prefs.getString("prefUserid","");
         setEvents();
         return view;
     }
     public void setEvents(){
         profileImage = view.findViewById(R.id.ProfileImageChangeButton);
 
-//        displayuserId = view.findViewById(R.id.ProfileIdEditText);
-//        displayuserId.setText(prefUserId);
-//        displayName = view.findViewById(R.id.editTextTextPersonName4);
-//        displayName.setText(prefName);
+        displayuserid = view.findViewById(R.id.ProfileIdEditText);
+        displayuserid.setText(prefUserid);
+        displayName = view.findViewById(R.id.editTextTextPersonName4);
+        displayName.setText(prefName);
 
         termOfUse = view.findViewById(R.id.ProfileTOULayout);
         termOfUse.setOnClickListener(view -> {
@@ -70,23 +86,61 @@ public class ProfileFragment extends Fragment {
         withdrawal.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("");
-            builder.setMessage("회원탈퇴를 할 경우,\n해당 계정의 모든 데이터가 삭제됩니다\n회원탈퇴를 원하신다면\n비밀번호를 입력 후 탈퇴버튼을 눌러주십시오.");
+//            builder.setMessage("회원탈퇴를 할 경우,\n해당 계정의 모든 데이터가 삭제됩니다\n회원탈퇴를 원하신다면\n비밀번호를 입력 후 탈퇴버튼을 눌러주십시오.");
+            builder.setMessage("회원탈퇴를 할 경우,\n해당 계정의 모든 데이터가 삭제됩니다\n회원탈퇴를 원하신다면\n탈퇴버튼을 눌러주십시오.");
 
-            final EditText input = new EditText(getActivity().getApplicationContext());
-            input.setHint(getString(R.string.pwEditText));
-            input.setGravity(Gravity.CENTER_HORIZONTAL);
-            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            builder.setView(input);
+//            final EditText input = new EditText(getActivity().getApplicationContext());
+//            input.setHint(getString(R.string.pwEditText));
+//            input.setGravity(Gravity.CENTER_HORIZONTAL);
+//            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+//            builder.setView(input);
+
 
             builder.setNegativeButton("회원탈퇴", new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int id) {
-                    String value = input.getText().toString();
-                    value.toString();
+                    Call<ResponseBody> call = RetrofitClient
+                            .getInstance()
+                            .getApi()
+                            .withdrawFromMember(prefUserid);
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            String s = "";
+                            String msg = "";
+                            try {
+                                s = response.body().string();
+                                JSONObject json = new JSONObject(s);
+                                msg = json.getString("message");
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+//                            } catch (NullPointerException n) {
+//                                n.printStackTrace();
+                            }
+                            if ("success".equals(msg)) {
+                                Toast.makeText(getActivity(), "회원탈퇴하셨습니다.", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+
+                            } else {
+                                Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    //                    Log.d("alarm", s);
+                            }
+                        }
+
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        }
+                    });
+//                    String value = input.getText().toString();
+//                    value.toString();
                 }
             });
             builder.setPositiveButton("취소", new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
+//                    dialog.dismiss();
                 }
             });
 
@@ -101,7 +155,7 @@ public class ProfileFragment extends Fragment {
             builder.setTitle("");
             builder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id){
-
+//                    dialog.dismiss();
                 }
             });
             builder.setNegativeButton("로그아웃", new DialogInterface.OnClickListener(){

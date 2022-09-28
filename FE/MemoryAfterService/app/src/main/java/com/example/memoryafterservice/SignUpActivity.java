@@ -90,10 +90,10 @@ public class SignUpActivity extends AppCompatActivity {
         verify = findViewById(R.id.SignUpVerify);
         checkDesc = findViewById(R.id.SignUpIdCheckDesc);
         verifyCheck = findViewById(R.id.SignUpVerifyButton);
-<<<<<<< HEAD
+
 //        idCheck = findViewById(R.id.SignUpIdCheckButton);
         toast = Toast.makeText(this, "기능 구현 중입니다.", Toast.LENGTH_SHORT);
-=======
+
 
         signupConfirm = Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT);
 
@@ -196,8 +196,8 @@ public class SignUpActivity extends AppCompatActivity {
                     msg = json.getString("message");
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
-                } catch (NullPointerException n) {
-                    n.printStackTrace();
+//                } catch (NullPointerException n) {
+//                    n.printStackTrace();
 //                    Toast.makeText(SignUpActivity.this, "NullPoint", Toast.LENGTH_LONG).show();
                 }
 

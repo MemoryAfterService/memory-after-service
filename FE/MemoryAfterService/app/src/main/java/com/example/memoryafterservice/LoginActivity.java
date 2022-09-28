@@ -138,10 +138,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void doLogin() {
-        final String userId = inputEditId.getText().toString().trim();
+        final String userid = inputEditId.getText().toString().trim();
         String password = inputEditPw.getText().toString().trim();
 
-        if (userId.isEmpty()) {
+        if (userid.isEmpty()) {
             inputEditId.setError("아이디를 입력해주십시오.");
             inputEditId.requestFocus();
             return;
@@ -154,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getApi()
-                .login(new LoginReq(userId, password));
+                .login(new LoginReq(userid, password));
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -179,12 +179,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 if ("success".equals(msg)) {
                     Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_LONG).show();
-//                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-//                    SharedPreferences.Editor edit = prefs.edit();
-//                    edit.putString("prefName", name);
-//                    edit.putString("prefUserId", userId);
-//                    edit.commit();
+                    SharedPreferences prefs = getSharedPreferences("prefVars",MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("prefName", name);
+                    editor.putString("prefUserid", userid);
+                    editor.commit();
                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                    finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "로그인 실패 ", Toast.LENGTH_LONG).show();
                 }
