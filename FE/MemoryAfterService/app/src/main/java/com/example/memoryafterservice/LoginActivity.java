@@ -163,6 +163,8 @@ public class LoginActivity extends AppCompatActivity {
                 String msg = "";
                 JSONObject member;
                 String name = "";
+                String phone = "";
+                Long id = Long.valueOf(0);
                 try {
                     s = response.body().string();
 //                    Log.d("myTag", s);
@@ -172,6 +174,8 @@ public class LoginActivity extends AppCompatActivity {
 //                    Log.d("myTag2", msg);
                     member = json.getJSONObject("member");
                     name = member.getString("name");
+                    phone = member.getString("phone");
+                    id = member.getLong("id");
 //                    Log.d("myTag3", name);
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -183,6 +187,8 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("prefName", name);
                     editor.putString("prefUserid", userid);
+                    editor.putString("prefPhone", phone);
+                    editor.putLong("prefId", id);
                     editor.commit();
                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     finish();

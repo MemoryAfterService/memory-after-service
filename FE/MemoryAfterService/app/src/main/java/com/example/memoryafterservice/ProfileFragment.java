@@ -9,16 +9,21 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.memoryafterservice.dto.MemberReq;
 import com.example.memoryafterservice.retrofit.RetrofitClient;
 
 import org.json.JSONException;
@@ -42,6 +47,8 @@ import retrofit2.Response;
 public class ProfileFragment extends Fragment {
     private String prefName;
     private String prefUserid;
+    private String prefPhone;
+    private Long prefId;
     private EditText displayuserid;
     private EditText displayName;
     private View view;
@@ -64,6 +71,8 @@ public class ProfileFragment extends Fragment {
         SharedPreferences prefs = getActivity().getApplicationContext().getSharedPreferences("prefVars", Context.MODE_PRIVATE);
         prefName = prefs.getString("prefName","");
         prefUserid = prefs.getString("prefUserid","");
+        prefPhone = prefs.getString("prefPhone", "");
+        prefId = prefs.getLong("prefId",0);
         setEvents();
         return view;
     }
@@ -72,6 +81,7 @@ public class ProfileFragment extends Fragment {
 
         displayuserid = view.findViewById(R.id.ProfileIdEditText);
         displayuserid.setText(prefUserid);
+//        displayuserid.setText(prefId.toString());
         displayName = view.findViewById(R.id.editTextTextPersonName4);
         displayName.setText(prefName);
 
@@ -174,5 +184,163 @@ public class ProfileFragment extends Fragment {
         });
 
         changePw = view.findViewById(R.id.ProfileChangePwLayout);
-    };
+        changePw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showChangePwDialog();
+            }
+        });
+
+
+    }
+    void showChangePwDialog() {
+        View view = LayoutInflater.from(getActivity().getApplicationContext()).inflate(
+                R.layout.layout_change_pw_dialog, (LinearLayout) getActivity().findViewById(R.id.changePwDialog));
+        EditText editCurrentPw = view.findViewById(R.id.currentPw);
+        EditText editNewPw = view.findViewById(R.id.newPw);
+        EditText editNewPw2 = view.findViewById(R.id.newPw2);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        final AlertDialog alertdialog = builder.setTitle("비밀번호 변경")
+                .setView(view)
+                .setPositiveButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setNegativeButton("변경", null)
+                .create();
+        alertdialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button buttonChangePw = alertdialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                buttonChangePw.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                        String currentPw = editCurrentPw.getText().toString().trim();
+                        String newPw = editNewPw.getText().toString().trim();
+                        String newPw2 = editNewPw2.getText().toString().trim();
+
+                        if (currentPw.isEmpty()) {
+                            editCurrentPw.setError("현재 비밀번호를 입력해주십시오");
+                            editCurrentPw.requestFocus();
+                            return;
+                        } else if (newPw.isEmpty()) {
+                            editNewPw.setError("새로운 비밀번호를 입력해주십시오.");
+                            editNewPw.requestFocus();
+                            return;
+                        } else if (newPw2.isEmpty()) {
+                            editNewPw2.setError("새로운 비밀번호를 다시 입력해주십시오.");
+                            editNewPw2.requestFocus();
+                            return;
+                        }
+
+                        if (newPw.equals(newPw2)) {
+
+                        } else {
+                            editNewPw2.setError("새로운 비밀번호를 동일하게 입력해주십시오.");
+                            editNewPw2.requestFocus();
+                            return;}
+
+                        Call<ResponseBody> call = RetrofitClient
+                                .getInstance()
+                                .getMemberApi()
+                                .modifyMemberPassword(new MemberReq(prefUserid, newPw, prefName, null));
+
+                        call.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                                Log.d("Tag", "응답");
+                                String s = "";
+                                String msg = "";
+                                try {
+                                    s = response.body().string();
+                                    JSONObject json = new JSONObject(s);
+                                    msg = json.getString("message");
+                                } catch(IOException|JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                if ("success".equals(msg)) {
+                                    Toast.makeText(getActivity().getApplicationContext(), "비밀번호가 변경되었습니다.", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    }
+                });
+
+            }
+        });
+        alertdialog.show();
+    }
+
 }
+//    void showChangePwDialog() {
+//        final View changePwDialog = getLayoutInflater().inflate(R.layout.activity_change_pw_dialog, null);
+//        final int changePwInt = 5;
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        final AlertDialog alertdialog = builder.setTitle("비밀번호 변경")
+//                .setView(changePwDialog)
+//                .setPositiveButton("취소", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                    }
+//                })
+//                .setNegativeButton("변경", null)
+//                .create();
+//
+//        alertdialog.setOnShowListener(new DialogInterface.OnShowListener() {
+//            @Override
+//            public void onShow(DialogInterface dialogInterface) {
+//
+//                Button buttonChangePw = alertdialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//                buttonChangePw.setOnClickListener(new View.OnClickListener(){
+//
+//                    @Override
+//                    public void onClick(View view) {
+//                        EditText editCurrentPw = com.example.memoryafterservice.changePwDialog.editCurrentPw;
+//                        EditText editNewPw = com.example.memoryafterservice.changePwDialog.editNewPw;
+//                        EditText editNewPw2 = com.example.memoryafterservice.changePwDialog.editNewPw2;
+//
+//                        String currentPw = editCurrentPw.getText().toString().trim();
+//                        String newPw = editNewPw.getText().toString().trim();
+//                        String newPw2 = editNewPw2.getText().toString().trim();
+//
+//                        if (currentPw.isEmpty()) {
+//                            editCurrentPw.setError("현재 비밀번호를 입력해주십시오");
+//                            editCurrentPw.requestFocus();
+//                            return;
+//                        } else if (newPw.isEmpty()) {
+//                            editNewPw.setError("새로운 비밀번호를 입력해주십시오.");
+//                            editNewPw.requestFocus();
+//                            return;
+//                        } else if (newPw2.isEmpty()) {
+//                        editNewPw2.setError("새로운 비밀번호를 다시 입력해주십시오.");
+//                        editNewPw2.requestFocus();
+//                        return;
+//                    }
+//
+//                    }
+//                });
+//
+//            }
+//        });
+//        alertdialog.show();
+//    }

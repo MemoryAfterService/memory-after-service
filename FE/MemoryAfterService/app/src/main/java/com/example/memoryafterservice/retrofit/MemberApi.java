@@ -16,6 +16,7 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface MemberApi {
@@ -28,4 +29,8 @@ public interface MemberApi {
     @DELETE("/api/member/{userid}")
     Call<ResponseBody> withdrawFromMember(
             @Path("userid") String userid);
+
+    @PUT("/api/member/changepwd")
+    Call<ResponseBody> modifyMemberPassword(@Body MemberReq memberReq);
+
 }
