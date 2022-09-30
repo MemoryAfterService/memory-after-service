@@ -1,14 +1,21 @@
 package com.example.memoryafterservice;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -20,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -29,6 +37,7 @@ import com.example.memoryafterservice.retrofit.RetrofitClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
@@ -52,7 +61,8 @@ public class ProfileFragment extends Fragment {
     private EditText displayuserid;
     private EditText displayName;
     private View view;
-    private ImageButton profileImage;
+    private ImageView profileImage;
+    private ImageButton profileImageBtn;
     private LinearLayout termOfUse;
     private LinearLayout withdrawal;
     private LinearLayout signout;
@@ -73,11 +83,39 @@ public class ProfileFragment extends Fragment {
         prefUserid = prefs.getString("prefUserid","");
         prefPhone = prefs.getString("prefPhone", "");
         prefId = prefs.getLong("prefId",0);
+
         setEvents();
         return view;
     }
     public void setEvents(){
-        profileImage = view.findViewById(R.id.ProfileImageChangeButton);
+        profileImage = view.findViewById(R.id.ProfileImageView);
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == -1) {
+                            Intent intent = result.getData();
+                            Uri uri = intent.getData();
+                            profileImage.setImageURI(uri);
+
+                        }
+                    }
+                });
+        profileImageBtn = view.findViewById(R.id.ProfileImageChangeButton);
+        profileImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                intent.setAction(intent.ACTION_PICK);
+                activityResultLauncher.launch(intent);
+
+
+            }
+        });
+
+
 
         displayuserid = view.findViewById(R.id.ProfileIdEditText);
         displayuserid.setText(prefUserid);

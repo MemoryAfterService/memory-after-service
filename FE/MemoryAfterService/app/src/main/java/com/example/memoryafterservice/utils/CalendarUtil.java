@@ -1,4 +1,4 @@
-package com.example.memoryafterservice;
+package com.example.memoryafterservice.utils;
 
 import java.time.LocalDate;
 
