@@ -2,6 +2,8 @@ package com.ssafy.mas.response;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -15,4 +17,5 @@ public class MemberRes {
     private String phone;
     private String profileUrl;
     private String regDate;
+    private List<String> bookmark;
 }
