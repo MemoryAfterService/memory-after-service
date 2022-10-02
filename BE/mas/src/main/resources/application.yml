@@ -3,12 +3,17 @@ server:
   servlet:
     context-path: /api
 spring:
+# 아래의 분리된 파일을 Spring Boot main class인 MasApplication에서 읽음
+#  config:
+#    import:
+#      - classpath:/application-database.yml
+#      - classpath:/application-env.yml
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        show_sql: false
+        show_sql: true
         format_sql : false
   servlet:
     multipart:

@@ -58,4 +58,15 @@ public class FileUploadController {
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @GetMapping("/conn")
+    public ResponseEntity<Map<String, Object>> airflowConnect(){
+        System.out.println("[GET] - connect to Airflow");
+
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("airflowResponse", fileUploadService.runPipeline());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

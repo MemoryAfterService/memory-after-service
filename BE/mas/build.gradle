@@ -37,6 +37,9 @@ dependencies {
 
 	// SFTP
 	implementation group: 'com.jcraft', name: 'jsch', version: '0.1.55'
+
+	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 }
 
 tasks.named('test') {
