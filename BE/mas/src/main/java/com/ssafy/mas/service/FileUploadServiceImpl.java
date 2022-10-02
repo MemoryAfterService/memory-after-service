@@ -1,7 +1,10 @@
 package com.ssafy.mas.service;
 
+import com.ssafy.mas.util.RestAPI;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +25,9 @@ public class FileUploadServiceImpl implements FileUploadService {
 
 //    @Value("${file-storage.path}")
 //    private String path;
+
+    @Autowired
+    RestAPI restAPI;
 
     @Override
     public boolean saveFile(String userid, MultipartFile[] files) {
@@ -80,5 +86,13 @@ public class FileUploadServiceImpl implements FileUploadService {
         // AIRFLOW TRIGGER //
 
         return true;
+    }
+
+    @Override
+    public JSONObject runPipeline() {
+        String res = restAPI.runDAG().getBody();
+        Object obj = JSONValue.parse(res);
+        JSONObject json = (JSONObject) obj;
+        return json;
     }
 }
