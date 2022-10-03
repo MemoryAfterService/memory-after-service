@@ -1,5 +1,8 @@
 package com.ssafy.mas.service;
 
+import com.ssafy.mas.database.entity.Member;
+import com.ssafy.mas.database.repository.MemberRepository;
+import com.ssafy.mas.database.repository.UpdateLogRepository;
 import com.ssafy.mas.util.RestAPI;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -20,11 +23,11 @@ import java.util.Locale;
 @Transactional
 public class FileUploadServiceImpl implements FileUploadService {
 
-//    @Autowired
-//    SSHUtils sshUtils;
+    @Autowired
+    MemberRepository memberRepository;
 
-//    @Value("${file-storage.path}")
-//    private String path;
+    @Autowired
+    UpdateLogRepository updateLogRepository;
 
     @Autowired
     RestAPI restAPI;
@@ -75,12 +78,15 @@ public class FileUploadServiceImpl implements FileUploadService {
             try {
                 files[i].transferTo(changeFile);
                 System.out.printf("[%s] - File upload is complete. The file is in %s\n", newFileName, savePath);
+
             } catch (IllegalStateException | IOException e) {
                 System.out.printf("[%s] - File upload failed.\n", newFileName);
                 e.printStackTrace();
                 return false;
             }
         }
+        Member findMember = memberRepository.findFirstByUserIdAndWithdrawal(userid, false);
+        updateLogRepository.updateProfileUploadLog(findMember, currentTime.toLocalDate());
 
         // 파일 전송이 완료되어야 airflow 실행 요청
         // AIRFLOW TRIGGER //

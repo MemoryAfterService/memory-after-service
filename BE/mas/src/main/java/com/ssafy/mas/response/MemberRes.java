@@ -2,6 +2,7 @@ package com.ssafy.mas.response;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -18,4 +19,12 @@ public class MemberRes {
     private String profileUrl;
     private String regDate;
     private List<String> bookmark;
+    private UpdateLog updatelog;
+
+    @Data
+    @AllArgsConstructor
+    public static class UpdateLog {
+        private LocalDate date;
+        private int count;
+    }
 }

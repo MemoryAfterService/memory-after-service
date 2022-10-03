@@ -71,6 +71,7 @@ public class AuthServiceImpl implements AuthService {
                     .profileUrl(join.getProfileUrl())
                     .regDate(join.getRegDate().toLocalDate().toString())
                     .bookmark(bookmarks)
+                    .updatelog(new MemberRes.UpdateLog(join.getUpdateLog().getLastUploadDate(), join.getUpdateLog().getCount()))
                     .build();
             result.put("member", member);
             result.put("result", true);
