@@ -107,16 +107,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="64dp"
         android:layout_marginEnd="48dp"
-        android:onClick="findId"
+        android:layout_marginBottom="80dp"
+        android:onClick="onClickFindIdBtn"
         android:text="@string/FindIdText"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FindIdVerify" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/FindIdSendVerifyButton"
+        android:id="@+id/SignUpSendVerifyButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="-96dp"
@@ -134,11 +135,28 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="-96dp"
         android:layout_marginEnd="48dp"
+        android:onClick="onClickVerifyBtn"
         android:text="@string/SignInVerifyButton"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/FindIdVerify"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/FindIdVerify"
         app:layout_constraintTop_toTopOf="@+id/FindIdVerify" />
+
+    <TextView
+        android:id="@+id/FindIdTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="당신의 아이디는 OOO입니다."
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/FindIdButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FindIdVerify" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

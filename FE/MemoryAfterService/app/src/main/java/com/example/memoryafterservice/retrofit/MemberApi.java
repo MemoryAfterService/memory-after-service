@@ -1,5 +1,7 @@
 package com.example.memoryafterservice.retrofit;
 
+import com.example.memoryafterservice.dto.FindIdReq;
+import com.example.memoryafterservice.dto.FindPwdReq;
 import com.example.memoryafterservice.dto.LoginReq;
 import com.example.memoryafterservice.dto.MemberReq;
 import com.example.memoryafterservice.dto.MemberRes;
@@ -26,11 +28,15 @@ public interface MemberApi {
     @POST("/api/member")
     Call<ResponseBody> saveMember(@Body MemberReq memberReq);
 
+    @POST("/api/member/findid")
+    Call<ResponseBody> findUserId(@Body FindIdReq findIdReq);
+
+    @POST("/api/member/findpwd")
+    Call<ResponseBody> issuingTempPwd(@Body FindPwdReq findPwdReq);
+
     @DELETE("/api/member/{userid}")
-    Call<ResponseBody> withdrawFromMember(
-            @Path("userid") String userid);
+    Call<ResponseBody> withdrawFromMember(@Path("userid") String userid);
 
     @PUT("/api/member/changepwd")
     Call<ResponseBody> modifyMemberPassword(@Body MemberReq memberReq);
-
 }

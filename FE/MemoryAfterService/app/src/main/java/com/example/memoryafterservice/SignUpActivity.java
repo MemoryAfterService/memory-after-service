@@ -1,18 +1,14 @@
 package com.example.memoryafterservice;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.app.PendingIntent;
+
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.telephony.SmsManager;
 import android.text.Editable;
-import android.util.Log;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,19 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.memoryafterservice.dto.MemberReq;
-import com.example.memoryafterservice.retrofit.MemberApi;
 import com.example.memoryafterservice.retrofit.RetrofitClient;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,75 +32,87 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
-
-    static final int SMS_SEND_PERMISSION = 1;
     private Toast toast;
-    private Toast signupConfirm;
-    private EditText verify;
-    //    private Button idCheck;
-    private Button verifyCheck;
-    private TextInputEditText inputEditId;
-    private TextInputEditText inputEditPw;
-    private TextInputEditText inputEditName;
-    private TextInputEditText inputEditPhone;
-    private MaterialButton buttonSave;
-    private TextView checkDesc;
-
-    //EditText inputPhoneNum;
-    Button sendSMSBt;
-
-    private void sendSMS(String phoneNumber, String message)
-    {
-        PendingIntent pi = PendingIntent.getActivity(this,0,
-                new Intent(this, SignUpActivity.class),0);
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message, pi, null);
-
-        Toast.makeText(getBaseContext(), "메시지가 전송되었습니다.", Toast.LENGTH_SHORT).show();
-    }
-
+    private EditText editTextId;
+    private EditText editTextPwd;
+    private EditText editTextPwdConfirm;
+    private EditText editTextName;
+    private EditText editTextPhone;
+    private EditText editTextAuthCode;
+    private TextView checkIdDuplicationMessage;
+    private TextView checkPwdConfirmMessage;
+    private Button checkIdDuplicationBtn;
+    private Button sendAuthCodeBtn;
+    private Button verifyBtn;
+    private String authCode;
+    private boolean idDuplicationCheckSuccess;
+    private boolean passwordConfirmSuccess;
+    private boolean authenticationSuccess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
-        //inputPhoneNum = findViewById(R.id.SignUpPhone);
-        //문자보내기 권한
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
-
-        if(permissionCheck != PackageManager.PERMISSION_GRANTED){
-            //문자 보내기 권한 거부
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)){
-                Toast.makeText(getApplicationContext(), "SMS 권한이 필요합니다", Toast.LENGTH_SHORT).show();
-
-            }
-            //문자 보내기 권한 허용
-            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.SEND_SMS}, SMS_SEND_PERMISSION);
-        }
-
         Objects.requireNonNull(getSupportActionBar()).hide();
-        verify = findViewById(R.id.SignUpVerify);
-        checkDesc = findViewById(R.id.SignUpIdCheckDesc);
-        verifyCheck = findViewById(R.id.SignUpVerifyButton);
-//        idCheck = findViewById(R.id.SignUpIdCheckButton);
-        toast = Toast.makeText(this, "기능 구현 중입니다.", Toast.LENGTH_SHORT);
 
-        signupConfirm = Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT);
+        editTextId = findViewById(R.id.SignUpId);
+        editTextPwd = findViewById(R.id.SignUpPw);
+        editTextPwdConfirm = findViewById(R.id.SignUpPwConfirm);
+        editTextName = findViewById(R.id.SignUpName);
+        editTextPhone = findViewById(R.id.SignUpPhone);
+        editTextAuthCode = findViewById(R.id.SignUpVerify);
+        checkIdDuplicationMessage = findViewById(R.id.SignUpIdCheckDesc);
+        checkIdDuplicationBtn = findViewById(R.id.SignUpIdCheckButton);
+        checkPwdConfirmMessage = findViewById(R.id.SignUpPwConfirmDesc);
+        sendAuthCodeBtn = findViewById(R.id.SignUpSendVerifyButton);
+        verifyBtn = findViewById(R.id.SignUpVerifyButton);
+        idDuplicationCheckSuccess = false;
+        passwordConfirmSuccess = false;
+        authenticationSuccess = false;
 
-        inputEditId = findViewById(R.id.SignUpId);
-        inputEditPw = findViewById(R.id.SignUpPw);
-        inputEditName = findViewById(R.id.SignUpName);
-        inputEditPhone = findViewById(R.id.SignUpPhone);
-        sendSMSBt = findViewById(R.id.FindIdSendVerifyButton);
-        inputEditPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
+        /** editTextPwdConfirm의 TextChangeListener */
+        editTextPwdConfirm.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                checkPwdConfirmMessage.setVisibility(View.VISIBLE);
+                if(editTextPwd.getText().toString().equals(editTextPwdConfirm.getText().toString())) {
+                    passwordConfirmSuccess = true;
+                    checkPwdConfirmMessage.setTextColor(Color.parseColor("#008000"));
+                    checkPwdConfirmMessage.setText(R.string.SignInPwConfirmDescPass);
+                } else {
+                    passwordConfirmSuccess = false;
+                    checkPwdConfirmMessage.setTextColor(Color.parseColor("#ED1A3D"));
+                    checkPwdConfirmMessage.setText(R.string.SignInPwConfirmDescFail);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editTextPwd.getText().toString().equals(editTextPwdConfirm.getText().toString())) {
+                    passwordConfirmSuccess = true;
+                    checkPwdConfirmMessage.setTextColor(Color.parseColor("#008000"));
+                    checkPwdConfirmMessage.setText(R.string.SignInPwConfirmDescPass);
+                } else {
+                    passwordConfirmSuccess = false;
+                    checkPwdConfirmMessage.setTextColor(Color.parseColor("#ED1A3D"));
+                    checkPwdConfirmMessage.setText(R.string.SignInPwConfirmDescFail);
+                }
+            }
+        });
+
+        /** editTextPhone의 TextChangeListener */
+        editTextPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
             private boolean backspacingFlag = false;
             private boolean editedFlag = false;
             private int cursorComplement;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                cursorComplement = s.length()-inputEditPhone.getSelectionStart();
+                cursorComplement = s.length()-editTextPhone.getSelectionStart();
                 if (count > after) {
                     backspacingFlag = true;
                 } else {
@@ -126,40 +130,21 @@ public class SignUpActivity extends AppCompatActivity {
                 String phone = string.replaceAll("[^\\d]", "");
 
                 if (!editedFlag) {
-
                     if (phone.length() >= 7 && !backspacingFlag) {
                         editedFlag = true;
                         String ans = phone.substring(0, 3) + "-" + phone.substring(3,7) + "-" + phone.substring(7);
-                        inputEditPhone.setText(ans);
-                        inputEditPhone.setSelection(inputEditPhone.getText().length()-cursorComplement);
+                        editTextPhone.setText(ans);
+                        editTextPhone.setSelection(editTextPhone.getText().length()-cursorComplement);
 
                     } else if (phone.length() >= 3 && !backspacingFlag) {
                         editedFlag = true;
                         String ans = phone.substring(0, 3) + "-" + phone.substring(3);
-                        inputEditPhone.setText(ans);
-                        inputEditPhone.setSelection(inputEditPhone.getText().length()-cursorComplement);
+                        editTextPhone.setText(ans);
+                        editTextPhone.setSelection(editTextPhone.getText().length()-cursorComplement);
                     }
                 } else {
                     editedFlag = false;
                 }
-            }
-        });
-
-        // 인증번호전송 클릭시 이벤트 기능
-        sendSMSBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                sendSMS(inputEditPhone.getText().toString(), "메세지 전송 테스트");
-
-            }
-        });
-
-        buttonSave = findViewById(R.id.SignUpButton);
-        buttonSave.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                signUp();
             }
         });
     }
@@ -168,126 +153,205 @@ public class SignUpActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    public void idCheck(View view) {
-        String inputId = inputEditId.getText().toString().trim();
-        if (inputId.isEmpty()) {
-            inputEditId.setError("아이디를 입력해주십시오.");
-            inputEditId.requestFocus();
+    public void onClickCheckIdDuplicationBtn(View view) {
+        String inputId = editTextId.getText().toString().trim();
+        if("".equals(inputId)) {
+            editTextId.setError("아이디를 입력해주십시오.");
+            editTextId.requestFocus();
             return;
         }
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("inputId", inputId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("inputid", inputId);
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getMemberApi()
-                .checkDuplicatedId(map);
+                .checkDuplicatedId(params);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String s = "";
-                String msg = "";
+                String responseBody = null;
+                JSONObject json = null;
+                String message = null;
                 try {
-                    s = response.body().string();
-                    JSONObject json = new JSONObject(s);
-                    msg = json.getString("message");
+                    responseBody = response.body().string();
+                    json = new JSONObject(responseBody);
+                    message = json.getString("message");
+
+                    if("duplicated".equals(message)) {
+                        idDuplicationCheckSuccess = false;
+                        checkIdDuplicationMessage.setTextColor(Color.parseColor("#ED1A3D"));
+                        checkIdDuplicationMessage.setText(R.string.SignInIdCheckDescFail);
+                    } else if("nonduplicated".equals(message)) {
+                        idDuplicationCheckSuccess = true;
+                        checkIdDuplicationMessage.setTextColor(Color.parseColor("#008000"));
+                        checkIdDuplicationMessage.setText(R.string.SignInIdCheckDescPass);
+                    }
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
-//                } catch (NullPointerException n) {
-//                    n.printStackTrace();
-//                    Toast.makeText(SignUpActivity.this, "NullPoint", Toast.LENGTH_LONG).show();
                 }
-
-                if ("nonduplicated".equals(msg)) {
-                    checkDesc.setText(getResources().getString(R.string.SignInIdCheckDescPass));
-//                    Toast.makeText(SignUpActivity.this, "사용할 수 있는 아이디입니다.", Toast.LENGTH_LONG).show();
-                } else {
-                    checkDesc.setText(getResources().getString(R.string.SignInIdCheckDescFail));
-//                    Toast.makeText(SignUpActivity.this, s, Toast.LENGTH_LONG).show();
-//                    Log.d("alarm", s);
-                }
-
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-
             }
         });
     }
 
-
     public void sendVerification(View view) {
-        toast.show();
-        verify.setVisibility(View.VISIBLE);
-        verifyCheck.setVisibility(View.VISIBLE);
-    }
+        String phoneNumber = editTextPhone.getText().toString().trim();
 
-    private void signUp() {
-        String userid = inputEditId.getText().toString().trim();
-        String password = inputEditPw.getText().toString().trim();
-        String name = inputEditName.getText().toString().trim();
-        String phone = inputEditPhone.getText().toString().trim();
-
-
-        if (userid.isEmpty()) {
-            inputEditId.setError("아이디를 입력해주십시오.");
-            inputEditId.requestFocus();
-            return;
-        } else if (checkDesc.getText() != getString(R.string.SignInIdCheckDescPass)){
-            checkDesc.setError("중복되지 않은 아이디를 확인해 주십시오.");
-            checkDesc.requestFocus();
-            return;
-        } else if (password.isEmpty()) {
-            inputEditPw.setError("비밀번호를 입력해주십시오.");
-            inputEditPw.requestFocus();
-            return;
-        } else if (name.isEmpty()) {
-            inputEditName.setError("이름을 입력해주십시오,");
-            inputEditName.requestFocus();
-            return;
-        } else if (phone.isEmpty()) {
-            inputEditPhone.setError("휴대폰번호를 입력해주십시오.");
-            inputEditPhone.requestFocus();
+        if("".equals(phoneNumber)) {
+            editTextPhone.setError("휴대전화 번호를 입력해주십시오.");
+            editTextPhone.requestFocus();
             return;
         }
 
+        sendAuthCodeBtn.setText("인증번호 재전송");
+        editTextAuthCode.setVisibility(View.VISIBLE);
+        verifyBtn.setVisibility(View.VISIBLE);
+        authenticationSuccess = false;
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("phone", phoneNumber);
+
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
-                .getMemberApi()
-                .saveMember(new MemberReq(userid, password, name, phone));
+                .getAuthApi()
+                .authenticateMobile(params);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String s = "";
-                String msg = "";
+                String responseBody = null;
+                JSONObject json = null;
+                String message = null;
                 try {
-                    s = response.body().string();
-                    JSONObject json = new JSONObject(s);
-                    msg = json.getString("message");
+                    responseBody = response.body().string();
+                    json = new JSONObject(responseBody);
+                    message = json.getString("message");
+
+                    if ("success".equals(message)) {
+                        authCode = json.getString("authcode");
+                    } else {
+                        Toast.makeText(getApplicationContext(), "인증번호를 재요청 해주세요.", Toast.LENGTH_SHORT).show();
+                    }
+
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
-                }
-//                    } catch (NullPointerException n) {
-//                        n.printStackTrace();
-
-                if ("success".equals(msg)) {
-                    Toast.makeText(SignUpActivity.this, "회원가입되었습니다.", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                    intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(SignUpActivity.this, "회원가입에 실패하였습니다.", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void onClickVerifyBtn(View view) {
+        String inputCode = editTextAuthCode.getText().toString().trim();
+
+        if("".equals(inputCode)) {
+            editTextAuthCode.setError("인증번호를 입력해주십시오.");
+            editTextAuthCode.requestFocus();
+            return;
+        }
+
+        if (authCode.equals(inputCode)) {
+            authenticationSuccess = true;
+            Toast.makeText(getApplicationContext(), "인증 성공", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "인증 실패", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onClickRegisterBtn(View view) {
+        String userId = editTextId.getText().toString().trim();
+        String userPasword = editTextPwd.getText().toString().trim();
+        String userPasswordConfirm = editTextPwdConfirm.getText().toString().trim();
+        String userName = editTextName.getText().toString().trim();
+        String phoneNumber = editTextPhone.getText().toString().trim();
+        String inputAuthCode = editTextAuthCode.getText().toString().trim();
+
+        if ("".equals(userId)) {
+            Toast.makeText(getApplicationContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            editTextId.requestFocus();
+            return;
+        }
+        if ("".equals(userPasword)) {
+            Toast.makeText(getApplicationContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            editTextPwd.requestFocus();
+            return;
+        }
+        if ("".equals(userPasswordConfirm)) {
+            Toast.makeText(getApplicationContext(), "비밀번호 재확인을 해주세요.", Toast.LENGTH_SHORT).show();
+            editTextPwdConfirm.requestFocus();
+            return;
+        }
+        if ("".equals(userName)) {
+            Toast.makeText(getApplicationContext(), "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            editTextName.requestFocus();
+            return;
+        }
+        if ("".equals(phoneNumber)) {
+            Toast.makeText(getApplicationContext(), "휴대전화 번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            editTextPhone.requestFocus();
+            return;
+        }
+        if ("".equals(inputAuthCode)) {
+            Toast.makeText(getApplicationContext(), "인증번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            editTextAuthCode.requestFocus();
+            return;
+        }
+        if(!idDuplicationCheckSuccess) {
+            Toast.makeText(getApplicationContext(), "아이디 중복 확인을 해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!passwordConfirmSuccess) {
+            Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!authenticationSuccess) {
+            Toast.makeText(getApplicationContext(), "휴대전화 번호 인증을 해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        MemberReq params = new MemberReq(userId, userPasword, userName, phoneNumber);
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getMemberApi().
+                saveMember(params);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String responseBody = null;
+                JSONObject json = null;
+                String message = null;
+
+                try {
+                    responseBody = response.body().string();
+                    json = new JSONObject(responseBody);
+                    message = json.getString("message");
+
+                    if("success".equals(message)) {
+                        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), "회원가입에 성공하였습니다.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "회원가입에 실패하였습니다.", Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
             }
         });
     }
