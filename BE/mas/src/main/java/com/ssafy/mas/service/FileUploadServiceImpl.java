@@ -106,6 +106,7 @@ public class FileUploadServiceImpl implements FileUploadService {
                 data_name,
                 result_path,
                 result_name);
+
         JSONObject jsonObject = new JSONObject();
         // 완료된 파일 읽기
         ArrayList<String> file_output = new ArrayList<>();
