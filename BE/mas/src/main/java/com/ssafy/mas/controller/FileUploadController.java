@@ -61,11 +61,11 @@ public class FileUploadController {
 
     @GetMapping("/conn")
     public ResponseEntity<Map<String, Object>> airflowConnect(){
-        System.out.println("[GET] - connect to Airflow");
+        System.out.println("[GET] - Run shell script");
 
         Map<String, Object> result = new HashMap<>();
 
-        result.put("airflowResponse", fileUploadService.runPipeline());
+        result.put("Response", fileUploadService.runPipeline());
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
