@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 public class MemberReq {
     private String userid;
     private String password;

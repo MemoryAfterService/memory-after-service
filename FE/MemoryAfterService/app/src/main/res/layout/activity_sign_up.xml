@@ -120,6 +120,7 @@
         app:layout_constraintTop_toBottomOf="@+id/SignUpPwConfirm" />
 
     <!--    <EditText-->
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/SignUpPhone"
         android:layout_width="match_parent"
@@ -136,7 +137,7 @@
         android:minHeight="48dp"
         android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SignUpName" />
 
@@ -165,11 +166,11 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="48dp"
+        android:onClick="onClickRegisterBtn"
         android:text="@string/SignInButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SignUpVerify"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/SignUpVerify" />
 <!--        android:onClick="signUp"-->
 
     <TextView
@@ -178,8 +179,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginEnd="48dp"
-        android:text="@string/SignInIdCheckDesc"
-        android:textColor="@android:color/holo_red_dark"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -191,8 +190,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginEnd="48dp"
-        android:text="@string/SignInPwConfirmDesc"
-        android:textColor="@android:color/holo_red_dark"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/SignUpName"
         app:layout_constraintEnd_toEndOf="parent"
@@ -205,7 +202,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="-96dp"
         android:layout_marginEnd="48dp"
-        android:onClick="idCheck"
+        android:onClick="onClickCheckIdDuplicationBtn"
         android:text="@string/SignInIdCheck"
         app:layout_constraintBottom_toBottomOf="@+id/SignUpId"
         app:layout_constraintEnd_toEndOf="parent"
@@ -213,7 +210,7 @@
         app:layout_constraintTop_toTopOf="@+id/SignUpId" />
 
     <Button
-        android:id="@+id/FindIdSendVerifyButton"
+        android:id="@+id/SignUpSendVerifyButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="-96dp"
@@ -231,6 +228,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="-96dp"
         android:layout_marginEnd="48dp"
+        android:onClick="onClickVerifyBtn"
         android:text="@string/SignInVerifyButton"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/SignUpVerify"

@@ -23,9 +23,10 @@
     <string name="SignInVerifyHint">인증번호를 입력해주십시오</string>
     <string name="SignInButton">회원 가입</string>
     <string name="SignInIdCheckDesc">아이디 중복 확인이 필요합니다.</string>
-    <string name="SignInIdCheckDescPass">등록할 수 있는 아이디입니다.</string>
-    <string name="SignInIdCheckDescFail">등록되어 있는 아이디입니다.</string>
-    <string name="SignInPwConfirmDesc">비밀번호가 다릅니다.</string>
+    <string name="SignInIdCheckDescPass">사용 가능한 아이디입니다.</string>
+    <string name="SignInIdCheckDescFail">이미 사용 중인 아이디입니다.</string>
+    <string name="SignInPwConfirmDescPass">비밀번호가 일치합니다.</string>
+    <string name="SignInPwConfirmDescFail">비밀번호가 일치하지 않습니다.</string>
     <string name="FindIdText">아이디 찾기</string>
     <string name="SignInIdCheck">중복 확인</string>
     <string name="SignInSendVerify">인증 번호 전송</string>
