@@ -11,11 +11,11 @@ import java.util.Date;
 
 @Component
 public class RestAPI {
-    @Value("${airflow-conf.url}")
+    //@Value("${airflow-conf.url}")
     private String BASE_URL;
-    @Value("${airflow-conf.userid}")
+    //@Value("${airflow-conf.userid}")
     private String userId;
-    @Value("${airflow-conf.password}")
+    //@Value("${airflow-conf.password}")
     private String password;
 
     // 연결 테스트 -> GET

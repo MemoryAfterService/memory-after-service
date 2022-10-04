@@ -3,18 +3,17 @@ package com.ssafy.mas.service;
 import com.ssafy.mas.database.entity.Member;
 import com.ssafy.mas.database.repository.MemberRepository;
 import com.ssafy.mas.database.repository.UpdateLogRepository;
-import com.ssafy.mas.util.RestAPI;
+import com.ssafy.mas.util.ExecuteShell;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Locale;
 
 
@@ -30,7 +29,9 @@ public class FileUploadServiceImpl implements FileUploadService {
     UpdateLogRepository updateLogRepository;
 
     @Autowired
-    RestAPI restAPI;
+    ExecuteShell executeShell;
+
+    private String RESULT_PATH;
 
     @Override
     public boolean saveFile(String userid, MultipartFile[] files) {
@@ -96,9 +97,31 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public JSONObject runPipeline() {
-        String res = restAPI.runDAG().getBody();
-        Object obj = JSONValue.parse(res);
-        JSONObject json = (JSONObject) obj;
-        return json;
+        String host_dir = "/home/ubuntu/mas_server/upload/ssafy1234/20220929020116476";
+        String data_name = "kakaotalk.zip";
+        String result_path = "/home/j7b103/word";
+        String result_name = "finaldataframe.csv";
+        ArrayList<String> output = executeShell.run_shell(
+                host_dir,
+                data_name,
+                result_path,
+                result_name);
+        JSONObject jsonObject = new JSONObject();
+        // 완료된 파일 읽기
+        ArrayList<String> file_output = new ArrayList<>();
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(host_dir + "/" + result_name));
+            String buffer;
+            while((buffer = br.readLine()) != null){
+                file_output.add(buffer);
+            }
+            jsonObject.put("log", output);
+            jsonObject.put("file", file_output);
+            return jsonObject;
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonObject.put("logs", output);
+            return jsonObject;
+        }
     }
 }
