@@ -38,6 +38,9 @@ public class ExecuteShell {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
         try {
             // only for unix
+            System.out.println(shell_path);
+            System.out.println(key_path);
+            System.out.println(remote_url);
             String command = String.format("sh %s %s %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, data_name, result_path, result_file);
             process = Runtime.getRuntime().exec(command);
             // 끝날 때 까지 기다림
