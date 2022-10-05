@@ -103,7 +103,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         String data_name = "kakaotalk.zip";
         String result_path = "/home/j7b103/word";
         String result_name = "finaldataframe.csv";
-        HashMap<String, ArrayList<String>> output = executeShell.run_shell(
+        HashMap<String, ArrayList<Object>> output = executeShell.run_shell(
                 host_dir,
                 data_name,
                 result_path,
