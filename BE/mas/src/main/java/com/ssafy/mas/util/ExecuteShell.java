@@ -24,7 +24,7 @@ public class ExecuteShell {
     private String key_path;
 
     // 셸 스크립트 실행
-    public ArrayList<ArrayList<Object>> run_shell(String host_dir, String data_name, String result_path, String result_file) {
+    public HashMap<String, ArrayList<Object>> run_shell(String host_dir, String data_name, String result_path, String result_file) {
         System.out.println(shell_path);
         System.out.println(key_path);
         System.out.println(remote_url);

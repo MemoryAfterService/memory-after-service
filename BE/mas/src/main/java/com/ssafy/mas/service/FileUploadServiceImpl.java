@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 
@@ -102,7 +103,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         String data_name = "kakaotalk.zip";
         String result_path = "/home/j7b103/word";
         String result_name = "finaldataframe.csv";
-        ArrayList<ArrayList<String>> output = executeShell.run_shell(
+        HashMap<String, ArrayList<String>> output = executeShell.run_shell(
                 host_dir,
                 data_name,
                 result_path,
