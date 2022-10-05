@@ -15,15 +15,6 @@ public class ExecuteShell {
     // 셸 파일 주소
     @Value("${instance_key.shell_path}")
     private String shell_path;
-    // 보낼 데이터 주소
-//    // 보낼 데이터 파일 -> 인자로 받기
-//    private String data_name = "kakaotalk.zip";
-//    // EC2 인스턴스의 파일 주소 -> 인자로 받기
-//    private String host_dir = "/Users/wondae";
-//    // Hadoop Cluster의 디렉토리 -> host와 짝으로 맞추기
-//    private String result_path = "/home/j7b103/word";
-//    // 결과 파일 이름 -> cluster의 Python script로 맞추기
-//    private String result_file = "finaldataframe.csv";
     // Hadoop cluster의 주소
     @Value("${instance_key.remote_url}")
     private String remote_url;
@@ -33,6 +24,9 @@ public class ExecuteShell {
 
     // 셸 스크립트 실행
     public ArrayList<ArrayList<String>> run_shell(String host_dir, String data_name, String result_path, String result_file) {
+        System.out.println(shell_path);
+        System.out.println(key_path);
+        System.out.println(remote_url);
         String homeDirectory = System.getProperty("user.home");
         Process process;
         ArrayList<ArrayList<String>> result = new ArrayList<>();
