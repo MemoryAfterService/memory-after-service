@@ -58,13 +58,13 @@ public class ExecuteShell {
             in.close();
 
             System.out.println(result.get(0).toString());
-//            result.add(new ArrayList<>());
-//            in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
-//            while ((inputLine = in.readLine()) != null) {
-//                System.out.println(inputLine);
-//                result.get(1).add(inputLine);
-//            }
-//            in.close();
+            result.add(new ArrayList<>());
+            in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
+            while ((inputLine = in.readLine()) != null) {
+                System.out.println(inputLine);
+                result.get(1).add(inputLine);
+            }
+            in.close();
 
             return result;
         }catch(IOException | InterruptedException e){
