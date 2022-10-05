@@ -38,9 +38,6 @@ public class ExecuteShell {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
         try {
             // only for unix
-            System.out.println(shell_path);
-            System.out.println(key_path);
-            System.out.println(remote_url);
             String command = String.format("sh %s %s %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, data_name, result_path, result_file);
             process = Runtime.getRuntime().exec(command);
             // 끝날 때 까지 기다림
@@ -56,7 +53,8 @@ public class ExecuteShell {
             }
             in.close();
 
-            result.add(new ArrayList<>());
+            System.out.println(result.get(0).toString());
+//            result.add(new ArrayList<>());
 //            in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
 //            while ((inputLine = in.readLine()) != null) {
 //                System.out.println(inputLine);
