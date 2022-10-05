@@ -7,6 +7,7 @@ import com.ssafy.mas.util.ExecuteShell;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -97,6 +98,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public JSONObject runPipeline() {
+        System.out.println("runPipeLine");
         String host_dir = "/home/ubuntu/mas_server/upload/ssafy1234/20220929020116476";
         String data_name = "kakaotalk.zip";
         String result_path = "/home/j7b103/word";
