@@ -111,9 +111,9 @@ public class FileUploadServiceImpl implements FileUploadService {
         JSONObject jsonObject = new JSONObject();
         // 완료된 파일 읽기
         if(output != null){
-            jsonObject.put("result", output);
+            jsonObject.put("response", output);
         }else{
-            jsonObject.put("result", "failed");
+            jsonObject.put("response", "failed");
         }
         return jsonObject;
     }

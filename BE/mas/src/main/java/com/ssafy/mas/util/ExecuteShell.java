@@ -30,7 +30,7 @@ public class ExecuteShell {
         System.out.println(remote_url);
         String homeDirectory = System.getProperty("user.home");
         Process process;
-        ArrayList<ArrayList<Object>> result = new ArrayList<>();
+        HashMap<String, ArrayList<Object>> result = new HashMap<>();
         try {
             // only for unix
             String command = String.format("sh %s %s %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, data_name, result_path, result_file);
@@ -38,7 +38,7 @@ public class ExecuteShell {
             // 끝날 때 까지 기다림
             process.waitFor();
 
-            result.add(new ArrayList<>());
+            result.put("logs", new ArrayList<>());
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
             String inputLine;
@@ -49,7 +49,7 @@ public class ExecuteShell {
             in.close();
 
             //System.out.println(result.get(0).toString());
-            result.add(new ArrayList<>());
+            result.put("result", new ArrayList<>());
             in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
             while ((inputLine = in.readLine()) != null) {
                 String[] inputSplit = inputLine.split(",");
