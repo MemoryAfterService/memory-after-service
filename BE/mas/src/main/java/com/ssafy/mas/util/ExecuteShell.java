@@ -25,10 +25,11 @@ public class ExecuteShell {
 
     // 셸 스크립트 실행
     public HashMap<String, ArrayList<Object>> run_shell(String host_dir, String data_name, String result_path, String result_file) {
-        System.out.println(shell_path);
-        System.out.println(key_path);
-        System.out.println(remote_url);
-        String homeDirectory = System.getProperty("user.home");
+        System.out.println(host_dir);
+        System.out.println(data_name);
+        System.out.println(result_path);
+        System.out.println(result_file);
+        
         Process process;
         HashMap<String, ArrayList<Object>> result = new HashMap<>();
         try {
