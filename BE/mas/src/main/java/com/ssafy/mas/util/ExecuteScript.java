@@ -53,7 +53,7 @@ public class ExecuteScript {
             in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
             while ((inputLine = in.readLine()) != null) {
                 String[] inputSplit = inputLine.split(",");
-                if(Integer.parseInt(inputSplit[5]) > 1) continue;
+                if(!inputSplit[5].equals("count") && Integer.parseInt(inputSplit[5]) > 1) continue;
                 HashMap<String, String> cnt = new HashMap<>();
                 cnt.put("date_time", inputSplit[1]);
                 cnt.put("user_name", inputSplit[2]);
