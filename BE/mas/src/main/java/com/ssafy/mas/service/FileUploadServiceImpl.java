@@ -7,7 +7,6 @@ import com.ssafy.mas.util.ExecuteShell;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -98,11 +97,12 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     @Override
-    public JSONObject runPipeline() {
-        String host_dir = "/root/upload/ssafy1234/20220929020116476";
+    public JSONObject runPipeline(String userid, String dateString) {
+        String host_dir = "/root/upload/"+ userid + "/" + dateString;
         String data_name = "kakaotalk.zip";
+        // 추후에 파일 구조 새로 만들기
         String result_path = "/home/j7b103/word";
-        String result_name = "finaldataframe.csv";
+        String result_name = "Data_koreanWordCount_result.csv";
         HashMap<String, ArrayList<Object>> output = executeShell.run_shell(
                 host_dir,
                 data_name,

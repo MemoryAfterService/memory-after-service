@@ -7,4 +7,6 @@ public interface FileUploadService {
     boolean saveFile(String userid, MultipartFile[] files);
 
     JSONObject runPipeline();
+
+    JSONObject runPipeline(String userId, String dateString);
 }

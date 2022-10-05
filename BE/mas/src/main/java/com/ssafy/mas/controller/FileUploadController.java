@@ -65,7 +65,7 @@ public class FileUploadController {
 
         Map<String, Object> result = new HashMap<>();
 
-        result.put("Response", fileUploadService.runPipeline());
+        result.put("Response", fileUploadService.runPipeline("ssafy1234", "20220929020116476"));
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
