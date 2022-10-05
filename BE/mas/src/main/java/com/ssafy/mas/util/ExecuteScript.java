@@ -44,7 +44,7 @@ public class ExecuteScript {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 System.out.println(inputLine);
-                result.get(0).add(inputLine);
+                result.get("logs").add(inputLine);
             }
             in.close();
 
@@ -59,7 +59,7 @@ public class ExecuteScript {
                 cnt.put("room_name", inputSplit[3]);
                 cnt.put("word", inputSplit[4]);
                 cnt.put("count", inputSplit[5]);
-                result.get(1).add(cnt);
+                result.get("result").add(cnt);
             }
             in.close();
 
