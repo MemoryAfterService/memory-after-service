@@ -98,7 +98,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public JSONObject runPipeline() {
-        String host_dir = "~/upload/ssafy1234/20220929020116476";
+        String host_dir = "/root/upload/ssafy1234/20220929020116476";
         String data_name = "kakaotalk.zip";
         String result_path = "/home/j7b103/word";
         String result_name = "finaldataframe.csv";
