@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Component
 public class ExecuteShell {
@@ -23,13 +24,13 @@ public class ExecuteShell {
     private String key_path;
 
     // 셸 스크립트 실행
-    public ArrayList<ArrayList<String>> run_shell(String host_dir, String data_name, String result_path, String result_file) {
+    public ArrayList<ArrayList<Object>> run_shell(String host_dir, String data_name, String result_path, String result_file) {
         System.out.println(shell_path);
         System.out.println(key_path);
         System.out.println(remote_url);
         String homeDirectory = System.getProperty("user.home");
         Process process;
-        ArrayList<ArrayList<String>> result = new ArrayList<>();
+        ArrayList<ArrayList<Object>> result = new ArrayList<>();
         try {
             // only for unix
             String command = String.format("sh %s %s %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, data_name, result_path, result_file);
@@ -51,8 +52,14 @@ public class ExecuteShell {
             result.add(new ArrayList<>());
             in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
             while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
-                result.get(1).add(inputLine);
+                String[] inputSplit = inputLine.split(",");
+                HashMap<String, String> cnt = new HashMap<>();
+                cnt.put("date_time", inputSplit[1]);
+                cnt.put("user_name", inputSplit[2]);
+                cnt.put("room_name", inputSplit[3]);
+                cnt.put("word", inputSplit[4]);
+                cnt.put("count", inputSplit[5]);
+                result.get(1).add(cnt);
             }
             in.close();
 
