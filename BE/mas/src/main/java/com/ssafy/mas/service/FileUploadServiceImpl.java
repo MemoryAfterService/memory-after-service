@@ -101,7 +101,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         String data_name = "kakaotalk.zip";
         String result_path = "/home/j7b103/word";
         String result_name = "finaldataframe.csv";
-        ArrayList<String> output = executeShell.run_shell(
+        ArrayList<ArrayList<String>> output = executeShell.run_shell(
                 host_dir,
                 data_name,
                 result_path,
@@ -109,20 +109,11 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         JSONObject jsonObject = new JSONObject();
         // 완료된 파일 읽기
-        ArrayList<String> file_output = new ArrayList<>();
-        try{
-            BufferedReader br = new BufferedReader(new FileReader(host_dir + "/" + result_name));
-            String buffer;
-            while((buffer = br.readLine()) != null){
-                file_output.add(buffer);
-            }
-            jsonObject.put("log", output);
-            jsonObject.put("file", file_output);
-            return jsonObject;
-        } catch (IOException e) {
-            e.printStackTrace();
-            jsonObject.put("logs", output);
-            return jsonObject;
+        if(output != null){
+            jsonObject.put("result", output);
+        }else{
+            jsonObject.put("result", "failed");
         }
+        return jsonObject;
     }
 }
