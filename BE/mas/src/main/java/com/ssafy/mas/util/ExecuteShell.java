@@ -33,7 +33,6 @@ public class ExecuteShell {
 
     // 셸 스크립트 실행
     public ArrayList<ArrayList<String>> run_shell(String host_dir, String data_name, String result_path, String result_file) {
-        System.out.println("RUNSHELL");
         String homeDirectory = System.getProperty("user.home");
         Process process;
         ArrayList<ArrayList<String>> result = new ArrayList<>();
@@ -55,12 +54,12 @@ public class ExecuteShell {
             in.close();
 
             result.add(new ArrayList<>());
-            in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
-                result.get(1).add(inputLine);
-            }
-            in.close();
+//            in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
+//            while ((inputLine = in.readLine()) != null) {
+//                System.out.println(inputLine);
+//                result.get(1).add(inputLine);
+//            }
+//            in.close();
 
             return result;
         }catch(IOException | InterruptedException e){

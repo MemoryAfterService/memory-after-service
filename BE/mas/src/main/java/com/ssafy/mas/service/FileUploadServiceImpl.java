@@ -98,7 +98,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public JSONObject runPipeline() {
-        System.out.println("runPipeLine");
         String host_dir = "/home/ubuntu/mas_server/upload/ssafy1234/20220929020116476";
         String data_name = "kakaotalk.zip";
         String result_path = "/home/j7b103/word";
