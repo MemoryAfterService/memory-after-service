@@ -8,8 +8,8 @@
 
     <ImageButton
         android:id="@+id/SignUpBackButton"
-        android:layout_width="48dp"
-        android:layout_height="48sp"
+        android:layout_width="40dp"
+        android:layout_height="42sp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="#00FFFFFF"
@@ -29,7 +29,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/BackTOU"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/SignUpBackButton"
         app:layout_constraintTop_toTopOf="parent" />
@@ -159,8 +159,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SignUpPhone" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/SignUpButton"
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
@@ -168,10 +167,12 @@
         android:layout_marginEnd="48dp"
         android:onClick="onClickRegisterBtn"
         android:text="@string/SignInButton"
+        android:background="@drawable/mint_border_layout"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SignUpVerify" />
-<!--        android:onClick="signUp"-->
+        app:layout_constraintTop_toBottomOf="@+id/SignUpVerify"/>
+
 
     <TextView
         android:id="@+id/SignUpIdCheckDesc"
@@ -204,6 +205,8 @@
         android:layout_marginEnd="48dp"
         android:onClick="onClickCheckIdDuplicationBtn"
         android:text="@string/SignInIdCheck"
+        android:background="@drawable/mint_border_layout"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/SignUpId"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/SignUpId"
@@ -211,12 +214,14 @@
 
     <Button
         android:id="@+id/SignUpSendVerifyButton"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="-96dp"
         android:layout_marginEnd="48dp"
         android:onClick="sendVerification"
         android:text="@string/SignInSendVerify"
+        android:background="@drawable/mint_border_layout"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/SignUpPhone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/SignUpPhone"
@@ -230,6 +235,8 @@
         android:layout_marginEnd="48dp"
         android:onClick="onClickVerifyBtn"
         android:text="@string/SignInVerifyButton"
+        android:background="@drawable/mint_border_layout"
+        android:textColor="@color/white"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/SignUpVerify"
         app:layout_constraintEnd_toEndOf="parent"

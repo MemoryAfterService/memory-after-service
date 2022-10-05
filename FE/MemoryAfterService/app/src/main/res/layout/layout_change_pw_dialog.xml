@@ -26,7 +26,7 @@
         android:gravity="center"
         android:textAlignment="center"
         android:inputType="textPassword"
-        android:hint="새로 설정할 비밀번호를 입력해주십시오."/>
+        android:hint="새 비밀번호를 입력해주십시오."/>
 
     <EditText
         android:id="@+id/newPw2"
@@ -37,6 +37,6 @@
         android:gravity="center"
         android:textAlignment="center"
         android:inputType="textPassword"
-        android:hint="새로 설정할 비밀번호를 다시 입력해주십시오."/>
+        android:hint="새 비밀번호를 다시 입력해주십시오."/>
 
 </LinearLayout>

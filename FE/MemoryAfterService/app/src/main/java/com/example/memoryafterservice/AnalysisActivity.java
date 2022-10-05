@@ -43,7 +43,7 @@ public class AnalysisActivity extends AppCompatActivity {
                                 .commit();
                         break;
                 }
-                return false;
+                return true;
             }
         });
     }

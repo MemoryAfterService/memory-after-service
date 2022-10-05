@@ -22,6 +22,7 @@
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/green_border_layout"
         android:layout_marginTop="444dp"
         android:text="@string/HomeMoveAnalysisText" />
 
@@ -30,6 +31,7 @@
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/mint_border_layout"
         android:layout_marginTop="390dp"
         android:text="@string/HomeDetailAnalysisText" />
 

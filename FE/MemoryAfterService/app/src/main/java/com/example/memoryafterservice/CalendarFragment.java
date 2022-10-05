@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class CalendarFragment extends Fragment {
+    private int selectedPosition = -1;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
 
@@ -55,6 +56,7 @@ public class CalendarFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(view.getContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+
     }
     private ArrayList<LocalDate> daysInMonthArray(LocalDate date) {
         ArrayList<LocalDate> daysInMonthArray = new ArrayList<>();
@@ -97,6 +99,8 @@ public class CalendarFragment extends Fragment {
 
         HashSet<LocalDate> picked = calendarAdapter.getPicked();
 
+
+
         next.setOnClickListener(view -> {
             if (picked.size() == 1) {
                 Intent intent = new Intent(getActivity(), SingleDataActivity.class);
@@ -109,6 +113,8 @@ public class CalendarFragment extends Fragment {
             }
         });
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -42,7 +42,7 @@ public class TermOfUseActivity extends AppCompatActivity {
             termOfUseCheck.setVisibility(View.GONE);
             TOUButton.setVisibility(View.GONE);
             ConstraintLayout.LayoutParams prams = (ConstraintLayout.LayoutParams) termOfUse.getLayoutParams();
-            int newHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,520,getResources().getDisplayMetrics());
+            int newHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,440,getResources().getDisplayMetrics());
             prams.height = newHeight;
             prams.topToBottom = backProfile.getId();
             termOfUse.setLayoutParams(prams);

@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
                     android:orientation="horizontal">
 
@@ -66,13 +66,13 @@
                         android:layout_weight="3"
                         android:text="@string/TOUText"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/ProfileTOUArrow"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="32dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/TOUDesc"
                         android:rotation="180"
@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="32dp"
                     android:orientation="horizontal">
 
@@ -96,13 +96,13 @@
                         android:layout_weight="3"
                         android:text="@string/SignoutText"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/ProfileSignoutArrow"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="32dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/ProfileSignOutDesc"
                         android:rotation="180"
@@ -114,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="32dp"
                     android:orientation="horizontal">
 
@@ -126,13 +126,13 @@
                         android:layout_weight="3"
                         android:text="@string/LogoutText"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/ProfileLogoutArrow"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="32dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/ProfileLogoutDesc"
                         android:rotation="180"
@@ -144,7 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="32dp"
                     android:orientation="horizontal">
 
@@ -156,13 +156,13 @@
                         android:layout_weight="3"
                         android:text="@string/ProfileChangePWText"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/ProfileChangePwArrow"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="32dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/ProfileChangePWDesc"
                         android:rotation="180"
@@ -177,7 +177,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -212,7 +212,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="32dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
