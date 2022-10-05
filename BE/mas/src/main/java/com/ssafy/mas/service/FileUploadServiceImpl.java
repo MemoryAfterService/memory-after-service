@@ -3,7 +3,7 @@ package com.ssafy.mas.service;
 import com.ssafy.mas.database.entity.Member;
 import com.ssafy.mas.database.repository.MemberRepository;
 import com.ssafy.mas.database.repository.UpdateLogRepository;
-import com.ssafy.mas.util.ExecuteShell;
+import com.ssafy.mas.util.ExecuteScript;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     UpdateLogRepository updateLogRepository;
 
     @Autowired
-    ExecuteShell executeShell;
+    ExecuteScript executeScript;
 
     private String RESULT_PATH;
 
@@ -99,11 +99,12 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public JSONObject runPipeline(String userid, String dateString) {
         String host_dir = "/root/upload/"+ userid + "/" + dateString;
+        System.out.println(host_dir);
         String data_name = "kakaotalk.zip";
         // 추후에 파일 구조 새로 만들기
         String result_path = "/home/j7b103/word";
         String result_name = "Data_koreanWordCount_result.csv";
-        HashMap<String, ArrayList<Object>> output = executeShell.run_shell(
+        HashMap<String, ArrayList<Object>> output = executeScript.run_shell(
                 host_dir,
                 data_name,
                 result_path,

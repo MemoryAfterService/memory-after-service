@@ -1,6 +1,5 @@
 package com.ssafy.mas.util;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Component
-public class ExecuteShell {
+public class ExecuteScript {
     // 셸 파일 주소
     @Value("${instance_key.shell_path}")
     private String shell_path;
@@ -29,7 +28,7 @@ public class ExecuteShell {
         System.out.println(data_name);
         System.out.println(result_path);
         System.out.println(result_file);
-        
+
         Process process;
         HashMap<String, ArrayList<Object>> result = new HashMap<>();
         try {
