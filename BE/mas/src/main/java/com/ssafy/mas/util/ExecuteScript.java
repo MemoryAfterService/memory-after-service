@@ -57,7 +57,7 @@ public class ExecuteScript {
                 cnt.put("room_name", inputSplit[3]);
                 cnt.put("hour", inputSplit[4]);
                 cnt.put("count", inputSplit[5]);
-                if(cnt.get("count").equals("count") || cnt.get("word").length() == 1 || Integer.parseInt(cnt.get("count")) == 1) continue;
+                if(cnt.get("count").equals("count") || Integer.parseInt(cnt.get("count")) == 1) continue;
                 System.out.println(cnt.get("word"));
                 result.get("result").add(cnt);
             }
