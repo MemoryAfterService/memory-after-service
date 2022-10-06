@@ -98,7 +98,6 @@ public class DaytalkAnalysisFragment extends Fragment {
                 JSONObject h = json.getJSONObject(i);
                 words.add(new DayTalk(
                         h.getString("user_name"),
-                        h.getString("room_name"),
                         Integer.parseInt(h.getString("count"))));
             }
 
