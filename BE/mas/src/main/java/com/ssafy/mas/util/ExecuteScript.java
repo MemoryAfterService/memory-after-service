@@ -30,19 +30,19 @@ public class ExecuteScript {
             BufferedReader in;
             String inputLine;
 //            // only for unix
-            String command = String.format("sh %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, result_path);
-            process = Runtime.getRuntime().exec(command);
-            // 끝날 때 까지 기다림
-            process.waitFor();
-
-            result.put("logs", new ArrayList<>());
-            in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
-                result.get("logs").add(inputLine);
-            }
-            in.close();
+//            String command = String.format("sh %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, result_path);
+//            process = Runtime.getRuntime().exec(command);
+//            // 끝날 때 까지 기다림
+//            process.waitFor();
+//
+//            result.put("logs", new ArrayList<>());
+//            in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//
+//            while ((inputLine = in.readLine()) != null) {
+//                System.out.println(inputLine);
+//                result.get("logs").add(inputLine);
+//            }
+//            in.close();
 
 
             // LineCount
@@ -93,7 +93,7 @@ public class ExecuteScript {
             result.get("image").add(cnt);
 
             return result;
-        }catch(IOException | InterruptedException e){
+        }catch(IOException e){
             e.printStackTrace();
             return null;
         }
