@@ -1,5 +1,6 @@
 package com.example.memoryafterservice.retrofit;
 
+import com.example.memoryafterservice.dto.ChangePwdReq;
 import com.example.memoryafterservice.dto.FindIdReq;
 import com.example.memoryafterservice.dto.FindPwdReq;
 import com.example.memoryafterservice.dto.LoginReq;
@@ -38,5 +39,5 @@ public interface MemberApi {
     Call<ResponseBody> withdrawFromMember(@Path("userid") String userid);
 
     @PUT("/api/member/changepwd")
-    Call<ResponseBody> modifyMemberPassword(@Body MemberReq memberReq);
+    Call<ResponseBody> modifyMemberPassword(@Body ChangePwdReq changePwdReq);
 }

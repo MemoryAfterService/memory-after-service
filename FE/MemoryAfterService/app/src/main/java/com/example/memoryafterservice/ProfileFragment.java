@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.memoryafterservice.dto.ChangePwdReq;
 import com.example.memoryafterservice.dto.MemberReq;
 import com.example.memoryafterservice.retrofit.RetrofitClient;
 
@@ -134,18 +135,21 @@ public class ProfileFragment extends Fragment {
         withdrawal.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("");
-//            builder.setMessage("회원탈퇴를 할 경우,\n해당 계정의 모든 데이터가 삭제됩니다\n회원탈퇴를 원하신다면\n비밀번호를 입력 후 탈퇴버튼을 눌러주십시오.");
-            builder.setMessage("회원탈퇴를 할 경우,\n해당 계정의 모든 데이터가 삭제됩니다\n회원탈퇴를 원하신다면\n탈퇴버튼을 눌러주십시오.");
+            builder.setMessage("회원탈퇴를 원하신다면\n비밀번호를 입력 후 탈퇴버튼을 눌러주십시오.");
+//            builder.setMessage("회원탈퇴를 할 경우,\n해당 계정의 모든 데이터가 삭제됩니다\n회원탈퇴를 원하신다면\n탈퇴버튼을 눌러주십시오.");
 
-//            final EditText input = new EditText(getActivity().getApplicationContext());
-//            input.setHint(getString(R.string.pwEditText));
-//            input.setGravity(Gravity.CENTER_HORIZONTAL);
-//            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-//            builder.setView(input);
+            final EditText input = new EditText(getActivity().getApplicationContext());
+            input.setHint(getString(R.string.pwEditText));
+            input.setGravity(Gravity.CENTER_HORIZONTAL);
+            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            builder.setView(input);
 
 
             builder.setNegativeButton("회원탈퇴", new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int id) {
+                    if (input.toString().isEmpty()) {
+
+                    } else {
                     Call<ResponseBody> call = RetrofitClient
                             .getInstance()
                             .getMemberApi()
@@ -172,16 +176,16 @@ public class ProfileFragment extends Fragment {
 
                             } else {
                                 Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-    //                    Log.d("alarm", s);
+                                //                    Log.d("alarm", s);
                             }
                         }
-
 
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
 
                         }
                     });
+                    }
 //                    String value = input.getText().toString();
 //                    value.toString();
                 }
@@ -287,7 +291,7 @@ public class ProfileFragment extends Fragment {
                         Call<ResponseBody> call = RetrofitClient
                                 .getInstance()
                                 .getMemberApi()
-                                .modifyMemberPassword(new MemberReq(prefUserid, newPw, prefName, null));
+                                .modifyMemberPassword(new ChangePwdReq(prefUserid, currentPw, newPw, newPw2));
 
                         call.enqueue(new Callback<ResponseBody>() {
                             @Override
@@ -295,11 +299,14 @@ public class ProfileFragment extends Fragment {
 //                                Log.d("Tag", "응답");
                                 String s = "";
                                 String msg = "";
+                                String rst = "";
                                 try {
                                     s = response.body().string();
                                     JSONObject json = new JSONObject(s);
                                     msg = json.getString("message");
-                                } catch(IOException|JSONException e) {
+                                    rst = json.getString("description");
+                                }
+                                catch(IOException|JSONException e) {
                                     e.printStackTrace();
                                 }
                                 if ("success".equals(msg)) {
@@ -308,11 +315,20 @@ public class ProfileFragment extends Fragment {
                                     intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                 } else {
-                                    Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+//                                    Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+//                                    try {
+//                                        s = response.body().string();
+//                                        JSONObject json2 = new JSONObject(s);
+//                                        rst = json2.getString("description");
+//                                    }
+//                                    catch(IOException|JSONException e){
+//                                        e.printStackTrace();
+//                                    }
+
+                                    Toast.makeText(getActivity().getApplicationContext(), rst, Toast.LENGTH_LONG).show();
                                 }
 
                             }
-
                             @Override
                             public void onFailure(Call<ResponseBody> call, Throwable t) {
                                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();

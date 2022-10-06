@@ -31,7 +31,7 @@
     <string name="SignInIdCheck">중복 확인</string>
     <string name="SignInSendVerify">인증번호 전송</string>
     <string name="SignInVerifyButton">인증 확인</string>
-    <string name="FindPwText">임시ㄴ비밀번호 발급</string>
+    <string name="FindPwText">임시ㄴㅊ비밀번호 발급</string>
     <string name="LoginFindPwId">계정을 잃어버리셨나요? 아이디 찾기 또는 비밀번호 찾기</string>
     <string name="ProfileImageChangeButtonDesc">change a profile image</string>
     <string name="ProfileImageDesc">shows profile image</string>
