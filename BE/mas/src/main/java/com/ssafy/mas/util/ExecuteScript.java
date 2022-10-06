@@ -32,25 +32,26 @@ public class ExecuteScript {
         Process process;
         HashMap<String, ArrayList<Object>> result = new HashMap<>();
         try {
-            // only for unix
-            String command = String.format("sh %s %s %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, data_name, result_path, result_file);
-            process = Runtime.getRuntime().exec(command);
-            // 끝날 때 까지 기다림
-            process.waitFor();
-
-            result.put("logs", new ArrayList<>());
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
-                result.get("logs").add(inputLine);
-            }
-            in.close();
+//            // only for unix
+//            String command = String.format("sh %s %s %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, data_name, result_path, result_file);
+//            process = Runtime.getRuntime().exec(command);
+//            // 끝날 때 까지 기다림
+//            process.waitFor();
+//
+//            result.put("logs", new ArrayList<>());
+//            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//
+//            String inputLine;
+//            while ((inputLine = in.readLine()) != null) {
+//                System.out.println(inputLine);
+//                result.get("logs").add(inputLine);
+//            }
+//            in.close();
 
             //System.out.println(result.get(0).toString());
             result.put("result", new ArrayList<>());
-            in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
+            BufferedReader in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
+            String inputLine = "";
             while ((inputLine = in.readLine()) != null) {
                 String[] inputSplit = inputLine.split(",");
                 if(!inputSplit[5].equals("count") && Integer.parseInt(inputSplit[5]) < 2) continue;
@@ -65,7 +66,7 @@ public class ExecuteScript {
             in.close();
 
             return result;
-        }catch(IOException | InterruptedException e){
+        }catch(IOException e){
             e.printStackTrace();
             return null;
         }
