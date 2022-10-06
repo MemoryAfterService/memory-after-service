@@ -99,16 +99,11 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public JSONObject runPipeline(String userid, String dateString) {
         String host_dir = "/root/upload/"+ userid + "/" + dateString;
-        System.out.println(host_dir);
-        String data_name = "kakaotalk.zip";
         // 추후에 파일 구조 새로 만들기
         String result_path = "/home/j7b103/word";
-        String result_name = "Data_koreanWordCount_result.csv";
         HashMap<String, ArrayList<Object>> output = executeScript.run_shell(
                 host_dir,
-                data_name,
-                result_path,
-                result_name);
+                result_path);
 
         JSONObject jsonObject = new JSONObject();
         // 완료된 파일 읽기
