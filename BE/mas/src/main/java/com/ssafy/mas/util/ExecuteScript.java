@@ -59,7 +59,7 @@ public class ExecuteScript {
                 cnt.put("count", inputSplit[5]);
                 if(cnt.get("count").equals("Count") || Integer.parseInt(cnt.get("count")) == 1) continue;
                 System.out.println(cnt.get("word"));
-                result.get("result").add(cnt);
+                result.get("LineCount").add(cnt);
             }
             in.close();
 
@@ -75,17 +75,17 @@ public class ExecuteScript {
                 cnt.put("count", inputSplit[3]);
                 if(cnt.get("count").equals("Count") || Integer.parseInt(cnt.get("count")) == 1) continue;
                 System.out.println(cnt.get("word"));
-                result.get("result").add(cnt);
+                result.get("DayTalkCount").add(cnt);
             }
             in.close();
 
             // Image
-            result.put("wordCloud", new ArrayList<>());
+            result.put("image", new ArrayList<>());
             byte[] fileContent = FileUtils.readFileToByteArray(new File(host_dir + '/' + "WordCloud.png"));
             String encodedString = Base64.getEncoder().encodeToString(fileContent);
             HashMap<String, String> cnt = new HashMap<>();
             cnt.put("image", encodedString);
-
+            result.get("image").add(cnt);
 
             return result;
         }catch(IOException | InterruptedException e){
