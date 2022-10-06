@@ -23,29 +23,27 @@ public class ExecuteScript {
 
     // 셸 스크립트 실행
     public HashMap<String, ArrayList<Object>> run_shell(String host_dir, String result_path) {
-        System.out.println(host_dir);
-        System.out.println(result_path);
 
         Process process;
         HashMap<String, ArrayList<Object>> result = new HashMap<>();
         try {
-//            // only for unix
-//            String command = String.format("sh %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, result_path);
-//            process = Runtime.getRuntime().exec(command);
-//            // 끝날 때 까지 기다림
-//            process.waitFor();
-//
-//            result.put("logs", new ArrayList<>());
-//            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-//
-//            String inputLine;
-//            while ((inputLine = in.readLine()) != null) {
-//                System.out.println(inputLine);
-//                result.get("logs").add(inputLine);
-//            }
-//            in.close();
             BufferedReader in;
             String inputLine;
+//            // only for unix
+            String command = String.format("sh %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, result_path);
+            process = Runtime.getRuntime().exec(command);
+            // 끝날 때 까지 기다림
+            process.waitFor();
+
+            result.put("logs", new ArrayList<>());
+            in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            while ((inputLine = in.readLine()) != null) {
+                System.out.println(inputLine);
+                result.get("logs").add(inputLine);
+            }
+            in.close();
+
 
             // LineCount
             result.put("LineCount", new ArrayList<>());
@@ -97,6 +95,9 @@ public class ExecuteScript {
 
             return result;
         }catch(IOException e){
+            e.printStackTrace();
+            return null;
+        } catch (InterruptedException e) {
             e.printStackTrace();
             return null;
         }
