@@ -101,8 +101,6 @@ public class DaytalkAnalysisFragment extends Fragment {
                         Integer.parseInt(h.getString("count"))));
             }
 
-            words.sort((dayTalk, t1) -> t1.count - dayTalk.count);
-
             // 상위 6개만 표시
             for (int i = 0; i < 6; i++) {
                 map.put(words.get(i).name, words.get(i).count);

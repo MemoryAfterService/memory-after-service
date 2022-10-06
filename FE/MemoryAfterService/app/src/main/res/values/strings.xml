@@ -56,7 +56,7 @@
     <string name="UploadSMSNextText">Next</string>
     <string name="UploadSMSHint">1544 -</string>
     <string name="LineAnalysisText">lineCount</string>
-    <string name="DayTalkAnalysisText">dayTalkCount</string>
+    <string name="DayTalkAnalysisText">대화 빈도</string>
     <string name="back" />
     <string name="forward" />
     <!-- TODO: Remove or change this placeholder text -->
