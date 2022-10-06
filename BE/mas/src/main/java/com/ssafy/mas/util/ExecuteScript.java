@@ -76,8 +76,7 @@ public class ExecuteScript {
                 String[] inputSplit = inputLine.split(",");
                 HashMap<String, String> cnt = new HashMap<>();
                 cnt.put("user_name", inputSplit[1]);
-                cnt.put("room_name", inputSplit[2]);
-                cnt.put("count", inputSplit[3]);
+                cnt.put("count", inputSplit[2]);
                 if(cnt.get("count").equals("Count") || Integer.parseInt(cnt.get("count")) == 1) continue;
                 System.out.println(cnt.get("word"));
                 result.get("DayTalkCount").add(cnt);
@@ -94,10 +93,7 @@ public class ExecuteScript {
             result.get("image").add(cnt);
 
             return result;
-        }catch(IOException e){
-            e.printStackTrace();
-            return null;
-        } catch (InterruptedException e) {
+        }catch(IOException | InterruptedException e){
             e.printStackTrace();
             return null;
         }
