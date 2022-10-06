@@ -90,7 +90,7 @@ public class ExecuteScript {
             result.get("image").add(cnt);
 
             return result;
-        }catch(IOException | InterruptedException e){
+        }catch(IOException e){
             e.printStackTrace();
             return null;
         }
