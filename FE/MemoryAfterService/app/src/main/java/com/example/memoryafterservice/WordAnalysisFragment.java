@@ -37,6 +37,8 @@ public class WordAnalysisFragment extends Fragment {
             Toast.makeText(getContext(), "데이터가 없습니다.", Toast.LENGTH_SHORT).show();
         }
 
+
+
         return view;
     }
 }
