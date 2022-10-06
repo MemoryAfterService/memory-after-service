@@ -176,7 +176,7 @@
     <string name="DetailAnalysisRecentAmountTitleText">이번 달 소비 내역\t\t\t\t\t\t +</string>
     <string name="DetailAnalysisRecentAmountDataTotalText">총액 : 200,000원</string>
     <string name="DetailAnalysisRecentAmountDataDetailText">09:21 GS25 4,500원\n12:30 삼성화재유성캠퍼스 7,000원\n18:00 G마켓 150,000원</string>
-    <string name="UploadMainDescText">문자와 카톡을 업로드하세요</string>
+    <string name="UploadMainDescText">카카오톡을 업로드하세요</string>
     <string name="UploadMainHelpDesc">helps how to upload data</string>
     <string name="UploadMainSMSDesc">Upload SMS Button</string>
     <string name="UploadMainKakaoDesc">Upload Kakao Button</string>
@@ -184,8 +184,8 @@
     <string name="UploadSMSDescText">결제내역 수신 번호를 입력하세요</string>
     <string name="UploadSMSNextText">Next</string>
     <string name="UploadSMSHint">1544 -</string>
-    <string name="ChattingAnalysisText">채팅 분석</string>
-    <string name="ConsumptionAnalysisText">소비 분석</string>
+    <string name="LineAnalysisText">대화 시간</string>
+    <string name="DayTalkAnalysisText">대화 빈도</string>
     <string name="back" />
     <string name="forward" />
     <!-- TODO: Remove or change this placeholder text -->
@@ -211,4 +211,5 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="wordAnalysisText">단어 빈도</string>
 </resources>

@@ -33,5 +33,7 @@ public class RetrofitClient {
     public AuthApi getAuthApi() {
         return retrofit.create(AuthApi.class);
     }
+
+    public FileApi getFileApi() { return retrofit.create(FileApi.class); }
 }
 

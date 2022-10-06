@@ -19,7 +19,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/AnalysisFragment"
-        android:name="com.example.memoryafterservice.ChattingAnalysisFragment"
+        android:name="com.example.memoryafterservice.LineAnalysisFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
