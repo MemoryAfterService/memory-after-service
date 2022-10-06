@@ -156,9 +156,6 @@ public class LineAnalysisFragment extends Fragment {
             for (int i = 1; i< json.length(); i++) {
                 JSONObject h = json.getJSONObject(i);
                 words.add(new Line(
-                        h.getString("date"),
-                        h.getString("user_name"),
-                        h.getString("room_name"),
                         h.getString("hour"),
                         Integer.parseInt(h.getString("count"))));
             }
@@ -168,7 +165,7 @@ public class LineAnalysisFragment extends Fragment {
             // 상위 6개만 표시
             for (int i = 0; i < 6; i++) {
                 yAxis.add((double) words.get(i).count);
-                entry.add(words.get(i).name);
+                entry.add(words.get(i).hour + "시");
             }
             // entry 입력
         } catch (JSONException e) {
