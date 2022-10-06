@@ -54,13 +54,9 @@ public class ExecuteScript {
                 if(count == 100) break;
                 String[] inputSplit = inputLine.split(",");
                 HashMap<String, String> cnt = new HashMap<>();
-                cnt.put("date", inputSplit[1]);
-                cnt.put("user_name", inputSplit[2]);
-                cnt.put("room_name", inputSplit[3]);
-                cnt.put("hour", inputSplit[4]);
-                cnt.put("count", inputSplit[5]);
+                cnt.put("hour", inputSplit[1]);
+                cnt.put("count", inputSplit[2]);
                 if(cnt.get("count").equals("Count") || Integer.parseInt(cnt.get("count")) == 1) continue;
-                System.out.println(cnt.get("word"));
                 result.get("LineCount").add(cnt);
                 count++;
             }
