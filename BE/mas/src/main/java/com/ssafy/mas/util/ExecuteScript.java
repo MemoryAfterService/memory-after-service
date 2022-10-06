@@ -51,7 +51,9 @@ public class ExecuteScript {
             result.put("LineCount", new ArrayList<>());
             in = new BufferedReader(new FileReader(host_dir + '/' + "Data_LineCount_result.csv"));
             inputLine = "";
+            int count = 0;
             while ((inputLine = in.readLine()) != null) {
+                if(count == 100) break;
                 String[] inputSplit = inputLine.split(",");
                 HashMap<String, String> cnt = new HashMap<>();
                 cnt.put("date", inputSplit[1]);
@@ -62,6 +64,7 @@ public class ExecuteScript {
                 if(cnt.get("count").equals("Count") || Integer.parseInt(cnt.get("count")) == 1) continue;
                 System.out.println(cnt.get("word"));
                 result.get("LineCount").add(cnt);
+                count++;
             }
             in.close();
 
@@ -69,7 +72,9 @@ public class ExecuteScript {
             result.put("DayTalkCount", new ArrayList<>());
             in = new BufferedReader(new FileReader(host_dir + '/' + "Data_DayTalkCount_result.csv"));
             inputLine = "";
+            count = 0;
             while ((inputLine = in.readLine()) != null) {
+                if(count == 100) break;
                 String[] inputSplit = inputLine.split(",");
                 HashMap<String, String> cnt = new HashMap<>();
                 cnt.put("user_name", inputSplit[1]);
@@ -78,6 +83,7 @@ public class ExecuteScript {
                 if(cnt.get("count").equals("Count") || Integer.parseInt(cnt.get("count")) == 1) continue;
                 System.out.println(cnt.get("word"));
                 result.get("DayTalkCount").add(cnt);
+                count++;
             }
             in.close();
 
