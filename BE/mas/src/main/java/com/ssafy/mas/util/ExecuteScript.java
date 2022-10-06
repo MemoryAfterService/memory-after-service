@@ -1,13 +1,12 @@
 package com.ssafy.mas.util;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 
 @Component
@@ -46,23 +45,47 @@ public class ExecuteScript {
             }
             in.close();
 
-            //System.out.println(result.get(0).toString());
-//            result.put("result", new ArrayList<>());
-//            in = new BufferedReader(new FileReader(host_dir + '/' + result_file));
-//            inputLine = "";
-//            while ((inputLine = in.readLine()) != null) {
-//                String[] inputSplit = inputLine.split(",");
-//                HashMap<String, String> cnt = new HashMap<>();
-//                cnt.put("date_time", inputSplit[1]);
-//                cnt.put("user_name", inputSplit[2]);
-//                cnt.put("room_name", inputSplit[3]);
-//                cnt.put("word", inputSplit[4]);
-//                cnt.put("count", inputSplit[5]);
-//                if(cnt.get("count").equals("count") || cnt.get("word").length() == 1 || Integer.parseInt(cnt.get("count")) == 1) continue;
-//                System.out.println(cnt.get("word"));
-//                result.get("result").add(cnt);
-//            }
-//            in.close();
+            // LineCount
+            result.put("LineCount", new ArrayList<>());
+            in = new BufferedReader(new FileReader(host_dir + '/' + "Data_LineCount_result.csv"));
+            inputLine = "";
+            while ((inputLine = in.readLine()) != null) {
+                String[] inputSplit = inputLine.split(",");
+                HashMap<String, String> cnt = new HashMap<>();
+                cnt.put("date", inputSplit[1]);
+                cnt.put("user_name", inputSplit[2]);
+                cnt.put("room_name", inputSplit[3]);
+                cnt.put("hour", inputSplit[4]);
+                cnt.put("count", inputSplit[5]);
+                if(cnt.get("count").equals("count") || cnt.get("word").length() == 1 || Integer.parseInt(cnt.get("count")) == 1) continue;
+                System.out.println(cnt.get("word"));
+                result.get("result").add(cnt);
+            }
+            in.close();
+
+            // DayTalkCount
+            result.put("DayTalkCount", new ArrayList<>());
+            in = new BufferedReader(new FileReader(host_dir + '/' + "Data_DayTalkCount_result.csv"));
+            inputLine = "";
+            while ((inputLine = in.readLine()) != null) {
+                String[] inputSplit = inputLine.split(",");
+                HashMap<String, String> cnt = new HashMap<>();
+                cnt.put("user_name", inputSplit[1]);
+                cnt.put("room_name", inputSplit[2]);
+                cnt.put("count", inputSplit[3]);
+                if(cnt.get("count").equals("count") || Integer.parseInt(cnt.get("count")) == 1) continue;
+                System.out.println(cnt.get("word"));
+                result.get("result").add(cnt);
+            }
+            in.close();
+
+            // Image
+            result.put("wordCloud", new ArrayList<>());
+            byte[] fileContent = FileUtils.readFileToByteArray(new File(host_dir + '/' + "WordCloud.png"));
+            String encodedString = Base64.getEncoder().encodeToString(fileContent);
+            HashMap<String, String> cnt = new HashMap<>();
+            cnt.put("image", encodedString);
+
 
             return result;
         }catch(IOException | InterruptedException e){
