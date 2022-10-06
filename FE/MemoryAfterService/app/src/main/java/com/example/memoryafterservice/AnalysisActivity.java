@@ -1,21 +1,23 @@
 package com.example.memoryafterservice;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+
+import org.json.JSONObject;
 
 import java.util.Objects;
 
 public class AnalysisActivity extends AppCompatActivity {
-    private ChattingAnalysisFragment chattingAnalysisFragment = new ChattingAnalysisFragment();
-    private ConsumptionAnalysisFragment consumptionAnalysisFragment = new ConsumptionAnalysisFragment();
+    private LineAnalysisFragment chattingAnalysisFragment = new LineAnalysisFragment();
+    private DaytalkAnalysisFragment consumptionAnalysisFragment = new DaytalkAnalysisFragment();
+    private WordAnalysisFragment wordAnalysisFragment = new WordAnalysisFragment();
 
     private BottomNavigationView analysisNavigationView;
+
+    private JSONObject json;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,27 +26,29 @@ public class AnalysisActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         analysisNavigationView = findViewById(R.id.AnalysisNavigationBar);
-        analysisNavigationView.setSelectedItemId(R.id.ChattingAnalysisMenu);
+        analysisNavigationView.setSelectedItemId(R.id.LineAnalysisMenu);
 
-        analysisNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()){
-                    case R.id.ChattingAnalysisMenu:
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.AnalysisFragment, chattingAnalysisFragment)
-                                .commit();
-                        break;
-                    case R.id.ConsumptionAnalysisMenu:
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.AnalysisFragment, consumptionAnalysisFragment)
-                                .commit();
-                        break;
-                }
-                return true;
+        analysisNavigationView.setOnItemSelectedListener(item -> {
+            switch(item.getItemId()){
+                case R.id.LineAnalysisMenu:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.AnalysisFragment, chattingAnalysisFragment)
+                            .commit();
+                    break;
+                case R.id.DayTalkAnalysisMenu:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.AnalysisFragment, consumptionAnalysisFragment)
+                            .commit();
+                    break;
+                case R.id.WordAnalysisMenu:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.AnalysisFragment, wordAnalysisFragment)
+                            .commit();
             }
+            return true;
         });
     }
 }
