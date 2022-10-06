@@ -57,7 +57,7 @@ public class ExecuteScript {
                 cnt.put("room_name", inputSplit[3]);
                 cnt.put("hour", inputSplit[4]);
                 cnt.put("count", inputSplit[5]);
-                if(cnt.get("count").equals("count") || Integer.parseInt(cnt.get("count")) == 1) continue;
+                if(cnt.get("count").equals("Count") || Integer.parseInt(cnt.get("count")) == 1) continue;
                 System.out.println(cnt.get("word"));
                 result.get("result").add(cnt);
             }
@@ -73,7 +73,7 @@ public class ExecuteScript {
                 cnt.put("user_name", inputSplit[1]);
                 cnt.put("room_name", inputSplit[2]);
                 cnt.put("count", inputSplit[3]);
-                if(cnt.get("count").equals("count") || Integer.parseInt(cnt.get("count")) == 1) continue;
+                if(cnt.get("count").equals("Count") || Integer.parseInt(cnt.get("count")) == 1) continue;
                 System.out.println(cnt.get("word"));
                 result.get("result").add(cnt);
             }
