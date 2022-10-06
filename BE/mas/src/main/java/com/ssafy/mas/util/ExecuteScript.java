@@ -54,7 +54,7 @@ public class ExecuteScript {
             String inputLine = "";
             while ((inputLine = in.readLine()) != null) {
                 String[] inputSplit = inputLine.split(",");
-                if(!inputSplit[5].equals("count") && Integer.parseInt(inputSplit[5]) < 2) continue;
+                if(!inputSplit[5].equals("count") && Integer.parseInt(inputSplit[5]) < 2 && inputSplit[4].length() < 2) continue;
                 HashMap<String, String> cnt = new HashMap<>();
                 cnt.put("date_time", inputSplit[1]);
                 cnt.put("user_name", inputSplit[2]);
