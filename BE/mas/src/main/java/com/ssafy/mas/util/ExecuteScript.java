@@ -29,21 +29,23 @@ public class ExecuteScript {
         Process process;
         HashMap<String, ArrayList<Object>> result = new HashMap<>();
         try {
-            // only for unix
-            String command = String.format("sh %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, result_path);
-            process = Runtime.getRuntime().exec(command);
-            // 끝날 때 까지 기다림
-            process.waitFor();
-
-            result.put("logs", new ArrayList<>());
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
+//            // only for unix
+//            String command = String.format("sh %s %s %s %s %s", shell_path, key_path, remote_url, host_dir, result_path);
+//            process = Runtime.getRuntime().exec(command);
+//            // 끝날 때 까지 기다림
+//            process.waitFor();
+//
+//            result.put("logs", new ArrayList<>());
+//            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//
+//            String inputLine;
+//            while ((inputLine = in.readLine()) != null) {
+//                System.out.println(inputLine);
+//                result.get("logs").add(inputLine);
+//            }
+//            in.close();
+            BufferedReader in;
             String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
-                result.get("logs").add(inputLine);
-            }
-            in.close();
 
             // LineCount
             result.put("LineCount", new ArrayList<>());
