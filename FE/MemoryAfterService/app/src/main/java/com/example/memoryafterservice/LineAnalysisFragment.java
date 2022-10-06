@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.memoryafterservice.dto.Word;
+import com.example.memoryafterservice.dto.Line;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -37,7 +37,7 @@ public class LineAnalysisFragment extends Fragment {
     private BarChart barChart;
     private View view;
     private JSONObject json;
-    private ArrayList<Word> words;
+    private ArrayList<Line> words;
 
     public LineAnalysisFragment() {
         // Required empty public constructor
@@ -50,7 +50,7 @@ public class LineAnalysisFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_line_analysis, container, false);
         barChart = view.findViewById(R.id.ChattingAnalysisBar);
-        String rawJSON = getActivity().getIntent().getStringExtra("result");
+        String rawJSON = getActivity().getIntent().getStringExtra("line");
         try{
             json = new JSONObject(rawJSON);
 
@@ -157,11 +157,11 @@ public class LineAnalysisFragment extends Fragment {
             System.out.println();
             for (int i = 1; i< arr.length(); i++) {
                 JSONObject h = arr.getJSONObject(i);
-                words.add(new Word(
-                        h.getString("date_time"),
+                words.add(new Line(
+                        h.getString("date"),
                         h.getString("user_name"),
                         h.getString("room_name"),
-                        h.getString("word"),
+                        h.getString("hour"),
                         Integer.parseInt(h.getString("count"))));
             }
 
@@ -170,7 +170,7 @@ public class LineAnalysisFragment extends Fragment {
             // 상위 6개만 표시
             for (int i = 0; i < 6; i++) {
                 yAxis.add((double) words.get(i).count);
-                entry.add(words.get(i).word);
+                entry.add(words.get(i).hour);
             }
             // entry 입력
         } catch (JSONException e) {

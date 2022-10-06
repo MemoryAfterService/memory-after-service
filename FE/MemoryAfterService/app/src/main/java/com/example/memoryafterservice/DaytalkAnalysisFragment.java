@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.memoryafterservice.dto.Word;
+import com.example.memoryafterservice.dto.Line;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -22,16 +22,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class DaytalkAnalysisFragment extends Fragment {
     private PieChart pieChart;
     private View view;
     private JSONObject json;
-    private ArrayList<Word> words;
+    private ArrayList<Line> words;
 
     public DaytalkAnalysisFragment() {
         // Required empty public constructor
@@ -44,7 +42,7 @@ public class DaytalkAnalysisFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_daytalk_analysis, container, false);
         pieChart = view.findViewById(R.id.ConsumptionAnalysisPie);
-        String rawJSON = getActivity().getIntent().getStringExtra("result");
+        String rawJSON = getActivity().getIntent().getStringExtra("dayTalk");
         try{
             json = new JSONObject(rawJSON);
 
@@ -96,11 +94,11 @@ public class DaytalkAnalysisFragment extends Fragment {
         // input data 넣기
         JSONArray arr = null;
         try {
-            arr = (JSONArray) json.get("result");
+            arr = (JSONArray) json.get("dayTalk");
             System.out.println();
             for (int i = 1; i< arr.length(); i++) {
                 JSONObject h = arr.getJSONObject(i);
-                words.add(new Word(
+                words.add(new Line(
                         h.getString("date_time"),
                         h.getString("user_name"),
                         h.getString("room_name"),
@@ -112,7 +110,7 @@ public class DaytalkAnalysisFragment extends Fragment {
 
             // 상위 6개만 표시
             for (int i = 0; i < 6; i++) {
-                map.put(words.get(i).word, words.get(i).count);
+                map.put(words.get(i).hour, words.get(i).count);
             }
             // entry 입력
         } catch (JSONException e) {

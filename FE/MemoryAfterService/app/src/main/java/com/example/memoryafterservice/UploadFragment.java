@@ -60,7 +60,9 @@ public class UploadFragment extends Fragment {
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         String responseBody = null;
                         JSONObject json = null;
-                        String message = null;
+                        JSONObject line = null;
+                        JSONObject dayTalk = null;
+                        JSONObject image = null;
                         try {
                             responseBody = response.body().string();
                             json = new JSONObject(responseBody);
@@ -68,6 +70,10 @@ public class UploadFragment extends Fragment {
 
                             json = (JSONObject) json.get("Response");
                             json = (JSONObject) json.get("response");
+                            line = json.getJSONObject("LineCount");
+                            dayTalk = json.getJSONObject("DayTalkCount");
+                            image = json.getJSONObject("Image");
+
 
 //                            // save file internal storage
 //                            FileOutputStream fos = getActivity().openFileOutput("result.json", Context.MODE_PRIVATE);
@@ -80,7 +86,9 @@ public class UploadFragment extends Fragment {
                             Toast.makeText(getContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
 
                             Intent indent = new Intent(getActivity(), AnalysisActivity.class);
-                            indent.putExtra("result", json.toString());
+                            indent.putExtra("line", line.toString());
+                            indent.putExtra("dayTalk", dayTalk.toString());
+                            indent.putExtra("image", image.toString());
 
                             getActivity().startActivity(indent);
 
