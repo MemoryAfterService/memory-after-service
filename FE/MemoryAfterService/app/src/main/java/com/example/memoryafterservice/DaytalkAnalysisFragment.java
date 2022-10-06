@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.memoryafterservice.dto.DayTalk;
 import com.example.memoryafterservice.dto.Line;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -28,8 +29,8 @@ import java.util.HashMap;
 public class DaytalkAnalysisFragment extends Fragment {
     private PieChart pieChart;
     private View view;
-    private JSONObject json;
-    private ArrayList<Line> words;
+    private JSONArray json;
+    private ArrayList<DayTalk> words;
 
     public DaytalkAnalysisFragment() {
         // Required empty public constructor
@@ -44,7 +45,7 @@ public class DaytalkAnalysisFragment extends Fragment {
         pieChart = view.findViewById(R.id.ConsumptionAnalysisPie);
         String rawJSON = getActivity().getIntent().getStringExtra("dayTalk");
         try{
-            json = new JSONObject(rawJSON);
+            json = new JSONArray(rawJSON);
 
             words = new ArrayList<>();
 
@@ -87,30 +88,25 @@ public class DaytalkAnalysisFragment extends Fragment {
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
         String label = "type";
         HashMap<String, Integer> map = new HashMap<>();
-        String title = "가장 많이 말한 사람";
-        pieChart.setCenterText(title);
-        pieChart.setCenterTextSize(20f);
-        pieChart.setDrawCenterText(true);
+//        String title = "가장 많이 말한 사람";
+//        pieChart.setCenterText(title);
+//        pieChart.setCenterTextSize(20f);
+//        pieChart.setDrawCenterText(true);
         // input data 넣기
-        JSONArray arr = null;
         try {
-            arr = (JSONArray) json.get("dayTalk");
-            System.out.println();
-            for (int i = 1; i< arr.length(); i++) {
-                JSONObject h = arr.getJSONObject(i);
-                words.add(new Line(
-                        h.getString("date_time"),
+            for (int i = 1; i< json.length(); i++) {
+                JSONObject h = json.getJSONObject(i);
+                words.add(new DayTalk(
                         h.getString("user_name"),
                         h.getString("room_name"),
-                        h.getString("word"),
                         Integer.parseInt(h.getString("count"))));
             }
 
-            words.sort((word, t1) -> t1.count - word.count);
+            words.sort((dayTalk, t1) -> t1.count - dayTalk.count);
 
             // 상위 6개만 표시
             for (int i = 0; i < 6; i++) {
-                map.put(words.get(i).hour, words.get(i).count);
+                map.put(words.get(i).name, words.get(i).count);
             }
             // entry 입력
         } catch (JSONException e) {

@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public class LineAnalysisFragment extends Fragment {
     private BarChart barChart;
     private View view;
-    private JSONObject json;
+    private JSONArray json;
     private ArrayList<Line> words;
 
     public LineAnalysisFragment() {
@@ -52,7 +52,7 @@ public class LineAnalysisFragment extends Fragment {
         barChart = view.findViewById(R.id.ChattingAnalysisBar);
         String rawJSON = getActivity().getIntent().getStringExtra("line");
         try{
-            json = new JSONObject(rawJSON);
+            json = new JSONArray(rawJSON);
 
             words = new ArrayList<>();
 
@@ -151,12 +151,10 @@ public class LineAnalysisFragment extends Fragment {
 
 
         // input data 넣기
-        JSONArray arr = null;
         try {
-            arr = (JSONArray) json.get("result");
             System.out.println();
-            for (int i = 1; i< arr.length(); i++) {
-                JSONObject h = arr.getJSONObject(i);
+            for (int i = 1; i< json.length(); i++) {
+                JSONObject h = json.getJSONObject(i);
                 words.add(new Line(
                         h.getString("date"),
                         h.getString("user_name"),
@@ -170,7 +168,7 @@ public class LineAnalysisFragment extends Fragment {
             // 상위 6개만 표시
             for (int i = 0; i < 6; i++) {
                 yAxis.add((double) words.get(i).count);
-                entry.add(words.get(i).hour);
+                entry.add(words.get(i).name);
             }
             // entry 입력
         } catch (JSONException e) {

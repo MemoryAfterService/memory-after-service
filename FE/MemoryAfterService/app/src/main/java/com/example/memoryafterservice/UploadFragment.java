@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.memoryafterservice.retrofit.RetrofitClient;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,9 +61,9 @@ public class UploadFragment extends Fragment {
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         String responseBody = null;
                         JSONObject json = null;
-                        JSONObject line = null;
-                        JSONObject dayTalk = null;
-                        JSONObject image = null;
+                        JSONArray line = null;
+                        JSONArray dayTalk = null;
+                        JSONArray image = null;
                         try {
                             responseBody = response.body().string();
                             json = new JSONObject(responseBody);
@@ -70,9 +71,9 @@ public class UploadFragment extends Fragment {
 
                             json = (JSONObject) json.get("Response");
                             json = (JSONObject) json.get("response");
-                            line = json.getJSONObject("LineCount");
-                            dayTalk = json.getJSONObject("DayTalkCount");
-                            image = json.getJSONObject("Image");
+                            line = (JSONArray) json.get("LineCount");
+                            dayTalk = (JSONArray)json.get("DayTalkCount");
+                            image = (JSONArray) json.get("image");
 
 
 //                            // save file internal storage

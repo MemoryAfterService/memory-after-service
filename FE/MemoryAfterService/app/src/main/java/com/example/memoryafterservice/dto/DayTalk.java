@@ -6,9 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DayTalk {
-    String name;
-    String room_name;
-    int count;
+    public String name;
+    public String room_name;
+    public int count;
 
     public DayTalk(String name, String room_name, int count) {
         this.name = name;
