@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
@@ -61,6 +62,10 @@ public class LoginActivity extends AppCompatActivity {
         inputEditId = findViewById(R.id.idEditText);
         inputEditPw = findViewById(R.id.pwEditText);
         buttonLogin = findViewById(R.id.LoginButton);
+
+//        int color = Color.parseColor("#ECECEC");
+
+//        inputEditPw.setBackgroundColor(color);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override

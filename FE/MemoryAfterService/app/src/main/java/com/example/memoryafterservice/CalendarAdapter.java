@@ -17,6 +17,8 @@ import java.util.HashSet;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
+    int selectedPosition=-1;
+
     private final ArrayList<LocalDate> daysOfMonth;
     private HashSet<LocalDate> pickedDate = new HashSet<LocalDate>();
 
@@ -38,20 +40,27 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         LocalDate day = daysOfMonth.get(position);
+        if(selectedPosition==position)
+            holder.itemView.setBackgroundColor(Color.parseColor("#2A9EAD"));
+//        else
+//            holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFFF"));
 
         if(day == null){
             holder.dayOfMonth.setText("");
         }else{
             holder.dayOfMonth.setText(String.valueOf(day.getDayOfMonth()));
 
-            if(day.equals(CalendarUtil.selectedDate)){
-                holder.parentView.setBackgroundColor(Color.rgb(236, 236, 236));
+            if(day.equals(CalendarUtil.selectedDate) && selectedPosition==-1){
+//                holder.parentView.setBackgroundColor(Color.rgb(236, 236, 236));
+                holder.itemView.setBackgroundColor(Color.rgb(236, 236, 236));
             }
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                selectedPosition=position;
+                notifyDataSetChanged();
                 if (day != null) {
                     if (pickedDate.size() < 2) {
                         pickedDate.add(day);

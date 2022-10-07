@@ -45,6 +45,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/row_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -114,10 +115,16 @@
 
         <Button
             android:id="@+id/CalendarNextButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
             android:layout_marginLeft="36dp"
             android:layout_marginRight="36dp"
-            android:text="Next" />
+            android:text="Next"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:background="@drawable/mint_border_layout"
+            android:textColor="@color/white" />
     </LinearLayout>
 </FrameLayout>

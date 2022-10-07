@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/ChattingAnalysisMenu"
-        android:title="@string/ChattingAnalysisText" />
+        android:id="@+id/LineAnalysisMenu"
+        android:title="@string/LineAnalysisText" />
     <item
-        android:id="@+id/ConsumptionAnalysisMenu"
-        android:title="@string/ConsumptionAnalysisText" />
-
+        android:id="@+id/DayTalkAnalysisMenu"
+        android:title="@string/DayTalkAnalysisText" />
+    <item
+        android:id="@+id/WordAnalysisMenu"
+        android:title="@string/wordAnalysisText" />
 </menu>
