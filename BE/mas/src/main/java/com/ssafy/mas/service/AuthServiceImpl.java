@@ -16,11 +16,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service("authService")
@@ -43,8 +47,8 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     NCloudSENSUtil nCloudSENSUtil;
 
-//    @Value("${security-aes256.key}")
-//    private String key;
+    @PersistenceContext
+    EntityManager em;
 
     @Override
     public Map<String, Object> loginMember(LoginReq user) throws Exception {
@@ -52,14 +56,23 @@ public class AuthServiceImpl implements AuthService {
         HashMap<String, Object> result = new HashMap<>();
 
         if (findMember != null && !findMember.isWithdrawal() && passwordEncoder.matches(user.getPassword(), findMember.getPassword())) {
-            System.out.println("CORRECT");
+            System.out.println("LOGIN SUCCESS");
+
+            Member join = em.find(Member.class, findMember.getId());
+            List<String> bookmarks = new ArrayList<>();
+            for (int i = 0; i < join.getBookmarks().size(); i++) {
+                bookmarks.add(join.getBookmarks().get(i).getSmsNumber());
+            }
+
             MemberRes member = MemberRes.builder()
-                    .id(findMember.getId())
-                    .userid(findMember.getUserId())
-                    .name(findMember.getName())
-                    .phone(aes256.decrypt(findMember.getPhone()))
-                    .profileUrl(findMember.getProfileUrl())
-                    .regDate(findMember.getRegDate().toLocalDate().toString())
+                    .id(join.getId())
+                    .userid(join.getUserId())
+                    .name(join.getName())
+                    .phone(aes256.decrypt(join.getPhone()))
+                    .profileUrl(join.getProfileUrl())
+                    .regDate(join.getRegDate().toLocalDate().toString())
+                    .bookmark(bookmarks)
+                    .updatelog(new MemberRes.UpdateLog(join.getUpdateLog().getLastUploadDate(), join.getUpdateLog().getCount()))
                     .build();
             result.put("member", member);
             result.put("result", true);

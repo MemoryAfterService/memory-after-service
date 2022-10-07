@@ -1,14 +1,20 @@
 package com.ssafy.mas.service;
 
+import com.ssafy.mas.database.entity.Member;
+import com.ssafy.mas.database.repository.MemberRepository;
+import com.ssafy.mas.database.repository.UpdateLogRepository;
+import com.ssafy.mas.util.ExecuteScript;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 
@@ -17,11 +23,16 @@ import java.util.Locale;
 @Transactional
 public class FileUploadServiceImpl implements FileUploadService {
 
-//    @Autowired
-//    SSHUtils sshUtils;
+    @Autowired
+    MemberRepository memberRepository;
 
-//    @Value("${file-storage.path}")
-//    private String path;
+    @Autowired
+    UpdateLogRepository updateLogRepository;
+
+    @Autowired
+    ExecuteScript executeScript;
+
+    private String RESULT_PATH;
 
     @Override
     public boolean saveFile(String userid, MultipartFile[] files) {
@@ -69,16 +80,38 @@ public class FileUploadServiceImpl implements FileUploadService {
             try {
                 files[i].transferTo(changeFile);
                 System.out.printf("[%s] - File upload is complete. The file is in %s\n", newFileName, savePath);
+
             } catch (IllegalStateException | IOException e) {
                 System.out.printf("[%s] - File upload failed.\n", newFileName);
                 e.printStackTrace();
                 return false;
             }
         }
+        Member findMember = memberRepository.findFirstByUserIdAndWithdrawal(userid, false);
+        updateLogRepository.updateProfileUploadLog(findMember, currentTime.toLocalDate());
 
         // 파일 전송이 완료되어야 airflow 실행 요청
         // AIRFLOW TRIGGER //
 
         return true;
+    }
+
+    @Override
+    public JSONObject runPipeline(String userid, String dateString) {
+        String host_dir = "/root/upload/"+ userid + "/" + dateString;
+        // 추후에 파일 구조 새로 만들기
+        String result_path = "/home/j7b103/word";
+        HashMap<String, ArrayList<Object>> output = executeScript.run_shell(
+                host_dir,
+                result_path);
+
+        JSONObject jsonObject = new JSONObject();
+        // 완료된 파일 읽기
+        if(output != null){
+            jsonObject.put("response", output);
+        }else{
+            jsonObject.put("response", "failed");
+        }
+        return jsonObject;
     }
 }

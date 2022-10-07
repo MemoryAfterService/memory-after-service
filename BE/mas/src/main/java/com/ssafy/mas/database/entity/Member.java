@@ -3,17 +3,16 @@ package com.ssafy.mas.database.entity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "member")
 @Entity
 @Getter
 @Setter
-@ToString(exclude = {})
+@ToString(exclude = {"bookmarks", "updateLog"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -42,6 +41,10 @@ public class Member extends BaseEntity {
 
     @OneToOne(mappedBy = "member")
     private UpdateLog updateLog;
+
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<Bookmark> bookmarks = new ArrayList<>();
 }
 
 
