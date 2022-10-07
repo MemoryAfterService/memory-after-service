@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/LineAnalysisMenu"
+        android:title="@string/LineAnalysisText" />
+    <item
+        android:id="@+id/DayTalkAnalysisMenu"
+        android:title="@string/DayTalkAnalysisText" />
+    <item
+        android:id="@+id/WordAnalysisMenu"
+        android:title="@string/wordAnalysisText" />
+</menu>

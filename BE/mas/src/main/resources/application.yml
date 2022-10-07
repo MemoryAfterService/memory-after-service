@@ -1,0 +1,32 @@
+server:
+  port: 8080
+  address: localhost
+  servlet:
+    context-path: /api
+spring:
+# 아래의 분리된 파일을 Spring Boot main class인 MasApplication에서 읽음
+#  config:
+#    import:
+#      - classpath:/application-database.yml
+#      - classpath:/application-env.yml
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql : false
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 5MB
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+logging:
+  level:
+    org.hibernate:
+      type:
+        descriptor:
+          sql: trace
+      SQL: debug

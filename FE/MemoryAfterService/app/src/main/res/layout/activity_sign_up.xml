@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity">
+
+    <ImageButton
+        android:id="@+id/SignUpBackButton"
+        android:layout_width="40dp"
+        android:layout_height="42sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/BackLoginDesc"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24"
+        android:onClick="backToTOU"/>
+
+    <TextView
+        android:id="@+id/BackMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/BackTOU"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/SignUpBackButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/SignUpDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="160dp"
+        android:text="@string/SignInText"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.271"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BackMain" />
+
+    <com.google.android.material.textfield.TextInputEditText
+
+        android:id="@+id/SignUpId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="48dp"
+        android:ems="10"
+        android:hint="@string/SignInIdHint"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUpDesc" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/SignUpPw"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="48dp"
+        android:ems="10"
+        android:hint="@string/SignInPwHint"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUpId" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/SignUpPwConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="48dp"
+        android:ems="10"
+        android:hint="@string/SignInPwConfirmHint"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUpPw" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/SignUpName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="48dp"
+        android:ems="10"
+        android:hint="@string/SignInNameHint"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUpPwConfirm" />
+
+    <!--    <EditText-->
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/SignUpPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="48dp"
+        android:digits="0123456789"
+        android:ems="10"
+        android:hint="@string/SignInPhoneHint"
+        android:importantForAutofill="no"
+        android:inputType="phone"
+        android:maxLength="13"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUpName" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/SignUpVerify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="48dp"
+        android:ems="10"
+        android:hint="@string/SignInVerifyHint"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUpPhone" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="48dp"
+        android:onClick="onClickRegisterBtn"
+        android:text="@string/SignInButton"
+        android:background="@drawable/mint_border_layout"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUpVerify"/>
+
+
+    <TextView
+        android:id="@+id/SignUpIdCheckDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="48dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUpId" />
+
+    <TextView
+        android:id="@+id/SignUpPwConfirmDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="48dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/SignUpName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUpPwConfirm" />
+
+    <Button
+        android:id="@+id/SignUpIdCheckButton"
+        android:layout_width="76dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="4dp"
+        android:textSize="10dp"
+        android:layout_marginStart="-96dp"
+        android:layout_marginEnd="48dp"
+        android:onClick="onClickCheckIdDuplicationBtn"
+        android:text="@string/SignInIdCheck"
+        android:background="@drawable/mint_round_border_layout"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/SignUpId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/SignUpId"
+        app:layout_constraintTop_toTopOf="@+id/SignUpId" />
+
+    <Button
+        android:id="@+id/SignUpSendVerifyButton"
+        android:layout_width="76dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="4dp"
+        android:textSize="10dp"
+        android:layout_marginStart="-96dp"
+        android:layout_marginEnd="48dp"
+        android:onClick="sendVerification"
+        android:text="@string/SignInSendVerify"
+        android:background="@drawable/mint_round_border_layout"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/SignUpPhone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/SignUpPhone"
+        app:layout_constraintTop_toTopOf="@+id/SignUpPhone" />
+
+    <Button
+        android:id="@+id/SignUpVerifyButton"
+        android:layout_width="76dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="4dp"
+        android:textSize="10dp"
+        android:layout_marginStart="-96dp"
+        android:layout_marginEnd="48dp"
+        android:onClick="onClickVerifyBtn"
+        android:text="@string/SignInVerifyButton"
+        android:background="@drawable/mint_round_border_layout"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/SignUpVerify"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/SignUpVerify"
+        app:layout_constraintTop_toTopOf="@+id/SignUpVerify" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
