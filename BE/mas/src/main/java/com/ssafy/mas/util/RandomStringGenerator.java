@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
 import java.util.Date;
-import java.util.Random;
 
 @Component
 public class RandomStringGenerator {

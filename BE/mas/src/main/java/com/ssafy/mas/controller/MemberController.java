@@ -3,7 +3,6 @@ package com.ssafy.mas.controller;
 import com.ssafy.mas.request.*;
 import com.ssafy.mas.response.MemberRes;
 import com.ssafy.mas.service.MemberService;
-import com.ssafy.mas.util.ValidationChecker;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 

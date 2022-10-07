@@ -1,7 +1,6 @@
 package com.ssafy.mas.controller;
 
 import com.ssafy.mas.request.BookmarkReq;
-import com.ssafy.mas.request.MemberReq;
 import com.ssafy.mas.service.BookmarkService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

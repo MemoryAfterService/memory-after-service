@@ -2,11 +2,8 @@ package com.ssafy.mas.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.mas.request.LoginReq;
-import com.ssafy.mas.request.MessageDTO;
 import com.ssafy.mas.response.MemberRes;
 import com.ssafy.mas.service.AuthService;
-import com.ssafy.mas.util.NCloudSENSUtil;
-import com.ssafy.mas.util.RandomStringGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

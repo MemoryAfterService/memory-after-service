@@ -2,7 +2,6 @@ package com.ssafy.mas.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.mas.request.AirflowReqDTO;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
