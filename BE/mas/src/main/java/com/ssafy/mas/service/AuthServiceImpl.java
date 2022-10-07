@@ -55,14 +55,15 @@ public class AuthServiceImpl implements AuthService {
         Member findMember = memberRepository.findFirstByUserId(user.getUserid());
         HashMap<String, Object> result = new HashMap<>();
 
-        Member join = em.find(Member.class, findMember.getId());
-        List<String> bookmarks = new ArrayList<>();
-        for (int i = 0; i < join.getBookmarks().size(); i++) {
-            bookmarks.add(join.getBookmarks().get(i).getSmsNumber());
-        }
-
         if (findMember != null && !findMember.isWithdrawal() && passwordEncoder.matches(user.getPassword(), findMember.getPassword())) {
             System.out.println("LOGIN SUCCESS");
+
+            Member join = em.find(Member.class, findMember.getId());
+            List<String> bookmarks = new ArrayList<>();
+            for (int i = 0; i < join.getBookmarks().size(); i++) {
+                bookmarks.add(join.getBookmarks().get(i).getSmsNumber());
+            }
+
             MemberRes member = MemberRes.builder()
                     .id(join.getId())
                     .userid(join.getUserId())
